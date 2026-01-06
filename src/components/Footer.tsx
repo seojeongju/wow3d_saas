@@ -7,16 +7,9 @@ export default function Footer() {
       <div className="container">
         <div className="footer-content">
           <div className="footer-brand">
-            <div className="footer-logo-container mb-4 text-white">
-              {/* SVG Logo - Matching Navbar */}
-              <svg className="footer-logo-svg" viewBox="0 0 160 40" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                <path d="M26 34L18 10H10L2 34H8.5L14 17L19.5 34H26Z" fill="currentColor" />
-                <path d="M44 34L36 10H28L20 34H26.5L32 17L37.5 34H44Z" fill="currentColor" />
-                <circle cx="54" cy="12" r="3" className="text-blue-400" fill="currentColor" />
-                <text x="66" y="28" style={{ fontFamily: 'sans-serif', fontWeight: 800, fontSize: '24px', letterSpacing: '-1px' }}>
-                  DataBiz
-                </text>
-              </svg>
+            <div className="footer-logo mb-4">
+              <span className="logo-wow">WOW</span>
+              <span className="logo-databiz">DataBiz</span>
             </div>
             <p>스마트상점 기술보급사업 공식 공급기업</p>
             <p className="copyright">© 2026 WoW Data Biz. All rights reserved.</p>
@@ -24,8 +17,8 @@ export default function Footer() {
           <div className="footer-links">
             <div className="link-group">
               <h4>서비스</h4>
-              <Link href="/services">재고/매출 관리</Link>
-              <Link href="/services">아카데미 관리</Link>
+              <Link href="/services/retail">재고/매출 관리</Link>
+              <Link href="/services/academy">아카데미 관리</Link>
             </div>
             <div className="link-group">
               <h4>고객지원</h4>
@@ -48,13 +41,25 @@ export default function Footer() {
           gap: 3rem;
         }
         
-        .footer-logo-container {
-          display: inline-block;
+        .footer-logo {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          font-weight: 800;
+          font-size: 1.5rem;
+          letter-spacing: -0.5px;
         }
-        .footer-logo-svg {
-          height: 48px;
-          width: auto;
-          color: white;
+        
+        .logo-wow {
+            color: white;
+        }
+        
+        .logo-databiz {
+            background: rgba(37, 99, 235, 0.3);
+            color: #93C5FD;
+            padding: 0.25rem 0.75rem;
+            border-radius: 6px;
+            font-size: 1.3rem;
         }
 
         .footer-brand h3 {

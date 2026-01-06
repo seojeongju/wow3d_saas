@@ -11,21 +11,6 @@ type NavLink = {
   children?: { href: string; label: string }[];
 };
 
-// SVG Logo Component implementation
-const Logo = ({ className }: { className?: string }) => (
-  <svg className={className} viewBox="0 0 160 40" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-    {/* Abstract W icon */}
-    <path d="M26 34L18 10H10L2 34H8.5L14 17L19.5 34H26Z" fill="currentColor" />
-    <path d="M44 34L36 10H28L20 34H26.5L32 17L37.5 34H44Z" fill="currentColor" />
-    <circle cx="54" cy="12" r="3" className="text-blue-500" fill="currentColor" />
-
-    {/* Text */}
-    <text x="66" y="28" style={{ fontFamily: 'sans-serif', fontWeight: 800, fontSize: '24px', letterSpacing: '-1px' }}>
-      DataBiz
-    </text>
-  </svg>
-);
-
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -65,9 +50,9 @@ export default function Navbar() {
       <nav className={clsx('navbar', scrolled && 'scrolled', isOpen && 'menu-open')}>
         <div className="container nav-container">
           <Link href="/" className="logo-link" onClick={handleLinkClick}>
-            {/* Logo changes color based on scroll state */}
-            <div className={clsx("brand-logo-wrapper", (scrolled || isOpen) ? "text-slate-900" : "text-white")}>
-              <Logo className="h-9 w-auto" />
+            <div className={clsx("brand-logo", (scrolled || isOpen) ? "scrolled" : "")}>
+              <span className="logo-wow">WOW</span>
+              <span className="logo-databiz">DataBiz</span>
             </div>
           </Link>
 
@@ -194,10 +179,10 @@ export default function Navbar() {
 
         .navbar.scrolled, .navbar.menu-open {
           height: 70px;
-          background: rgba(255, 255, 255, 0.95);
+          background: rgba(255, 255, 255, 0.98);
           backdrop-filter: blur(12px);
-          border-bottom: 1px solid rgba(0,0,0,0.05);
-          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+          border-bottom: 1px solid rgba(0,0,0,0.08);
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
         }
 
         .nav-container {
@@ -205,8 +190,37 @@ export default function Navbar() {
           transition: height 0.3s ease;
         }
 
-        .brand-logo-wrapper {
-             transition: color 0.3s ease;
+        /* Logo Styling */
+        .brand-logo {
+             display: flex;
+             align-items: center;
+             gap: 0.5rem;
+             font-weight: 800;
+             font-size: 1.5rem;
+             letter-spacing: -0.5px;
+        }
+        
+        .logo-wow {
+            color: white;
+            transition: color 0.3s ease;
+        }
+        
+        .logo-databiz {
+            background: white;
+            color: #2563EB;
+            padding: 0.25rem 0.75rem;
+            border-radius: 6px;
+            font-size: 1.3rem;
+            transition: all 0.3s ease;
+        }
+        
+        .brand-logo.scrolled .logo-wow {
+            color: #0F172A;
+        }
+        
+        .brand-logo.scrolled .logo-databiz {
+            background: #2563EB;
+            color: white;
         }
 
         /* Desktop Menu */
@@ -220,19 +234,16 @@ export default function Navbar() {
           transition: all 0.2s;
           padding: 0.5rem 1rem;
           position: relative;
-          color: rgba(255,255,255,0.9);
-          text-shadow: 0 1px 2px rgba(0,0,0,0.2); /* Contrast adjust */
+          color: rgba(255,255,255,0.95);
         }
         .nav-link:hover {
           color: white;
-          text-shadow: 0 0 8px rgba(255,255,255,0.4);
         }
 
         /* Scrolled State */
         .navbar.scrolled .nav-link,
         .navbar.menu-open .nav-link {
-          color: #334155;
-          text-shadow: none;
+          color: #475569;
         }
         .navbar.scrolled .nav-link:hover,
         .navbar.menu-open .nav-link:hover {
@@ -260,7 +271,7 @@ export default function Navbar() {
           top: 100%;
           left: 50%;
           transform: translateX(-50%) translateY(10px);
-          padding-top: 5px; /* Bridge gap for hover */
+          padding-top: 5px;
           opacity: 0;
           visibility: hidden;
           transition: all 0.2s ease;
