@@ -1,7 +1,5 @@
 "use client";
-import Link from "next/link"; // Added Link import just incase but using <a> in this file based on previous read. 
-// Actually previous read used <a> tags? Let's check. Yes `<a>`. But usually Link is better in Next.js.
-// I'll stick to <a> if that's what was there, or upgrade to Link. Let's upgrade to Link for consistency.
+import Link from "next/link";
 
 export default function Footer() {
   return (
@@ -9,11 +7,17 @@ export default function Footer() {
       <div className="container">
         <div className="footer-content">
           <div className="footer-brand">
-            <div className="footer-logo-container mb-4">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/images/logo.png" alt="WoW Data Biz" className="footer-logo-img" />
+            <div className="footer-logo-container mb-4 text-white">
+              {/* SVG Logo - Matching Navbar */}
+              <svg className="footer-logo-svg" viewBox="0 0 160 40" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path d="M26 34L18 10H10L2 34H8.5L14 17L19.5 34H26Z" fill="currentColor" />
+                <path d="M44 34L36 10H28L20 34H26.5L32 17L37.5 34H44Z" fill="currentColor" />
+                <circle cx="54" cy="12" r="3" className="text-blue-400" fill="currentColor" />
+                <text x="66" y="28" style={{ fontFamily: 'sans-serif', fontWeight: 800, fontSize: '24px', letterSpacing: '-1px' }}>
+                  DataBiz
+                </text>
+              </svg>
             </div>
-            {/* <h3>WoW Data Biz</h3> Removed text header since using logo */}
             <p>스마트상점 기술보급사업 공식 공급기업</p>
             <p className="copyright">© 2026 WoW Data Biz. All rights reserved.</p>
           </div>
@@ -47,10 +51,10 @@ export default function Footer() {
         .footer-logo-container {
           display: inline-block;
         }
-        .footer-logo-img {
+        .footer-logo-svg {
           height: 48px;
-          filter: brightness(0) invert(1); /* Make logo white for dark footer */
-          opacity: 0.9;
+          width: auto;
+          color: white;
         }
 
         .footer-brand h3 {
