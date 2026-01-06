@@ -146,8 +146,9 @@ export default function Home() {
         /* Hero Section */
         .hero {
           background-color: #0F172A;
+          /* Enhanced gradient for better contrast on the left side */
           background-image: 
-             linear-gradient(to right, rgba(15, 23, 42, 1) 30%, rgba(15, 23, 42, 0.7) 60%, rgba(15, 23, 42, 0) 100%),
+             linear-gradient(to right, rgba(15, 23, 42, 1) 0%, rgba(15, 23, 42, 0.95) 40%, rgba(15, 23, 42, 0.6) 70%, rgba(15, 23, 42, 0.3) 100%),
              url('/images/hero-bg.png');
           background-size: cover;
           background-position: right center;
@@ -157,7 +158,7 @@ export default function Home() {
           padding-top: 10rem;
           padding-bottom: 0;
           position: relative;
-          text-align: left; /* Changed from center to left */
+          text-align: left;
           overflow: hidden;
           min-height: 800px;
           display: flex;
@@ -175,7 +176,9 @@ export default function Home() {
         }
         
         .hero-text-area {
-            max-width: 600px;
+            max-width: 650px;
+            /* Added text shadow for readability */
+            text-shadow: 0 2px 5px rgba(0,0,0,0.5);
         }
 
         .hero-curve {
@@ -191,16 +194,17 @@ export default function Home() {
           height: 150px;
         }
         .badge {
-          background: rgba(255, 255, 255, 0.1);
-          color: #60A5FA;
+          background: rgba(37, 99, 235, 0.25);
+          color: #93C5FD;
           padding: 0.6rem 1.2rem;
           border-radius: 2rem;
           font-size: 0.9rem;
-          font-weight: 600;
+          font-weight: 700;
           margin-bottom: 1.5rem;
-          border: 1px solid rgba(255, 255, 255, 0.2);
+          border: 1px solid rgba(147, 197, 253, 0.4);
           backdrop-filter: blur(4px);
           display: inline-block;
+          box-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
         h1 {
           font-size: 3.5rem;
@@ -208,19 +212,23 @@ export default function Home() {
           line-height: 1.2;
           margin-bottom: 2rem;
           letter-spacing: -0.03em;
+          text-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
         .highlight {
           color: transparent;
           background-clip: text;
           background-image: linear-gradient(to right, #60A5FA, #A78BFA);
           -webkit-background-clip: text;
+          filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
         }
         .hero-desc {
           font-size: 1.25rem;
-          color: #CBD5E1;
+          color: #E2E8F0;
           max-width: 600px;
           margin-bottom: 3rem;
           line-height: 1.6;
+          font-weight: 500;
+          text-shadow: 0 2px 4px rgba(0,0,0,0.5);
         }
         .hero-actions {
           display: flex;
@@ -232,9 +240,10 @@ export default function Home() {
           font-size: 1.1rem;
         }
         .btn-outline-light {
-          border: 2px solid rgba(255,255,255,0.3);
+          border: 2px solid rgba(255,255,255,0.4);
           color: white;
-          background: transparent;
+          background: rgba(0,0,0,0.2);
+          backdrop-filter: blur(4px);
         }
         .btn-outline-light:hover {
           background: white;
@@ -415,8 +424,8 @@ export default function Home() {
             .hero {
                 text-align: center;
                 background-image: 
-                 linear-gradient(to bottom, rgba(15, 23, 42, 1) 0%, rgba(15, 23, 42, 0.8) 50%, rgba(15, 23, 42, 0.9) 100%),
-                 url('/images/hero-bg.png'); /* Darker overlay on mobile */
+                 linear-gradient(to bottom, rgba(15, 23, 42, 1) 0%, rgba(15, 23, 42, 0.9) 50%, rgba(15, 23, 42, 0.95) 100%),
+                 url('/images/hero-bg.png'); /* Enhanced dark overlay for mobile */
                 background-position: center;
             }
             .hero-content { align-items: center; }
