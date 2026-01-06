@@ -1,0 +1,78 @@
+.footer {
+    background: var(--primary-color);
+    color: #fff;
+    padding: 4rem 0 2rem;
+    margin-top: auto;
+}
+
+.footerContent {
+    display: grid;
+    gap: 3rem;
+}
+
+.footerLogo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 800;
+    font-size: 1.5rem;
+    letter-spacing: -0.5px;
+}
+
+.logoWow {
+    color: white;
+}
+
+.logoDatabiz {
+    background: rgba(37, 99, 235, 0.3);
+    color: #93c5fd;
+    padding: 0.25rem 0.75rem;
+    border-radius: 6px;
+    font-size: 1.3rem;
+}
+
+.footerBrand p {
+    color: #94a3b8;
+    font-size: 0.9rem;
+}
+
+.copyright {
+    margin-top: 2rem;
+    font-size: 0.8rem;
+    opacity: 0.6;
+}
+
+.footerLinks {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+}
+
+.linkGroup h4 {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    color: #fff;
+}
+
+.linkGroup a {
+    display: block;
+    color: #94a3b8;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+    text-decoration: none;
+}
+
+.linkGroup a:hover {
+    color: #fff;
+}
+
+@media (min-width: 768px) {
+    .footerContent {
+        grid-template-columns: 1fr 2fr;
+    }
+
+    .footerLinks {
+        justify-self: end;
+        gap: 4rem;
+    }
+}
