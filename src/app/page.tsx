@@ -9,22 +9,24 @@ export default function Home() {
       {/* Hero Section with Rounded Bottom */}
       <section className="hero">
         <div className="container hero-content">
-          <div className="badge">AI 데이터분석 </div>
-          <h1>
-            데이터로 완성하는<br />
-            <span className="highlight">소상공인 디지털 전환</span>
-          </h1>
-          <p className="hero-desc">
-            매출 분석부터 재고, 고객 관리까지. <br className="mobile-only" />
-            정부 지원으로 시작하는 가장 확실한 스마트 경영 솔루션, <strong>와우데이터비즈</strong>입니다.
-          </p>
-          <div className="hero-actions">
-            <Link href="/pricing" className="btn btn-cta btn-lg">
-              무료 체험하기
-            </Link>
-            <Link href="/services" className="btn btn-outline-light btn-lg">
-              서비스 자세히 보기
-            </Link>
+          <div className="hero-text-area">
+            <div className="badge">AI 데이터분석 </div>
+            <h1>
+              데이터로 완성하는<br />
+              <span className="highlight">소상공인 디지털 전환</span>
+            </h1>
+            <p className="hero-desc">
+              매출 분석부터 재고, 고객 관리까지. <br className="mobile-only" />
+              정부 지원으로 시작하는 가장 확실한 스마트 경영 솔루션, <strong>와우데이터비즈</strong>입니다.
+            </p>
+            <div className="hero-actions">
+              <Link href="/pricing" className="btn btn-cta btn-lg">
+                무료 체험하기
+              </Link>
+              <Link href="/services" className="btn btn-outline-light btn-lg">
+                서비스 자세히 보기
+              </Link>
+            </div>
           </div>
         </div>
         {/* Curve Separator */}
@@ -49,9 +51,9 @@ export default function Home() {
             <div className="service-row">
               <div className="service-visual">
                 <div className="mockup-window">
-                  {/* Placeholder for screenshot */}
                   <div className="mockup-content blue-gradient">
-                    <span className="mockup-label">Dashboard UI</span>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src="/images/dashboard-hero.png" alt="Retail Dashboard" className="mockup-img" />
                   </div>
                 </div>
               </div>
@@ -69,7 +71,7 @@ export default function Home() {
                   <li><CheckCircle2 size={20} /> AI 기반 일별/월별 매출 트렌드 예측</li>
                   <li><CheckCircle2 size={20} /> 발주서 관리 및 배송 트랙킹까지 한눈에 OK</li>
                 </ul>
-                <Link href="/services" className="btn btn-outline">
+                <Link href="/services/retail" className="btn btn-outline">
                   자세히 보기 <ArrowRight size={16} className="ml-2" />
                 </Link>
               </div>
@@ -79,9 +81,9 @@ export default function Home() {
             <div className="service-row reverse">
               <div className="service-visual">
                 <div className="mockup-window">
-                  {/* Placeholder for screenshot */}
                   <div className="mockup-content indigo-gradient">
-                    <span className="mockup-label">LMS / CBT System</span>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src="/images/lms-dashboard.png" alt="Education Dashboard" className="mockup-img" />
                   </div>
                 </div>
               </div>
@@ -99,7 +101,7 @@ export default function Home() {
                   <li><CheckCircle2 size={20} /> 온라인 CBT 문제은행 & 과제 시스템</li>
                   <li><CheckCircle2 size={20} /> 수강생별 맞춤형 학습 성취도 리포트</li>
                 </ul>
-                <Link href="/services" className="btn btn-outline">
+                <Link href="/services/academy" className="btn btn-outline">
                   자세히 보기 <ArrowRight size={16} className="ml-2" />
                 </Link>
               </div>
@@ -143,22 +145,39 @@ export default function Home() {
       <style jsx>{`
         /* Hero Section */
         .hero {
-          background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+          background-color: #0F172A;
+          background-image: 
+             linear-gradient(to right, rgba(15, 23, 42, 1) 30%, rgba(15, 23, 42, 0.7) 60%, rgba(15, 23, 42, 0) 100%),
+             url('/images/hero-bg.png');
+          background-size: cover;
+          background-position: right center;
+          background-repeat: no-repeat;
+          
           color: white;
-          padding-top: 8rem;
+          padding-top: 10rem;
           padding-bottom: 0;
           position: relative;
-          text-align: center;
+          text-align: left; /* Changed from center to left */
           overflow: hidden;
+          min-height: 800px;
+          display: flex;
+          align-items: center;
         }
+        
         .hero-content {
           padding-bottom: 10rem; /* Space for curve */
           display: flex;
           flex-direction: column;
-          align-items: center;
+          align-items: flex-start; /* Align Left */
           z-index: 10;
           position: relative;
+          width: 100%;
         }
+        
+        .hero-text-area {
+            max-width: 600px;
+        }
+
         .hero-curve {
           position: absolute;
           bottom: 0;
@@ -181,6 +200,7 @@ export default function Home() {
           margin-bottom: 1.5rem;
           border: 1px solid rgba(255, 255, 255, 0.2);
           backdrop-filter: blur(4px);
+          display: inline-block;
         }
         h1 {
           font-size: 3.5rem;
@@ -198,14 +218,14 @@ export default function Home() {
         .hero-desc {
           font-size: 1.25rem;
           color: #CBD5E1;
-          max-width: 700px;
+          max-width: 600px;
           margin-bottom: 3rem;
           line-height: 1.6;
         }
         .hero-actions {
           display: flex;
           gap: 1.5rem;
-          justify-content: center;
+          justify-content: flex-start; /* Align Left */
         }
         .btn-lg {
           padding: 1rem 2rem;
@@ -284,7 +304,7 @@ export default function Home() {
         .mockup-window {
           background: #f1f5f9;
           border-radius: 1rem;
-          padding: 1rem;
+          padding: 0.5rem;
           border: 1px solid #e2e8f0;
           box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
         }
@@ -294,13 +314,17 @@ export default function Home() {
           display: flex;
           align-items: center;
           justify-content: center;
-          color: white;
-          font-weight: bold;
-          font-size: 1.5rem;
+          overflow: hidden;
+          position: relative;
+        }
+        .mockup-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
         .blue-gradient { background: linear-gradient(135deg, #3B82F6, #2563EB); }
         .indigo-gradient { background: linear-gradient(135deg, #6366F1, #4F46E5); }
-        .mockup-label { opacity: 0.8; }
+        .mockup-label { opacity: 0.8; color: white; font-weight: bold; font-size: 1.5rem; }
 
         /* Stats Section */
         .stats-section {
@@ -386,6 +410,18 @@ export default function Home() {
           /* Normal Order */
           .service-row .service-content { order: 2; }
           .service-row .service-visual { order: 1; }
+        }
+        @media (max-width: 899px) { /* Adjust hero for mobile/tablet */
+            .hero {
+                text-align: center;
+                background-image: 
+                 linear-gradient(to bottom, rgba(15, 23, 42, 1) 0%, rgba(15, 23, 42, 0.8) 50%, rgba(15, 23, 42, 0.9) 100%),
+                 url('/images/hero-bg.png'); /* Darker overlay on mobile */
+                background-position: center;
+            }
+            .hero-content { align-items: center; }
+            .hero-actions { justify-content: center; }
+            .hero-text-area { max-width: 100%; }
         }
       `}</style>
     </>

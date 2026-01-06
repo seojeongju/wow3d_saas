@@ -1,13 +1,20 @@
 "use client";
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Menu, X, ChevronRight } from 'lucide-react';
+import { Menu, X, ChevronRight, ChevronDown } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import clsx from 'clsx';
+
+type NavLink = {
+  href: string;
+  label: string;
+  children?: { href: string; label: string }[];
+};
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState<string | null>(null); // For mobile mostly, or desktop click
   const pathname = usePathname();
 
   // Scroll effect for navbar
@@ -19,9 +26,16 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const navLinks = [
+  const navLinks: NavLink[] = [
     { href: '/', label: '홈' },
-    { href: '/services', label: '서비스 소개' },
+    {
+      href: '/services',
+      label: '서비스 소개',
+      children: [
+        { href: '/services/retail', label: '스마트 재고/매출 관리 팩' },
+        { href: '/services/academy', label: '스마트 아카데미 매니지먼트' },
+      ]
+    },
     { href: '/pricing', label: '도입 안내' },
     { href: '/about', label: '회사 소개' },
     { href: '/contact', label: '문의하기' },
@@ -39,13 +53,32 @@ export default function Navbar() {
           {/* Desktop Menu */}
           <div className="desktop-menu">
             {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={clsx('nav-link', pathname === link.href && 'active')}
-              >
-                {link.label}
-              </Link>
+              <div key={link.href} className="nav-item-group relative group">
+                <Link
+                  href={link.href}
+                  className={clsx('nav-link flex items-center gap-1', pathname.startsWith(link.href) && link.href !== '/' && 'active')}
+                >
+                  {link.label}
+                  {link.children && <ChevronDown size={14} className="opacity-70 group-hover:rotate-180 transition-transform" />}
+                </Link>
+
+                {/* Dropdown Menu */}
+                {link.children && (
+                  <div className="absolute top-full left-0 pt-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform translate-y-2 group-hover:translate-y-0 min-w-[240px]">
+                    <div className="bg-white rounded-lg shadow-xl border border-slate-100 p-2 overflow-hidden">
+                      {link.children.map((child) => (
+                        <Link
+                          key={child.href}
+                          href={child.href}
+                          className="block px-4 py-3 text-sm text-slate-600 hover:text-blue-600 hover:bg-slate-50 rounded-md transition-colors"
+                        >
+                          {child.label}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
             ))}
           </div>
 
@@ -71,15 +104,48 @@ export default function Navbar() {
       <div className={clsx('mobile-menu-overlay', isOpen && 'open')}>
         <div className="mobile-menu-container">
           {navLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className={clsx('mobile-link', pathname === link.href && 'active')}
-              onClick={() => setIsOpen(false)}
-            >
-              {link.label}
-              <ChevronRight size={16} className="mobile-chevron" />
-            </Link>
+            <div key={link.href} className="mobile-nav-group border-b border-slate-100">
+              <div className="flex justify-between items-center w-full">
+                <Link
+                  href={link.children ? '#' : link.href} // If dropdown, prevent click or make it toggle? Let's toggle.
+                  className={clsx('mobile-link flex-1', pathname === link.href && 'active')}
+                  onClick={(e) => {
+                    if (link.children) {
+                      e.preventDefault();
+                      setDropdownOpen(dropdownOpen === link.href ? null : link.href);
+                    } else {
+                      setIsOpen(false);
+                    }
+                  }}
+                >
+                  {link.label}
+                </Link>
+                {link.children && (
+                  <button
+                    onClick={() => setDropdownOpen(dropdownOpen === link.href ? null : link.href)}
+                    className="p-4"
+                  >
+                    <ChevronDown size={18} className={clsx('transition-transform', dropdownOpen === link.href && 'rotate-180')} />
+                  </button>
+                )}
+              </div>
+
+              {/* Mobile Submenu */}
+              {link.children && (
+                <div className={clsx('mobile-submenu bg-slate-50', dropdownOpen === link.href ? 'block' : 'hidden')}>
+                  {link.children.map((child) => (
+                    <Link
+                      key={child.href}
+                      href={child.href}
+                      className="block px-6 py-3 text-slate-600 text-sm border-l-2 border-transparent hover:border-blue-500 hover:text-blue-600"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      {child.label}
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
           ))}
           <div className="mobile-cta-container">
             <Link href="/contact" onClick={() => setIsOpen(false)} className="btn-mobile-cta">
@@ -133,7 +199,11 @@ export default function Navbar() {
         .desktop-menu {
           display: none;
           align-items: center;
-          gap: 2.5rem;
+          gap: 2rem;
+        }
+        
+        .nav-item-group {
+          position: relative;
         }
 
         .nav-link {
@@ -142,8 +212,10 @@ export default function Navbar() {
           font-size: 0.95rem;
           transition: all 0.2s;
           position: relative;
+          cursor: pointer;
         }
         
+        /* Underline effect */
         .nav-link::after {
           content: '';
           position: absolute;
@@ -249,17 +321,17 @@ export default function Navbar() {
         }
 
         .mobile-link {
-          font-size: 1.5rem;
+          font-size: 1.2rem;
           font-weight: 600;
           padding: 1.2rem 0;
-          border-bottom: 1px solid #f1f5f9;
           color: var(--primary-color);
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
         }
         .mobile-chevron {
           color: #cbd5e1;
+        }
+        
+        .mobile-submenu {
+          padding-left: 0.5rem;
         }
 
         .mobile-cta-container {
