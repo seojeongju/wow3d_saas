@@ -31,8 +31,9 @@ export default function Navbar() {
     <>
       <nav className={clsx('navbar', scrolled && 'scrolled', isOpen && 'menu-open')}>
         <div className="container nav-container">
-          <Link href="/" className="logo">
-            WoW<span className="logo-accent">DataBiz</span>
+          <Link href="/" className="logo-link">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/images/logo.png" alt="WoW Data Biz" className="logo-img" />
           </Link>
 
           {/* Desktop Menu */}
@@ -116,45 +117,16 @@ export default function Navbar() {
           justify-content: space-between;
         }
 
-        .logo {
-          font-size: 1.6rem;
-          font-weight: 800;
-          color: var(--primary-color); /* Need to ensure visibility on dark hero if initial state is transparent */
-          letter-spacing: -0.5px;
+        .logo-link {
+          display: flex;
+          align-items: center;
           z-index: 1001;
-          position: relative;
-        }
-        
-        .logo-accent {
-          color: var(--accent-color);
         }
 
-        /* Adjust logo color for transparent header on dark hero? 
-           For now, assumed hero text is white, but logo in PRD was dark. 
-           Let's keep logo dark or make it adaptive. 
-           Simple fix: Scrolled -> Dark Text, Top/Transparent -> White Text IF Hero is dark.
-           But current Hero is dark. Let's make logo text white initially if transparent?
-           Actually, let's stick to safe 'white background on scroll' and 'transparent on top'.
-           If hero is dark, text needs to be white initially.
-        */
-        
-        /* Adaptive Theme Logic for Logo & Links */
-        .navbar:not(.scrolled):not(.menu-open) .logo {
-           color: white; 
-        }
-        .navbar:not(.scrolled):not(.menu-open) .nav-link {
-           color: rgba(255,255,255,0.8);
-        }
-        .navbar:not(.scrolled):not(.menu-open) .nav-link:hover {
-           color: white;
-        }
-        .navbar:not(.scrolled):not(.menu-open) .mobile-toggle {
-           color: white;
-        }
-
-        .navbar.scrolled .logo,
-        .navbar.menu-open .logo {
-          color: var(--primary-color);
+        .logo-img {
+          height: 48px; /* Adjust based on logo aspect ratio */
+          width: auto;
+          object-fit: contain;
         }
         
         /* Desktop Menu */
@@ -193,6 +165,18 @@ export default function Navbar() {
           font-weight: 700;
           color: var(--accent-color);
         }
+        
+        /* Adaptive Theme Logic for Links */
+        .navbar:not(.scrolled):not(.menu-open) .nav-link {
+           color: rgba(255,255,255,0.9);
+        }
+        .navbar:not(.scrolled):not(.menu-open) .nav-link:hover {
+           color: white;
+        }
+        .navbar:not(.scrolled):not(.menu-open) .mobile-toggle {
+           color: white;
+        }
+
 
         /* Desktop Actions */
         .desktop-actions {
