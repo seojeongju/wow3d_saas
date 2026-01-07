@@ -263,47 +263,114 @@ export default function ServicesPage() {
       <div className="divider" />
 
       {/* WOW-CBT Section */}
-      <section className="service-detail-section" id="cbt">
+      <section className={styles.serviceDetailSection} id="cbt">
         <div className="container">
-          <div className="section-intro">
-            <span className="section-label violet text-indigo-600">Certification · CBT</span>
-            <h2 className="text-4xl font-extrabold mb-2 text-slate-900">WOW-CBT (와우CBT)</h2>
-            <p className="text-xl font-semibold mb-6 text-indigo-600">자격증 대비 모의고사 · 문제은행</p>
-            <p className="intro-text text-lg text-slate-600 mb-8 max-w-3xl mx-auto">
-              실제 시험 흐름을 그대로 구현한 CBT 모의고사 시스템으로 <strong>실전 감각</strong>을 키우고,
-              오답 노트와 취약 유형 분석으로 <strong>반복 학습 효율</strong>을 극대화하세요.
-            </p>
 
-            <div className="flex justify-center gap-4 mb-10">
-              <Link href="/services/cbt" className="btn btn-primary">
-                WOW-CBT 자세히 보기
-              </Link>
-              <a className="btn btn-outline" href="https://wow-cbt-webmain.pages.dev/" target="_blank" rel="noreferrer">
-                데모 보기
-              </a>
-            </div>
+          {/* Section Hero */}
+          <div className={styles.sectionIntro}>
+            <span className={`${styles.sectionLabel} text-purple-600`}>Certification · CBT</span>
+            <h2 className="text-4xl font-extrabold mb-2 text-slate-900">WOW-CBT (와우CBT)</h2>
+            <p className="text-xl font-semibold mb-6 text-purple-600">자격증 대비 모의고사 · 문제은행</p>
+            <p className="intro-text text-lg text-slate-600 mb-8 max-w-3xl mx-auto">
+              실전처럼 연습하고 한 번에 합격할 수 있도록, 실제 시험 환경을 그대로 구현한 CBT 모의고사 시스템입니다.<br />
+              시험지 자동 생성, 즉시 채점, 오답 노트까지.
+            </p>
+          </div>
+
+          {/* Hero Image */}
+          <div className="hero-image-wrapper mb-20 shadow-2xl rounded-xl overflow-hidden border border-slate-200">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/images/cbt-exam.png" alt="WOW-CBT 모의고사 화면" className="w-full h-auto object-cover" />
           </div>
 
           <div className="mb-24">
             <h3 className="text-2xl font-bold text-center mb-10 text-slate-800">학습 흐름을 끊지 않는 핵심 기능</h3>
-            <div className="features-grid three-col">
+            <div className={`${styles.featuresGrid} ${styles.threeCol}`}>
               <div className={styles.featureCard}>
-                <Timer size={40} className="text-indigo-600 mb-4 mx-auto" />
+                <Timer size={40} className="text-purple-600 mb-4 mx-auto" />
                 <h3>실전 모의고사</h3>
                 <p>타이머·마킹·문항 이동 등 실제 시험과 유사한 UI로 실전 대비가 가능합니다.</p>
               </div>
               <div className={styles.featureCard}>
-                <BookOpen size={40} className="text-indigo-600 mb-4 mx-auto" />
+                <BookOpen size={40} className="text-purple-600 mb-4 mx-auto" />
                 <h3>오답 노트</h3>
                 <p>틀린 문제는 자동으로 저장되고 유형별로 묶어 반복 학습할 수 있습니다.</p>
               </div>
               <div className={styles.featureCard}>
-                <LineChart size={40} className="text-indigo-600 mb-4 mx-auto" />
+                <LineChart size={40} className="text-purple-600 mb-4 mx-auto" />
                 <h3>취약 유형 분석</h3>
                 <p>정답률/소요시간 기반으로 약점을 분석해 개선 포인트를 명확히 제시합니다.</p>
               </div>
             </div>
           </div>
+
+          <div className={`${styles.divider} mb-24`} />
+
+          {/* Detailed Features - Alternating Rows */}
+          <div>
+
+            {/* Feature 1: Question Bank */}
+            <div className={`${styles.featureRow} mb-24`}>
+              <div className={styles.featureContent}>
+                <h3 className={styles.featureTitle}>
+                  <span className="text-purple-600 text-sm font-bold uppercase tracking-wider block mb-2">01 Question Bank</span>
+                  문제은행 & 시험지 자동 생성
+                </h3>
+                <p className={styles.featureDesc}>
+                  단원/난이도/유형 기준으로 문제를 선택하고, 랜덤 섞기까지 한 번에 처리합니다.
+                </p>
+                <ul className={styles.featureList}>
+                  <li><strong>문제 데이터 구조:</strong> 문제/해설/정답(객관식·단답형 등) 데이터 구조를 완벽 지원합니다.</li>
+                  <li><strong>출제 비중 설정:</strong> 단원별·난이도별 출제 비중 설정 및 랜덤 출제가 가능합니다.</li>
+                  <li><strong>시험지 템플릿:</strong> 모의고사부터 실전 시험까지 다양한 템플릿 구성을 지원합니다.</li>
+                </ul>
+              </div>
+              <div className="feature-image shadow-xl rounded-lg overflow-hidden border border-slate-100">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/images/cbt-exam.png" alt="문제은행 시스템" className="w-full h-auto" />
+              </div>
+            </div>
+
+            {/* Feature 2: Grading & Review */}
+            <div className={`${styles.featureRow} ${styles.reverse} mb-24`}>
+              <div className={`${styles.featureImage} shadow-xl rounded-lg overflow-hidden border border-slate-100`}>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/images/student-report.png" alt="채점 및 리포트" className="w-full h-auto" />
+              </div>
+              <div className={styles.featureContent}>
+                <h3 className={styles.featureTitle}>
+                  <span className="text-purple-600 text-sm font-bold uppercase tracking-wider block mb-2">02 Grading & Review</span>
+                  즉시 채점 & 오답 복습 루프
+                </h3>
+                <p className={styles.featureDesc}>
+                  시험 종료 즉시 채점 결과가 제공되고, 오답 노트로 바로 복습이 이어집니다.
+                </p>
+                <ul className={styles.featureList}>
+                  <li><strong>자동 채점:</strong> 시험 종료와 동시에 정답 확인 및 상세 해설을 제공합니다.</li>
+                  <li><strong>오답 재학습:</strong> 틀린 유형을 분석해 유사 문제를 추천하여 학습 효율을 높입니다.</li>
+                  <li><strong>학습 리포트:</strong> 개인별 취약점과 목표 점수 달성률을 데이터로 제시합니다.</li>
+                </ul>
+              </div>
+            </div>
+
+            {/* Feature 3: Security & Build */}
+            <div className="feature-text-block bg-slate-50 p-10 rounded-2xl text-center max-w-4xl mx-auto mb-20 border border-slate-200">
+              <ShieldCheck size={48} className="text-purple-600 mb-6 mx-auto" />
+              <h3 className="text-2xl font-bold mb-4 text-slate-800">안전하고 신뢰할 수 있는 시험 운영</h3>
+              <p className="text-slate-600 mb-6">
+                교육기관과 기업 환경에 맞춘 강력한 보안 옵션을 제공합니다. <br />
+                철저한 접근 제어와 데이터 보호로 공정한 시험 환경을 구축하세요.
+              </p>
+              <div className="flex justify-center gap-4 text-sm font-medium text-slate-500">
+                <span className="px-3 py-1 bg-white rounded shadow-sm border">권한 관리</span>
+                <span className="px-3 py-1 bg-white rounded shadow-sm border">접근 제어</span>
+                <span className="px-3 py-1 bg-white rounded shadow-sm border">온프라미스 지원</span>
+              </div>
+            </div>
+
+          </div>
+
+          <PricingTable serviceName="WOW-CBT (와우CBT)" serviceId="cbt" />
         </div>
       </section>
 
