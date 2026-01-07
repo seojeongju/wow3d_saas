@@ -1,0 +1,226 @@
+/* ============================================
+   Services Page Styles
+   ============================================ */
+
+.servicesPage {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+}
+
+/* ============================================
+   Hero Section with Background Pattern
+   ============================================ */
+
+.bgGradient {
+  background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
+  color: white;
+  padding: 8rem 0 6rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.bgGradient::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    radial-gradient(circle at 20% 50%, rgba(37, 99, 235, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(37, 99, 235, 0.1) 0%, transparent 50%),
+    linear-gradient(135deg, transparent 0%, rgba(255, 255, 255, 0.03) 50%, transparent 100%);
+  background-size: 100% 100%, 100% 100%, 100% 100%;
+  background-position: 0% 0%, 100% 100%, 0% 0%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.bgGradient::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 100px,
+      rgba(255, 255, 255, 0.02) 100px,
+      rgba(255, 255, 255, 0.02) 102px
+    );
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.5;
+}
+
+.serviceDetailSection {
+  padding: 6rem 0;
+}
+
+.sectionIntro {
+  text-align: center;
+  margin: 0 auto 3rem;
+}
+
+.sectionLabel {
+  display: inline-block;
+  font-weight: 700;
+  font-size: 0.9rem;
+  padding: 0.4rem 1rem;
+  background: #F1F5F9;
+  border-radius: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.sectionIntro h2 {
+  line-height: 1.2;
+}
+
+.introText {
+  line-height: 1.8;
+}
+
+/* Features Grid */
+.featuresGrid {
+  display: grid;
+  gap: 2rem;
+}
+
+.featuresGrid.threeCol {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.featureCard {
+  background: #F8FAFC;
+  padding: 2rem;
+  border-radius: 1rem;
+  text-align: center;
+  transition: transform 0.2s;
+}
+
+.featureCard:hover {
+  transform: translateY(-5px);
+  background: white;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.featureCard h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: #1E293B;
+}
+
+.featureCard p {
+  color: #64748B;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+/* Feature Rows (Alternating) */
+.featureRow {
+  display: flex;
+  align-items: center;
+  gap: 4rem;
+}
+
+.featureRow.reverse {
+  flex-direction: row-reverse;
+}
+
+.featureContent {
+  flex: 1;
+}
+
+.featureImage {
+  flex: 1.2;
+}
+
+.featureTitle {
+  font-size: 2rem;
+  font-weight: 800;
+  margin-bottom: 1.5rem;
+  color: #0F172A;
+  line-height: 1.3;
+}
+
+.featureDesc {
+  font-size: 1.1rem;
+  color: #475569;
+  margin-bottom: 2rem;
+  line-height: 1.7;
+}
+
+.featureList {
+  list-style: none;
+  padding: 0;
+}
+
+.featureList li {
+  position: relative;
+  padding-left: 1.5rem;
+  margin-bottom: 1rem;
+  color: #475569;
+  line-height: 1.6;
+}
+
+.featureList li::before {
+  content: "•";
+  color: #2563EB;
+  font-weight: bold;
+  font-size: 1.5rem;
+  position: absolute;
+  left: 0;
+  top: -0.2rem;
+}
+
+.featureList li strong {
+  color: #1E293B;
+  font-weight: 600;
+}
+
+/* Indigo Theme for Education List */
+.featureList.indigo li::before {
+  color: #4F46E5;
+}
+
+.divider {
+  height: 1px;
+  background: #E2E8F0;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .featureRow {
+    flex-direction: column;
+    gap: 3rem;
+    text-align: center;
+  }
+
+  .featureRow.reverse {
+    flex-direction: column;
+  }
+
+  .featureList li {
+    text-align: left;
+    display: inline-block;
+  }
+}
+
+@media (max-width: 768px) {
+  .featuresGrid.threeCol {
+    grid-template-columns: 1fr;
+  }
+
+  .sectionIntro h2,
+  .featureTitle {
+    font-size: 1.75rem;
+  }
+}
+

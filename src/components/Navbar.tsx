@@ -22,8 +22,21 @@ export default function Navbar() {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
     };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    
+    // Throttle scroll events for better performance
+    let ticking = false;
+    const onScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          handleScroll();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+    
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
   const navLinks: NavLink[] = [
@@ -32,8 +45,9 @@ export default function Navbar() {
       href: '/services',
       label: '서비스 소개',
       children: [
-        { href: '/services/retail', label: '스마트 재고/매출 관리 팩' },
-        { href: '/services/academy', label: '스마트 아카데미 매니지먼트' },
+        { href: '/services/retail', label: 'WOW-Smart Manager' },
+        { href: '/services/academy', label: 'NCS On-Track (온트랙)' },
+        { href: '/services/cbt', label: 'WOW-CBT (와우CBT)' },
       ]
     },
     { href: '/pricing', label: '도입 안내' },
@@ -45,6 +59,21 @@ export default function Navbar() {
     setIsOpen(false);
     setDropdownOpen(null);
   };
+
+  // Close mobile menu when clicking outside
+  useEffect(() => {
+    if (!isOpen) return;
+    
+    const handleClickOutside = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (!target.closest('[data-mobile-menu]') && !target.closest('[data-mobile-toggle]')) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener('click', handleClickOutside);
+    return () => document.removeEventListener('click', handleClickOutside);
+  }, [isOpen]);
 
   return (
     <>
@@ -105,6 +134,8 @@ export default function Navbar() {
             className={clsx(styles.mobileToggle, (scrolled || isOpen) && styles.dark)}
             onClick={() => setIsOpen(!isOpen)}
             aria-label="Toggle menu"
+            aria-expanded={isOpen}
+            data-mobile-toggle
           >
             {isOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
@@ -112,7 +143,11 @@ export default function Navbar() {
       </nav>
 
       {/* Mobile Menu Overlay */}
-      <div className={clsx(styles.mobileMenuOverlay, isOpen && styles.open)}>
+      <div 
+        className={clsx(styles.mobileMenuOverlay, isOpen && styles.open)}
+        data-mobile-menu
+        aria-hidden={!isOpen}
+      >
         <div className={styles.mobileMenuContainer}>
           {navLinks.map((link) => (
             <div key={link.href} className={styles.mobileNavGroup}>

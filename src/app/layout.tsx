@@ -15,8 +15,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "와우데이터비즈 - 스마트상점 경영지원 데이터 솔루션",
-  description: "소상공인을 위한 데이터 기반 POS, 재고관리, NCS 학사관리, CBT 문제은행 솔루션. 스마트상점 기술보급사업 공급기업.",
+  title: "와우데이터비즈 - 스마트 경영지원 데이터 솔루션",
+  description: "소상공인을 위한 데이터 기반 POS, 재고관리, NCS 학사관리, CBT 문제은행 솔루션. 월 구독형 SaaS 서비스.",
 };
 
 export default function RootLayout({
