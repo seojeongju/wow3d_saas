@@ -145,11 +145,11 @@ export default function ServicesPage() {
 
           </div>
 
-          <PricingTable serviceName="재고/매출 관리" />
+          <PricingTable serviceName="재고/매출 관리" serviceId="retail" />
         </div>
       </section>
 
-          <div className={styles.divider} />
+      <div className={styles.divider} />
 
       {/* Education Section */}
       <section className={styles.serviceDetailSection} id="education">
@@ -256,7 +256,7 @@ export default function ServicesPage() {
 
           </div>
 
-          <PricingTable serviceName="NCS On-Track (온트랙)" />
+          <PricingTable serviceName="NCS On-Track (온트랙)" serviceId="cbt" />
         </div>
       </section>
 

@@ -15,11 +15,11 @@ type PricingPlan = {
     isCustom?: boolean; // For "Separate Consultation"
 };
 
-const plans: PricingPlan[] = [
+const defaultPlans: PricingPlan[] = [
     {
         name: '스탠다드 팩',
         description: '1인 창업자 및 소규모 매장을 위한 필수 데이터 분석 기능 제공',
-        price: 20000,
+        price: 30000,
         isPopular: true,
         features: [
             '실시간 매출/재고 현황 대시보드',
@@ -33,13 +33,13 @@ const plans: PricingPlan[] = [
     },
     {
         name: '프리미엄 팩',
-        description: '다점포 운영 및 심화 분석이 필요한 성장형 매장을 위한 플랜',
+        description: 'AI 기반 고도화된 데이터 분석 및 맞춤형 관리 기능 제공',
         price: 50000,
         features: [
             '스탠다드 전 기능 포함',
-            'AI 기반 수요 예측 및 발주 추천',
+            'AI 기반 수요 예측 및 분석',
             '다점포 통합 관리(본사 기능)',
-            '전담 매니저 기술 지원',
+            '전용 매니저 기술 지원',
             '데이터 보관 기간 3년'
         ],
         buttonText: '상담 문의',
@@ -47,7 +47,7 @@ const plans: PricingPlan[] = [
     },
     {
         name: '엔터프라이즈',
-        description: '프랜차이즈 본사 및 전용 시스템 구축이 필요한 기업 고객',
+        description: '대규모 조직 및 전용 시스템 구축이 필요한 기업 고객',
         price: 0,
         isCustom: true,
         features: [
@@ -62,7 +62,7 @@ const plans: PricingPlan[] = [
     },
     {
         name: '온프라미스',
-        description: '보안 문제로 설치형 솔루션이 필요한 경우 (CBT/HRD 등)',
+        description: '보안 정책상 독립된 서버 설치가 필요한 경우',
         price: 0,
         isCustom: true,
         features: [
@@ -76,8 +76,141 @@ const plans: PricingPlan[] = [
     }
 ];
 
-export default function PricingTable({ serviceName }: { serviceName: string }) {
+const serviceSpecificPlans: Record<string, PricingPlan[]> = {
+    retail: [
+        {
+            name: '스탠다드 팩',
+            description: '도소매/요식업을 위한 필수 재고 및 매출 관리 플랜',
+            price: 50000,
+            isPopular: true,
+            features: [
+                '실시간 매출/재고 현황 대시보드',
+                '월간 매출 분석 리포트 제공',
+                '기본 고객 관리(CRM) 기능',
+                '모바일 앱 지원 (Android/iOS)',
+                '데이터 보관 기간 1년'
+            ],
+            buttonText: '무료 체험 신청',
+            buttonLink: '/contact'
+        },
+        {
+            name: '프리미엄 팩',
+            description: 'AI 수요예측 및 다점포 통합 관리가 포함된 성장형 매장 플랜',
+            price: 70000,
+            features: [
+                '스탠다드 전 기능 포함',
+                'AI 기반 수요 예측 및 발주 추천',
+                '다점포 통합 관리(본사 기능)',
+                '전용 매니저 기술 지원',
+                '데이터 보관 기간 3년'
+            ],
+            buttonText: '상담 문의',
+            buttonLink: '/contact'
+        },
+        {
+            name: '엔터프라이즈',
+            description: '프랜차이즈 본사 전용 맞춤형 구축 플랜',
+            price: 0,
+            isCustom: true,
+            features: [
+                '프리미엄 전 기능 포함',
+                '자사 브랜드 맞춤형 커스텀 개발',
+                '사내 ERP/그룹웨어 연동',
+                '전용 클라우드 서버 구축',
+                '영구 라이선스 옵션 제공'
+            ],
+            buttonText: '상담 문의',
+            buttonLink: '/contact'
+        },
+        {
+            name: '온프라미스',
+            description: '내부 서버 설치 및 데이터 완전 독립형 플랜',
+            price: 0,
+            isCustom: true,
+            features: [
+                '자체 서버 내 솔루션 설치',
+                '소스코드 제공 (옵션)',
+                '커스터마이징 개발 지원',
+                '유지보수 별도 계약'
+            ],
+            buttonText: '견적 요청',
+            buttonLink: '/contact'
+        }
+    ],
+    cbt: [
+        {
+            name: '스탠다드 팩',
+            description: '실전 모의고사 및 문제은행 기본 기능 제공 플랜',
+            price: 30000,
+            isPopular: true,
+            features: [
+                '실시간 타이머 및 모의고사 UI',
+                '자동 채점 및 기본 통계',
+                '오답 노트 자동 생성',
+                '문제 은행 1,000문항 업로드 가능',
+                '데이터 보관 기간 1년'
+            ],
+            buttonText: '무료 체험 신청',
+            buttonLink: '/contact'
+        },
+        {
+            name: '프리미엄 팩',
+            description: 'AI 취약점 분석 및 기관 전용 관리 기능이 포함된 플랜',
+            price: 50000,
+            features: [
+                '스탠다드 전 기능 포함',
+                'AI 기반 취약 유형 분석 리포트',
+                '관리자 전용 학생 성과 분석',
+                '문제 은행 무제한 업로드',
+                '데이터 보관 기간 3년'
+            ],
+            buttonText: '상담 문의',
+            buttonLink: '/contact'
+        },
+        {
+            name: '엔터프라이즈',
+            description: '대규모 시험 운영 및 보안 특화 구축 플랜',
+            price: 0,
+            isCustom: true,
+            features: [
+                '프리미엄 전 기능 포함',
+                '시험 보안 정책 커스텀 설정',
+                '기관 전용 LMS 연동',
+                '전용 클라우드 서버 구축',
+                '영구 라이선스 옵션 제공'
+            ],
+            buttonText: '상담 문의',
+            buttonLink: '/contact'
+        },
+        {
+            name: '온프라미스',
+            description: '완벽한 물리적 보안을 위한 사내 서버 설치형 플랜',
+            price: 0,
+            isCustom: true,
+            features: [
+                '자체 서버 내 솔루션 시험장 구축',
+                '소스코드 제공 (옵션)',
+                '커스터마이징 개발 지원',
+                '유지보수 별도 계약'
+            ],
+            buttonText: '견적 요청',
+            buttonLink: '/contact'
+        }
+    ]
+};
+
+export default function PricingTable({ serviceName, serviceId }: { serviceName: string; serviceId?: string }) {
     const [isAnnual, setIsAnnual] = useState(false);
+
+    // Get plans based on serviceId, match by serviceName if Id not provided, or use default
+    let activePlans = defaultPlans;
+    if (serviceId && serviceSpecificPlans[serviceId]) {
+        activePlans = serviceSpecificPlans[serviceId];
+    } else if (serviceName.toLowerCase().includes('smart manager')) {
+        activePlans = serviceSpecificPlans.retail;
+    } else if (serviceName.toLowerCase().includes('cbt')) {
+        activePlans = serviceSpecificPlans.cbt;
+    }
 
     return (
         <div className="pricing-section">
@@ -104,7 +237,7 @@ export default function PricingTable({ serviceName }: { serviceName: string }) {
             </div>
 
             <div className="pricing-grid">
-                {plans.map((plan, index) => {
+                {activePlans.map((plan, index) => {
                     const displayPrice = isAnnual
                         ? Math.round(plan.price * 12 * 0.8 / 1000) * 1000 // 20% Discount
                         : plan.price;

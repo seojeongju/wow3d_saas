@@ -86,7 +86,7 @@ export default function WowCbtServicePage() {
       {/* Detailed Features */}
       <section className={styles.detailSection}>
         <div className="container">
-          
+
           {/* Feature 1: Question Bank */}
           <div className={styles.detailRow}>
             <div className={styles.detailContent}>
@@ -202,7 +202,7 @@ export default function WowCbtServicePage() {
       {/* Pricing Section */}
       <section className={styles.pricingSection}>
         <div className="container">
-          <PricingTable serviceName="WOW-CBT (와우CBT)" />
+          <PricingTable serviceName="WOW-CBT (와우CBT)" serviceId="cbt" />
         </div>
       </section>
 

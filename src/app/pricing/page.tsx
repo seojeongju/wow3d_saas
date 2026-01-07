@@ -328,7 +328,7 @@ export default function PricingPage() {
               비즈니스 규모에 맞는 최적의 플랜을 선택하세요
             </p>
           </div>
-          <PricingTable serviceName="와우데이터비즈" />
+          <PricingTable serviceName={currentService.name} serviceId={currentService.id} />
         </div>
       </section>
 

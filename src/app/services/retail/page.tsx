@@ -81,7 +81,7 @@ export default function RetailServicePage() {
       {/* Detailed Features */}
       <section className={styles.detailSection}>
         <div className="container">
-          
+
           {/* Feature 1: Product Management */}
           <div className={styles.detailRow}>
             <div className={styles.detailContent}>
@@ -185,7 +185,7 @@ export default function RetailServicePage() {
       {/* Pricing Section */}
       <section className={styles.pricingSection}>
         <div className="container">
-          <PricingTable serviceName="WOW-Smart Manager" />
+          <PricingTable serviceName="WOW-Smart Manager" serviceId="retail" />
         </div>
       </section>
 

@@ -26,9 +26,9 @@ export default function AcademyServicePage() {
                 <Link href="/contact" className={styles.btnPrimary}>
                   무료 상담 신청 <ArrowRight size={18} />
                 </Link>
-                <a 
-                  href="https://3dcookiehd.pages.dev/login" 
-                  target="_blank" 
+                <a
+                  href="https://3dcookiehd.pages.dev/login"
+                  target="_blank"
                   rel="noreferrer"
                   className={styles.btnSecondary}
                 >
@@ -86,7 +86,7 @@ export default function AcademyServicePage() {
       {/* Detailed Features */}
       <section className={styles.detailSection}>
         <div className="container">
-          
+
           {/* Feature 1: Academic Management */}
           <div className={styles.detailRow}>
             <div className={styles.detailContent}>
@@ -190,7 +190,7 @@ export default function AcademyServicePage() {
       {/* Pricing Section */}
       <section className={styles.pricingSection}>
         <div className="container">
-          <PricingTable serviceName="NCS On-Track (온트랙)" />
+          <PricingTable serviceName="NCS On-Track (온트랙)" serviceId="cbt" />
         </div>
       </section>
 
