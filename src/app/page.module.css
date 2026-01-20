@@ -180,7 +180,7 @@
   display: none;
   position: relative;
   width: 100%;
-  max-width: 640px;
+  max-width: 960px;
   margin-left: auto;
   animation: slideInRight 0.8s cubic-bezier(0.16, 1, 0.3, 1);
   perspective: 1000px;
