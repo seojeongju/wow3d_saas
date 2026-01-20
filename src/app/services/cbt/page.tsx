@@ -202,7 +202,7 @@ export default function WowCbtServicePage() {
       {/* Pricing Section */}
       <section className={styles.pricingSection}>
         <div className="container">
-          <PricingTable serviceName="WOW-CBT (와우CBT)" serviceId="cbt" />
+          <PricingTable serviceName="WOW-CBT (와우CBT)" />
         </div>
       </section>
 
