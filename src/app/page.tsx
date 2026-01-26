@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Box, Users, ArrowRight, CheckCircle2, MessageCircle, ChevronLeft, ChevronRight, Timer } from "lucide-react";
+import { Box, Users, ArrowRight, CheckCircle2, MessageCircle, ChevronLeft, ChevronRight, Timer, Printer } from "lucide-react";
 import clsx from "clsx";
 import styles from "./page.module.css";
 import { useState, useEffect } from "react";
@@ -10,9 +10,9 @@ const heroSlides = [
   {
     id: 0,
     badge: "New Service",
-    title: "3D프린팅 AI 실시간 견적",
+    title: "3D프린팅 AI실시간 자동견적시스템",
     subtitle: "당신의 상상력을 현실로",
-    description: "STL, OBJ, 3MF 파일을 업로드하면 AI가 부피·표면적을 분석해 실시간 견적을 제공합니다. 클릭 한 번으로 시제품부터 양산까지.",
+    description: "STL, OBJ, 3MF,STEP 파일을 업로드하면 AI가 부피·표면적을 분석해 실시간 견적을 제공합니다. 클릭 한 번으로 시제품부터 양산까지.",
     image: "/images/ai-quote-system.png",
     ctaLink: "/#quote-system",
     gradient: "linear-gradient(135deg, #020617 0%, #1e293b 100%)",
@@ -291,6 +291,39 @@ export default function Home() {
                 </ul>
                 <Link href="/services/cbt" className="btn btn-outline">
                   자세히 보기 <ArrowRight size={16} className={styles.ml2} />
+                </Link>
+              </div>
+            </div>
+
+            {/* Service 4: 3D Printing AI Quote */}
+            <div className={clsx(styles.serviceRow, styles.serviceRowReverse)}>
+              <div className={styles.serviceVisual}>
+                <div className={styles.mockupWindow}>
+                  <div className={clsx(styles.mockupContent, styles.greenGradient)}>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src="/images/ai-quote-system.png" alt="AI 3D Printing Quote" className={styles.mockupImg} />
+                  </div>
+                </div>
+              </div>
+              <div className={styles.serviceContent}>
+                <div className={clsx(styles.iconWrapper, styles.iconWrapperGreen)}>
+                  <Printer size={32} />
+                </div>
+                <h3>3D프린팅 AI 실시간 견적</h3>
+                <p className={styles.serviceSubtitle}>
+                  당신의 상상력을 현실로
+                </p>
+                <p className={styles.serviceDesc}>
+                  STL, OBJ, 3MF, STEP 등 다양한 3D 파일을 업로드하면 AI가 즉시 분석하여 견적을 산출합니다.
+                  복잡한 상담 과정 없이 웹에서 바로 확인하고 주문하세요.
+                </p>
+                <ul className={styles.featureList}>
+                  <li><CheckCircle2 size={20} /> AI 기반 실시간 자동 견적 산출</li>
+                  <li><CheckCircle2 size={20} /> 다양한 3D 파일 포맷 완벽 지원</li>
+                  <li><CheckCircle2 size={20} /> 시제품 제작부터 양산까지 원클릭 주문</li>
+                </ul>
+                <Link href="/#quote-section" className="btn btn-outline">
+                  견적 확인하기 <ArrowRight size={16} className={styles.ml2} />
                 </Link>
               </div>
             </div>

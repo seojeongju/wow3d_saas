@@ -434,9 +434,18 @@
   background: linear-gradient(135deg, #7C3AED, #6B21A8);
 }
 
+.greenGradient {
+  background: linear-gradient(135deg, #10B981, #059669);
+}
+
 .iconWrapperPurple {
   background: #EDE9FE;
   color: #7C3AED;
+}
+
+.iconWrapperGreen {
+  background: #D1FAE5;
+  color: #059669;
 }
 
 /* Stats Section */
