@@ -196,6 +196,52 @@ const serviceSpecificPlans: Record<string, PricingPlan[]> = {
             buttonText: '견적 요청',
             buttonLink: '/contact'
         }
+    ],
+    printing: [
+        {
+            name: '스탠다드 팩',
+            description: '개인 창작자 및 소량 시제품 제작을 위한 데이터 분석 플랜',
+            price: 30000,
+            isPopular: true,
+            features: [
+                'AI 실시간 자동 견적 산출',
+                '3D 뷰어 및 형상 분석 제공',
+                'STL/OBJ 파일 자동 변환 지원',
+                '견적 이력 저장 30일',
+                '기본 소재(PLA/ABS) 견적 산출'
+            ],
+            buttonText: '견적 확인하기',
+            buttonLink: '/services/printing'
+        },
+        {
+            name: '엔터프라이즈',
+            description: '대량 양산 및 기업 전용 스마트 팩토리 연동 플랜',
+            price: 0,
+            isCustom: true,
+            features: [
+                '스탠다드 전 기능 포함',
+                '기업 전용 대시보드 제공',
+                '산업용 소재(Resin/PC 등) 지원',
+                '대량 주문 및 우선 출력(Priority)',
+                '전담 엔지니어 후가공 컨설팅'
+            ],
+            buttonText: '상담 문의',
+            buttonLink: '/contact'
+        },
+        {
+            name: '온프라미스',
+            description: '보안 데이터 처리를 위한 사내 구축형 솔루션',
+            price: 0,
+            isCustom: true,
+            features: [
+                '사내 서버 내 견적 시스템 구축',
+                '자사 보유 장비(FDM/SLA) DB 연동',
+                '커스터마이징 개발 지원',
+                'API 연동 지원 (ERP/MES)'
+            ],
+            buttonText: '견적 요청',
+            buttonLink: '/contact'
+        }
     ]
 };
 
@@ -210,6 +256,8 @@ export default function PricingTable({ serviceName, serviceId }: { serviceName: 
         activePlans = serviceSpecificPlans.retail;
     } else if (serviceName.toLowerCase().includes('cbt')) {
         activePlans = serviceSpecificPlans.cbt;
+    } else if (serviceName.toLowerCase().includes('3d') || serviceName.toLowerCase().includes('printing') || serviceName.includes('견적')) {
+        activePlans = serviceSpecificPlans.printing;
     }
 
     return (

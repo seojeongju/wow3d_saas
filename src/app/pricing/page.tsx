@@ -152,6 +152,49 @@ const services = [
         ]
       }
     ]
+  },
+  {
+    id: 'printing',
+    name: '3D프린팅 AI 실시간 견적',
+    subtitle: 'AI 자동 견적 & 원스톱 주문 시스템',
+    description: 'AI 분석을 통한 투명한 견적 산출과 시제품 제작부터 양산까지 한 번에',
+    color: '#059669',
+    image: '/images/ai-quote-system.png',
+    features: [
+      {
+        icon: <Timer size={36} />,
+        title: 'AI 실시간 견적',
+        description: '3D 모델 파일 업로드 즉시 부피, 표면적을 분석하여 견적을 산출합니다.'
+      },
+      {
+        icon: <Box size={36} />,
+        title: '다양한 포맷 지원',
+        description: 'STL, OBJ, 3MF, STEP 등 3D 모델링 주요 포맷을 완벽하게 지원합니다.'
+      },
+      {
+        icon: <Award size={36} />,
+        title: '전문가급 품질',
+        description: '산업용 장비와 전문 후가공 서비스로 시제품부터 양산품까지 최상의 품질을 보장합니다.'
+      }
+    ],
+    detailedFeatures: [
+      {
+        title: 'Smart Quotation - 투명하고 빠른 견적 산출',
+        items: [
+          '형상 정밀 분석: 오버행, 서포트 필요 영역 등을 AI가 자동 인식',
+          '실시간 가격 비교: 재질(필라멘트/레진), 밀도, 후가공 옵션 변경에 따른 가격 즉시 확인',
+          '암호화 보안 업로드: 업로드된 파일은 암호화되어 보호되며 일정 기간 후 자동 파기'
+        ]
+      },
+      {
+        title: 'One-stop Production - 편리한 주문 제작',
+        items: [
+          '대량 생산 대응: 샘플 확인 후 금형/사출 없이 바로 소량/대량 양산 가능',
+          '다양한 소재 라인업: PLA, ABS, TPU, Resin 등 20여 종 이상의 산업용 소재 보유',
+          '전문 후가공 옵션: 표면 연마, 도색, 코팅 등 용도에 맞는 후처리 서비스 제공'
+        ]
+      }
+    ]
   }
 ];
 
