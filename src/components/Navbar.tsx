@@ -22,7 +22,7 @@ export default function Navbar() {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
     };
-    
+
     // Throttle scroll events for better performance
     let ticking = false;
     const onScroll = () => {
@@ -34,7 +34,7 @@ export default function Navbar() {
         ticking = true;
       }
     };
-    
+
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
@@ -48,6 +48,7 @@ export default function Navbar() {
         { href: '/services/retail', label: 'WOW-Smart Manager' },
         { href: '/services/academy', label: 'NCS On-Track (온트랙)' },
         { href: '/services/cbt', label: 'WOW-CBT (와우CBT)' },
+        { href: '/services/printing', label: '3D프린팅 AI 실시간 견적' },
       ]
     },
     { href: '/pricing', label: '도입 안내' },
@@ -63,7 +64,7 @@ export default function Navbar() {
   // Close mobile menu when clicking outside
   useEffect(() => {
     if (!isOpen) return;
-    
+
     const handleClickOutside = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
       if (!target.closest('[data-mobile-menu]') && !target.closest('[data-mobile-toggle]')) {
@@ -143,7 +144,7 @@ export default function Navbar() {
       </nav>
 
       {/* Mobile Menu Overlay */}
-      <div 
+      <div
         className={clsx(styles.mobileMenuOverlay, isOpen && styles.open)}
         data-mobile-menu
         aria-hidden={!isOpen}

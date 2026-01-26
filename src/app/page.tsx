@@ -322,8 +322,8 @@ export default function Home() {
                   <li><CheckCircle2 size={20} /> 다양한 3D 파일 포맷 완벽 지원</li>
                   <li><CheckCircle2 size={20} /> 시제품 제작부터 양산까지 원클릭 주문</li>
                 </ul>
-                <Link href="/#quote-section" className="btn btn-outline">
-                  견적 확인하기 <ArrowRight size={16} className={styles.ml2} />
+                <Link href="/services/printing" className="btn btn-outline">
+                  자세히 보기 <ArrowRight size={16} className={styles.ml2} />
                 </Link>
               </div>
             </div>

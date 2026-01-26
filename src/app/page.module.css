@@ -573,15 +573,6 @@
     display: none;
   }
 
-  /* Alternate Order */
-  .serviceRowReverse .serviceContent {
-    order: 1;
-  }
-
-  .serviceRowReverse .serviceVisual {
-    order: 2;
-  }
-
   /* Normal Order */
   .serviceRow .serviceContent {
     order: 2;
@@ -589,6 +580,15 @@
 
   .serviceRow .serviceVisual {
     order: 1;
+  }
+
+  /* Alternate Order - Zigzag Layout */
+  .serviceRowReverse .serviceContent {
+    order: 1;
+  }
+
+  .serviceRowReverse .serviceVisual {
+    order: 2;
   }
 }
 
