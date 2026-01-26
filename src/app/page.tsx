@@ -8,6 +8,19 @@ import { useState, useEffect } from "react";
 
 const heroSlides = [
   {
+    id: 0,
+    badge: "New Service",
+    title: "3D프린팅 AI 실시간 견적",
+    subtitle: "당신의 상상력을 현실로",
+    description: "STL, OBJ, 3MF 파일을 업로드하면 AI가 부피·표면적을 분석해 실시간 견적을 제공합니다. 클릭 한 번으로 시제품부터 양산까지.",
+    image: "/images/ai-quote-system.png",
+    ctaLink: "/#quote-system",
+    gradient: "linear-gradient(135deg, #020617 0%, #1e293b 100%)",
+    badgeColor: "rgba(34, 197, 94, 0.25)",
+    badgeTextColor: "#4ade80",
+    badgeBorder: "rgba(74, 222, 128, 0.4)"
+  },
+  {
     id: 1,
     badge: "Retail & Food",
     title: "WOW-Smart Manager",
@@ -83,7 +96,7 @@ export default function Home() {
   return (
     <>
       {/* Hero Section with Slider */}
-      <section 
+      <section
         className={styles.hero}
         style={{ background: currentSlideData.gradient }}
       >
@@ -91,7 +104,7 @@ export default function Home() {
           {/* Slide Content */}
           <div className={clsx("container", styles.heroContent)}>
             <div className={styles.heroTextArea}>
-              <div 
+              <div
                 className={styles.badge}
                 style={{
                   background: currentSlideData.badgeColor,
@@ -119,12 +132,12 @@ export default function Home() {
                 </Link>
               </div>
             </div>
-            
+
             {/* Hero Image */}
             <div className={styles.heroImageWrapper}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img 
-                src={currentSlideData.image} 
+              <img
+                src={currentSlideData.image}
                 alt={currentSlideData.title}
                 className={styles.heroImage}
               />
@@ -132,7 +145,7 @@ export default function Home() {
           </div>
 
           {/* Navigation Arrows */}
-          <button 
+          <button
             className={styles.sliderNavButton}
             onClick={prevSlide}
             aria-label="Previous slide"
@@ -140,7 +153,7 @@ export default function Home() {
           >
             <ChevronLeft size={24} />
           </button>
-          <button 
+          <button
             className={styles.sliderNavButton}
             onClick={nextSlide}
             aria-label="Next slide"
