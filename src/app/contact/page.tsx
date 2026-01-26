@@ -2,8 +2,18 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Mail, Phone, MapPin, Send, MessageCircle, Clock, CheckCircle2 } from "lucide-react";
+import emailjs from '@emailjs/browser';
+import { Mail, Phone, MapPin, Send, MessageCircle, Clock, CheckCircle2, AlertCircle } from "lucide-react";
 import styles from "./contact.module.css";
+
+// EmailJS Configuration Keys (Replace these with your actual keys from EmailJS Dashboard)
+// It is recommended to put these in .env.local file as:
+// NEXT_PUBLIC_EMAILJS_SERVICE_ID=...
+// NEXT_PUBLIC_EMAILJS_TEMPLATE_ID=...
+// NEXT_PUBLIC_EMAILJS_PUBLIC_KEY=...
+const SERVICE_ID = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || "service_mtlwmkf";
+const TEMPLATE_ID = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || "template_phkwwx3";
+const PUBLIC_KEY = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || "nc21fq4bp_z8wmpLA";
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -17,6 +27,7 @@ export default function ContactPage() {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -26,9 +37,30 @@ export default function ContactPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
-    // Simulate form submission
-    setTimeout(() => {
+    setErrorMessage("");
+
+    // Prepare template parameters
+    // These names must match the variable names in your EmailJS template (e.g., {{from_name}}, {{message}}, etc.)
+    const templateParams = {
+      from_name: formData.name,
+      from_email: formData.email,
+      phone: formData.phone,
+      company: formData.company,
+      service: formData.service,
+      message: formData.message,
+      to_email: 'wow3d16@naver.com' // You can use this variable in EmailJS template as {{to_email}}
+    };
+
+    try {
+      // Send email using EmailJS
+      // Note: You must sign up at https://www.emailjs.com/ to get these IDs
+      await emailjs.send(
+        SERVICE_ID,
+        TEMPLATE_ID,
+        templateParams,
+        PUBLIC_KEY
+      );
+
       setIsSubmitting(false);
       setIsSubmitted(true);
       setFormData({
@@ -39,12 +71,12 @@ export default function ContactPage() {
         service: "",
         message: ""
       });
-      
-      // Reset success message after 5 seconds
-      setTimeout(() => {
-        setIsSubmitted(false);
-      }, 5000);
-    }, 1500);
+
+    } catch (error) {
+      console.error('Email send failed:', error);
+      setIsSubmitting(false);
+      setErrorMessage("메일 전송에 실패했습니다. 잠시 후 다시 시도해주세요.");
+    }
   };
 
   return (
@@ -79,6 +111,13 @@ export default function ContactPage() {
                 <h2>문의하기</h2>
                 <p>아래 양식을 작성해 주시면 담당자가 빠르게 연락드리겠습니다.</p>
               </div>
+
+              {errorMessage && (
+                <div className={styles.errorMessage} style={{ padding: '1rem', backgroundColor: '#FEE2E2', border: '1px solid #FECACA', borderRadius: '0.5rem', marginBottom: '1.5rem', color: '#B91C1C', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <AlertCircle size={20} />
+                  <span>{errorMessage}</span>
+                </div>
+              )}
 
               {isSubmitted ? (
                 <div className={styles.successMessage}>
@@ -206,14 +245,14 @@ export default function ContactPage() {
                     <Phone size={20} className={styles.contactIcon} />
                     <div>
                       <span className={styles.contactLabel}>전화</span>
-                      <a href="tel:02-3144-3137" className={styles.contactValue}>02-3144-3137</a>
+                      <a href="tel:02-3144-3137" className={styles.contactValue}>02-3144-3137 / 054-464-3144</a>
                     </div>
                   </div>
                   <div className={styles.contactItem}>
                     <Mail size={20} className={styles.contactIcon} />
                     <div>
                       <span className={styles.contactLabel}>이메일</span>
-                      <a href="mailto:3dcookidhd@naver.com" className={styles.contactValue}>3dcookidhd@naver.com</a>
+                      <a href="mailto:wow3d16@naver.com" className={styles.contactValue}>wow3d16@naver.com</a>
                     </div>
                   </div>
                   <div className={styles.contactItem}>
