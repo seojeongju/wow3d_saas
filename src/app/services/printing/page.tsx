@@ -33,7 +33,7 @@ export default function PrintingServicePage() {
                         </div>
                         <div className={styles.heroImage}>
                             {/* eslint-disable-next-line @next/next/no-img-element */}
-                            <img src="/images/ai-quote-system.png" alt="3D 프린팅 견적 시스템" className={styles.heroImg} />
+                            <img src="/images/printing-ui-viewer.png" alt="3D 프린팅 견적 시스템" className={styles.heroImg} />
                         </div>
                     </div>
                 </div>
@@ -76,7 +76,7 @@ export default function PrintingServicePage() {
                 <div className="container">
                     <div className={styles.dashboardWrapper}>
                         {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img src="/images/ai-quote-system.png" alt="3D 프린팅 견적 프로세스" className={styles.dashboardImg} />
+                        <img src="/images/printing-ui-upload.png" alt="3D 프린팅 견적 프로세스" className={styles.dashboardImg} />
                     </div>
                 </div>
             </section>
@@ -114,7 +114,7 @@ export default function PrintingServicePage() {
                         </div>
                         <div className={styles.detailImage}>
                             {/* eslint-disable-next-line @next/next/no-img-element */}
-                            <img src="/images/ai-quote-system.png" alt="AI 분석 화면" className={styles.detailImg} />
+                            <img src="/images/printing-ui-viewer.png" alt="AI 분석 화면" className={styles.detailImg} />
                         </div>
                     </div>
 
@@ -144,7 +144,7 @@ export default function PrintingServicePage() {
                         </div>
                         <div className={styles.detailImage}>
                             {/* eslint-disable-next-line @next/next/no-img-element */}
-                            <img src="/images/ai-quote-system.png" alt="산업용 3D 프린터 출력" className={styles.detailImg} />
+                            <img src="/images/printing-ui-cart.png" alt="산업용 3D 프린터 출력" className={styles.detailImg} />
                         </div>
                     </div>
 
