@@ -14,7 +14,7 @@ const heroSlides = [
     subtitle: "당신의 상상력을 현실로",
     description: "STL, OBJ, 3MF,STEP 파일을 업로드하면 AI가 부피·표면적을 분석해 실시간 견적을 제공합니다. 클릭 한 번으로 시제품부터 양산까지.",
     image: "/images/ai-quote-system.png",
-    ctaLink: "/#quote-system",
+    ctaLink: "/services/printing",
     gradient: "linear-gradient(135deg, #020617 0%, #1e293b 100%)",
     badgeColor: "rgba(34, 197, 94, 0.25)",
     badgeTextColor: "#4ade80",
