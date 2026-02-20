@@ -146,14 +146,14 @@ export default function Navbar() {
 
           {/* Desktop Actions */}
           <div className={styles.desktopActions}>
-            <Link href="/contact" className={clsx(styles.btnNavCta, scrolled ? styles.btnSolid : styles.btnGlass)}>
+            <Link href="/contact" className={clsx(styles.btnNavCta, isNavOpaque ? styles.btnSolid : styles.btnGlass)}>
               무료 상담 신청 <ChevronRight size={16} />
             </Link>
           </div>
 
           {/* Mobile Menu Button */}
           <button
-            className={clsx(styles.mobileToggle, (scrolled || isOpen) && styles.dark)}
+            className={clsx(styles.mobileToggle, (isNavOpaque || isOpen) && styles.dark)}
             onClick={() => setIsOpen(!isOpen)}
             aria-label="Toggle menu"
             aria-expanded={isOpen}
