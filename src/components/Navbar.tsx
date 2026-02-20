@@ -52,6 +52,7 @@ export default function Navbar() {
       ]
     },
     { href: '/pricing', label: '도입 안내' },
+    { href: '/archive', label: '자료실' },
     { href: '/about', label: '회사 소개' },
     { href: '/contact', label: '문의하기' },
   ];
