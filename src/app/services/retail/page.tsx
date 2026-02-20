@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import PricingTable from '@/components/PricingTable';
 import { Box, Users, BarChart3, Cloud, CheckCircle2, ArrowRight } from 'lucide-react';
@@ -33,7 +33,7 @@ export default function RetailServicePage() {
             </div>
             <div className={styles.heroImage}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/images/wow-smart-manager-hero.png" alt="WOW-Smart Manager Dashboard" className={styles.heroImg} />
+              <img src="/images/wow-smart-manager-hero.jpg" alt="WOW-Smart Manager Dashboard" className={styles.heroImg} />
             </div>
           </div>
         </div>
@@ -73,7 +73,7 @@ export default function RetailServicePage() {
         <div className="container">
           <div className={styles.dashboardWrapper}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/images/dashboard-hero.png" alt="WOW-Smart Manager Dashboard" className={styles.dashboardImg} />
+            <img src="/images/dashboard-hero.jpg" alt="WOW-Smart Manager Dashboard" className={styles.dashboardImg} />
           </div>
         </div>
       </section>
@@ -106,7 +106,7 @@ export default function RetailServicePage() {
             </div>
             <div className={styles.detailImage}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/images/product-mgmt.png" alt="Product Management" className={styles.detailImg} />
+              <img src="/images/product-mgmt.jpg" alt="Product Management" className={styles.detailImg} />
             </div>
           </div>
 
@@ -132,7 +132,7 @@ export default function RetailServicePage() {
             </div>
             <div className={styles.detailImage}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/images/inventory-mgmt.png" alt="Inventory Management" className={styles.detailImg} />
+              <img src="/images/inventory-mgmt.jpg" alt="Inventory Management" className={styles.detailImg} />
             </div>
           </div>
 

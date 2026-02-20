@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 import PricingTable from '@/components/PricingTable';
 import { Box, Users, BarChart3, Cloud, ShieldCheck, Timer, BookOpen, LineChart } from 'lucide-react';
 import Link from 'next/link';
@@ -33,7 +33,7 @@ export default function ServicesPage() {
           {/* Hero Image */}
           <div className="hero-image-wrapper mb-20 shadow-2xl rounded-xl overflow-hidden border border-slate-200">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/images/dashboard-hero.png" alt="SaaS ERP Dashboard" className="w-full h-auto object-cover" />
+            <img src="/images/dashboard-hero.jpg" alt="SaaS ERP Dashboard" className="w-full h-auto object-cover" />
           </div>
 
           {/* Core Features Grid - Introduction */}
@@ -81,7 +81,7 @@ export default function ServicesPage() {
               </div>
               <div className="feature-image shadow-xl rounded-lg overflow-hidden border border-slate-100">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/images/product-mgmt.png" alt="Product Management UI" className="w-full h-auto" />
+                <img src="/images/product-mgmt.jpg" alt="Product Management UI" className="w-full h-auto" />
               </div>
             </div>
 
@@ -89,7 +89,7 @@ export default function ServicesPage() {
             <div className={`${styles.featureRow} ${styles.reverse} mb-24`}>
               <div className={`${styles.featureImage} shadow-xl rounded-lg overflow-hidden border border-slate-100`}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/images/inventory-mgmt.png" alt="Inventory Management UI" className="w-full h-auto" />
+                <img src="/images/inventory-mgmt.jpg" alt="Inventory Management UI" className="w-full h-auto" />
               </div>
               <div className={styles.featureContent}>
                 <h3 className={styles.featureTitle}>

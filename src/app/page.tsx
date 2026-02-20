@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Link from "next/link";
 import { Box, Users, ArrowRight, CheckCircle2, MessageCircle, ChevronLeft, ChevronRight, Timer, Printer } from "lucide-react";
@@ -26,7 +26,7 @@ const heroSlides = [
     title: "WOW-Smart Manager",
     subtitle: "스마트 재고/매출 관리 팩",
     description: "도소매업, 요식업 사장님을 위한 재고/발주 및 매출 심층 분석 솔루션입니다. 복잡한 재고 수불부 작성, 이제 자동으로 해결하세요.",
-    image: "/images/wow-smart-manager-hero.png",
+    image: "/images/wow-smart-manager-hero.jpg",
     ctaLink: "/services/retail",
     gradient: "linear-gradient(135deg, #1E293B 0%, #0F172A 100%)",
     badgeColor: "rgba(37, 99, 235, 0.25)",
@@ -202,7 +202,7 @@ export default function Home() {
                 <div className={styles.mockupWindow}>
                   <div className={clsx(styles.mockupContent, styles.blueGradient)}>
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src="/images/dashboard-hero.png" alt="Retail Dashboard" className={styles.mockupImg} />
+                    <img src="/images/dashboard-hero.jpg" alt="Retail Dashboard" className={styles.mockupImg} />
                   </div>
                 </div>
               </div>
