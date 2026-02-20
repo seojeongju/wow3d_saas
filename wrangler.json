@@ -1,6 +1,7 @@
 {
-    "name": "wow-saas",
+    "name": "wow3d-saas",
     "compatibility_date": "2024-04-03",
+    "pages_build_output_dir": "out",
     "d1_databases": [
         {
             "binding": "DB",
