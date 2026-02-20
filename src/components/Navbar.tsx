@@ -58,6 +58,14 @@ export default function Navbar() {
         { href: '/services/printing/', label: '3D프린팅 AI 실시간 견적' },
       ]
     },
+    {
+      href: '/hardware/',
+      label: '하드웨어 소개',
+      children: [
+        { href: '/hardware/3d-printer/', label: 'MSLA-DLP 3D Print' },
+        { href: '/hardware/hologram/', label: '3D Hologram Display' },
+      ]
+    },
     { href: '/pricing/', label: '도입 안내' },
     { href: '/archive/', label: '자료실(게시판)' },
     { href: '/about/', label: '회사 소개' },
