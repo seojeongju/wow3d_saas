@@ -18,10 +18,17 @@ export default function Navbar() {
   const [dropdownOpen, setDropdownOpen] = useState<string | null>(null);
   const pathname = usePathname();
 
+  // 홈(/) 이외의 페이지는 항상 불투명 네비게이션 표시
+  const isHeroPage = pathname === '/';
+  const isNavOpaque = !isHeroPage || scrolled;
+
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
     };
+
+    // 초기 스크롤 위치 확인
+    handleScroll();
 
     // Throttle scroll events for better performance
     let ticking = false;
@@ -79,10 +86,10 @@ export default function Navbar() {
 
   return (
     <>
-      <nav className={clsx(styles.navbar, scrolled && styles.scrolled, isOpen && styles.menuOpen)}>
+      <nav className={clsx(styles.navbar, isNavOpaque && styles.scrolled, isOpen && styles.menuOpen)}>
         <div className={clsx("container", styles.navContainer)}>
           <Link href="/" className={styles.logoLink} onClick={handleLinkClick}>
-            <div className={clsx(styles.brandLogo, (scrolled || isOpen) && styles.scrolled)}>
+            <div className={clsx(styles.brandLogo, (isNavOpaque || isOpen) && styles.scrolled)}>
               <span className={styles.logoWow}>WOW</span>
               <span className={styles.logoDatabiz}>DataBiz</span>
             </div>
