@@ -42,19 +42,19 @@ export default function Navbar() {
   const navLinks: NavLink[] = [
     { href: '/', label: '홈' },
     {
-      href: '/services/',
+      href: '/services',
       label: '서비스 소개',
       children: [
-        { href: '/services/retail/', label: 'WOW-Smart Manager' },
-        { href: '/services/academy/', label: 'NCS On-Track (온트랙)' },
-        { href: '/services/cbt/', label: 'WOW-CBT (와우CBT)' },
-        { href: '/services/printing/', label: '3D프린팅 AI 실시간 견적' },
+        { href: '/services/retail', label: 'WOW-Smart Manager' },
+        { href: '/services/academy', label: 'NCS On-Track (온트랙)' },
+        { href: '/services/cbt', label: 'WOW-CBT (와우CBT)' },
+        { href: '/services/printing', label: '3D프린팅 AI 실시간 견적' },
       ]
     },
-    { href: '/pricing/', label: '도입 안내' },
-    { href: '/archive/', label: '자료실' },
-    { href: '/about/', label: '회사 소개' },
-    { href: '/contact/', label: '문의하기' },
+    { href: '/pricing', label: '도입 안내' },
+    { href: '/archive', label: '자료실(게시판)' },
+    { href: '/about', label: '회사 소개' },
+    { href: '/contact', label: '문의하기' },
   ];
 
   const handleLinkClick = () => {
