@@ -1,12 +1,11 @@
 {
     "name": "wow-saas",
     "compatibility_date": "2024-04-03",
-    "pages_build_output_dir": ".next",
     "d1_databases": [
         {
             "binding": "DB",
-            "database_name": "wow-archive-db",
-            "database_id": "YOUR_D1_DATABASE_ID_HERE"
+            "database_name": "wow3d-saas-db",
+            "database_id": "33472b2e-b17f-4a69-b99b-3ec673a5beb9"
         }
     ],
     "r2_buckets": [
