@@ -1,0 +1,689 @@
+/* ============================================
+   Archive Page — CSS Module
+   ============================================ */
+
+.page {
+    min-height: 100vh;
+    background: #f8fafc;
+    padding-top: 88px;
+    padding-bottom: 4rem;
+}
+
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 2.5rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+/* ============================================
+   Notification Stack
+   ============================================ */
+
+.notificationStack {
+    position: fixed;
+    top: 100px;
+    right: 1.5rem;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    pointer-events: none;
+}
+
+.notification {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    padding: 0.75rem 1rem;
+    border-radius: 10px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    pointer-events: auto;
+    animation: slideInNotif 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    min-width: 280px;
+    max-width: 400px;
+}
+
+@keyframes slideInNotif {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.notification_success {
+    background: #ecfdf5;
+    border: 1px solid #a7f3d0;
+    color: #065f46;
+}
+
+.notification_error {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    color: #991b1b;
+}
+
+.notification_info {
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    color: #1e40af;
+}
+
+.notifClose {
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin-left: auto;
+    opacity: 0.6;
+    display: flex;
+    align-items: center;
+    color: inherit;
+    padding: 2px;
+    border-radius: 4px;
+    transition: opacity 0.2s;
+}
+
+.notifClose:hover {
+    opacity: 1;
+}
+
+/* ============================================
+   Page Header
+   ============================================ */
+
+.pageHeader {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+.headerIcon {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    flex-shrink: 0;
+    box-shadow: 0 8px 20px rgba(37, 99, 235, 0.25);
+}
+
+.pageTitle {
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: #0f172a;
+    letter-spacing: -0.02em;
+    margin: 0 0 0.25rem 0;
+}
+
+.pageTitleAccent {
+    color: #2563eb;
+}
+
+.pageDesc {
+    font-size: 0.9375rem;
+    color: #64748b;
+    margin: 0;
+}
+
+.headerStats {
+    margin-left: auto;
+}
+
+.statBadge {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: linear-gradient(135deg, #eff6ff 0%, #f5f3ff 100%);
+    border: 1px solid #ddd6fe;
+    border-radius: 12px;
+    padding: 0.75rem 1.5rem;
+}
+
+.statNum {
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: #2563eb;
+    line-height: 1;
+}
+
+.statLabel {
+    font-size: 0.75rem;
+    color: #7c3aed;
+    font-weight: 600;
+    margin-top: 0.25rem;
+}
+
+/* ============================================
+   Error Banner
+   ============================================ */
+
+.errorBanner {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.875rem 1.25rem;
+    background: #fef2f2;
+    border: 1px solid #fca5a5;
+    border-radius: 10px;
+    color: #dc2626;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.retryBtn {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    margin-left: auto;
+    padding: 0.4rem 0.875rem;
+    background: #dc2626;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.retryBtn:hover {
+    background: #b91c1c;
+}
+
+/* ============================================
+   Control Bar
+   ============================================ */
+
+.controlBar {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.searchWrap {
+    position: relative;
+    flex: 1;
+    min-width: 220px;
+}
+
+.searchIcon {
+    position: absolute;
+    left: 0.875rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #94a3b8;
+    pointer-events: none;
+}
+
+.searchInput {
+    width: 100%;
+    padding: 0.75rem 2.75rem 0.75rem 2.75rem;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 10px;
+    font-size: 0.9375rem;
+    color: #0f172a;
+    background: #ffffff;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    box-sizing: border-box;
+}
+
+.searchInput:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.searchClear {
+    position: absolute;
+    right: 0.875rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #94a3b8;
+    display: flex;
+    align-items: center;
+    padding: 2px;
+    border-radius: 4px;
+}
+
+.searchClear:hover {
+    color: #475569;
+}
+
+.controlActions {
+    display: flex;
+    gap: 0.625rem;
+    align-items: center;
+}
+
+.refreshBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    background: #ffffff;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 10px;
+    cursor: pointer;
+    color: #64748b;
+    transition: all 0.2s;
+}
+
+.refreshBtn:hover:not(:disabled) {
+    border-color: #2563eb;
+    color: #2563eb;
+}
+
+.refreshBtn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.fileInput {
+    display: none;
+}
+
+.uploadBtn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+    color: #ffffff;
+    border-radius: 10px;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    white-space: nowrap;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+    user-select: none;
+}
+
+.uploadBtn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(37, 99, 235, 0.35);
+}
+
+.uploadBtn:active {
+    transform: translateY(0);
+}
+
+.uploadBtnLoading {
+    opacity: 0.8;
+    cursor: not-allowed;
+}
+
+/* ============================================
+   Drag & Drop Zone
+   ============================================ */
+
+.dropZone {
+    border: 2px dashed #cbd5e1;
+    border-radius: 12px;
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.625rem;
+    color: #94a3b8;
+    font-size: 0.875rem;
+    transition: all 0.2s;
+    background: #f8fafc;
+}
+
+.dropZoneActive {
+    border-color: #2563eb;
+    background: rgba(37, 99, 235, 0.04);
+    color: #2563eb;
+}
+
+/* ============================================
+   Table Card
+   ============================================ */
+
+.tableCard {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 4px 12px rgba(0, 0, 0, 0.04);
+}
+
+.fileTable {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+.fileTable th {
+    background: #f8fafc;
+    padding: 0.875rem 1.25rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: #64748b;
+    text-align: left;
+    border-bottom: 1px solid #e2e8f0;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.thFile {
+    width: 40%;
+}
+
+.thType {
+    width: 14%;
+}
+
+.thSize {
+    width: 12%;
+}
+
+.thDate {
+    width: 16%;
+}
+
+.thAction {
+    width: 18%;
+    text-align: right;
+    padding-right: 1.25rem;
+}
+
+.fileRow {
+    transition: background 0.15s;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.fileRow:last-child {
+    border-bottom: none;
+}
+
+.fileRow:hover {
+    background: #f8faff;
+}
+
+.fileTable td {
+    padding: 1rem 1.25rem;
+    font-size: 0.9375rem;
+    color: #334155;
+    vertical-align: middle;
+}
+
+.tdFile {}
+
+.tdType {}
+
+.tdSize {
+    color: #64748b;
+    font-size: 0.875rem;
+}
+
+.tdDate {
+    color: #64748b;
+    font-size: 0.875rem;
+}
+
+.tdAction {
+    text-align: right;
+}
+
+.fileInfo {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+    min-width: 0;
+}
+
+.fileIconWrap {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, #eff6ff 0%, #f5f3ff 100%);
+    border: 1px solid #ddd6fe;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #4f46e5;
+    flex-shrink: 0;
+}
+
+.fileIconSvg {
+    width: 20px;
+    height: 20px;
+}
+
+.fileName {
+    font-weight: 500;
+    color: #0f172a;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: block;
+}
+
+.typeTag {
+    display: inline-flex;
+    padding: 0.25rem 0.625rem;
+    background: #f1f5f9;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #475569;
+}
+
+.actionBtn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    background: #f1f5f9;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    color: #475569;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s;
+    margin-left: 0.375rem;
+}
+
+.actionBtn:hover {
+    background: #dbeafe;
+    border-color: #93c5fd;
+    color: #2563eb;
+}
+
+.actionBtnDanger:hover {
+    background: #fee2e2;
+    border-color: #fca5a5;
+    color: #dc2626;
+}
+
+/* ============================================
+   Loading & Empty States
+   ============================================ */
+
+.loadingWrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    padding: 4rem 2rem;
+    color: #94a3b8;
+    font-size: 0.9375rem;
+}
+
+.emptyState {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 5rem 2rem;
+    text-align: center;
+}
+
+.emptyIcon {
+    width: 80px;
+    height: 80px;
+    background: #f1f5f9;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #cbd5e1;
+    margin-bottom: 1.5rem;
+}
+
+.emptyTitle {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #334155;
+    margin: 0 0 0.5rem 0;
+}
+
+.emptyDesc {
+    font-size: 0.9375rem;
+    color: #94a3b8;
+    margin: 0 0 1.5rem 0;
+    max-width: 380px;
+}
+
+.emptyClearBtn {
+    padding: 0.625rem 1.25rem;
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    border-radius: 8px;
+    color: #2563eb;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.emptyClearBtn:hover {
+    background: #dbeafe;
+}
+
+/* ============================================
+   Footer Info
+   ============================================ */
+
+.footerInfo {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.8125rem;
+    color: #94a3b8;
+    padding-top: 0.5rem;
+}
+
+/* ============================================
+   Spin Animation
+   ============================================ */
+
+.spin {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ============================================
+   Responsive
+   ============================================ */
+
+@media (max-width: 768px) {
+    .page {
+        padding-top: 80px;
+    }
+
+    .container {
+        padding: 1.5rem 1rem;
+        gap: 1rem;
+    }
+
+    .pageHeader {
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .headerStats {
+        margin-left: 0;
+        width: 100%;
+    }
+
+    .statBadge {
+        flex-direction: row;
+        gap: 0.5rem;
+    }
+
+    .controlBar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .searchWrap {
+        min-width: 0;
+    }
+
+    .controlActions {
+        justify-content: flex-end;
+    }
+
+    .thType,
+    .thSize {
+        display: none;
+    }
+
+    .tdType,
+    .tdSize {
+        display: none;
+    }
+
+    .thDate {
+        display: none;
+    }
+
+    .tdDate {
+        display: none;
+    }
+
+    .thFile {
+        width: 70%;
+    }
+
+    .thAction {
+        width: 30%;
+    }
+
+    .fileTable td,
+    .fileTable th {
+        padding: 0.75rem 1rem;
+    }
+}
