@@ -348,6 +348,21 @@
     line-height: 1.5;
 }
 
+/* Spec Table Wrapper — mobile horizontal scroll */
+
+.tableWrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border-radius: 16px;
+    border: 1px solid #e2e8f0;
+}
+
+.tableWrap .specTable {
+    border: none;
+    border-radius: 0;
+    min-width: 640px;
+}
+
 /* Spec Table */
 
 .specTable {
