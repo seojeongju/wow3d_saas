@@ -89,9 +89,14 @@ export default function Navbar() {
       <nav className={clsx(styles.navbar, isNavOpaque && styles.scrolled, isOpen && styles.menuOpen)}>
         <div className={clsx("container", styles.navContainer)}>
           <Link href="/" className={styles.logoLink} onClick={handleLinkClick}>
-            <div className={clsx(styles.brandLogo, (isNavOpaque || isOpen) && styles.scrolled)}>
-              <span className={styles.logoWow}>WOW</span>
-              <span className={styles.logoDatabiz}>DataBiz</span>
+            <div className={clsx(styles.logoWrapper)}>
+              <div className={clsx(styles.brandLogo, (isNavOpaque || isOpen) && styles.scrolled)}>
+                <span className={styles.logoWow}>WOW</span>
+                <span className={styles.logoDatabiz}>DataBiz</span>
+              </div>
+              <span className={clsx(styles.logoCompany, (isNavOpaque || isOpen) && styles.scrolled)}>
+                (주)와우쓰리디
+              </span>
             </div>
           </Link>
 
