@@ -1,5 +1,6 @@
-export const runtime = 'edge';
-export const dynamic = 'force-dynamic';
+// This route is handled by Cloudflare Pages Functions (/functions/api/archive.ts)
+// Kept as placeholder for local dev only
+export const dynamic = 'force-static';
 
 import { NextRequest, NextResponse } from 'next/server';
 
