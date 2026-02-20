@@ -26,7 +26,7 @@ export default function ArchivePage() {
             setLoading(true);
             const res = await fetch("/api/archive");
             if (res.ok) {
-                const data = await res.json();
+                const data: ArchiveFile[] = await res.json();
                 setFiles(data);
             }
         } catch (error) {
