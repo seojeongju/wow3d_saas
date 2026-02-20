@@ -4,77 +4,88 @@ import Link from "next/link";
 import { ArrowRight, ChevronRight } from "lucide-react";
 import styles from "../hardware.module.css";
 
-/* =====================================================
-   실제 wow3dhd.co.kr MSLA/DLP 3D 프린터 제품 데이터
-   ===================================================== */
+/* ============================================================
+   실제 wow3dhd.co.kr  MSLA-DLP 3D Printer 제품 데이터
+   모델: MSLA P10 (flagship) · MSLA P7 (compact)
+   ============================================================ */
 
-const features = [
-    { icon: "🎯", name: "초고정밀 광경화 출력", val: "MSLA(Mono LCD) / DLP 방식\nXY 정확도 ±0.05mm 이하 구현" },
-    { icon: "⚡", name: "고속 연속 출력", val: "레이어 당 2~5초\n기존 FDM 대비 최대 10배 빠른 속도" },
-    { icon: "🧪", name: "다양한 레진 호환", val: "ABS-Like, Dental, 캐스터블\n고강도·유연성·투명 레진 지원" },
-    { icon: "💡", name: "독자 광 보정 기술", val: "광 강도 불균일 자동 보정\n출력 성공률 대폭 향상" },
-    { icon: "🔧", name: "알루미늄 합금 설계", val: "산업용 정밀 가이드 레일\n고정밀 스크류 로드 탑재" },
-    { icon: "🖥️", name: "간편한 운용", val: "직관적인 터치 인터페이스\nChitubox · LycheeSlicer 호환" },
-];
+const heroSlogan = "상상하는 모든 것을 현실로";
+const heroSub = "마이크로 단위의 정밀함으로 피규어·주얼리·덴탈·미니어처를 구현하는 차세대 MSLA·DLP 3D 프린터";
 
-/* 모델 라인업 */
+/* ─────────────── 모델 카드 ─────────────── */
 const models = [
     {
-        model: "WOW-S1",
-        type: "MSLA (Mono LCD)",
-        buildVol: "130×82×160mm",
-        xyRes: "0.051mm (4K LCD)",
-        speed: "30~50mm/hr",
-        resin: "405nm 범용 레진"
+        id: "P10",
+        name: "MSLA P10",
+        badge: "Flagship",
+        color: "blue",
+        tagline: "10인치 8K 초대형 빌드 · 주얼리 / 프로토타입",
+        highlights: [
+            { k: "LCD", v: "10인치 8K 고해상도 Mono LCD" },
+            { k: "XY 해상도", v: "14.85 μm (마이크로미터)" },
+            { k: "Z축 정밀도", v: "7 μm 이내" },
+            { k: "빌드 볼륨", v: "228 × 128 × 250 mm" },
+            { k: "인쇄 정확도", v: "0.05 mm" },
+            { k: "인쇄 성공률", v: "최대 99%" },
+        ],
+        features: [
+            "산업용 리드 스크류 + 고정밀 듀얼 가이드 레일",
+            "자체 온도 조절 가열 시스템 — 외부 온도 무관 안정 출력",
+            "그레이스케일 XY 픽셀 관리로 부드러운 표면 구현",
+            "압력 완화 홀 제작 플랫폼 — 레진 박리 원활",
+            "오프라인 내장 저장소 + 개방형 커스텀 모듈 지원",
+            "이미지 처리 기술로 층 밀림 최소화",
+        ],
     },
     {
-        model: "WOW-D1",
-        type: "DLP (프로젝터)",
-        buildVol: "192×108×200mm",
-        xyRes: "0.050mm",
-        speed: "40~60mm/hr",
-        resin: "405nm / 385nm 레진"
-    },
-    {
-        model: "WOW-D2 PRO",
-        type: "DLP 산업용",
-        buildVol: "256×144×280mm",
-        xyRes: "0.033mm (8K급)",
-        speed: "50~80mm/hr",
-        resin: "다종 산업용 레진"
+        id: "P7",
+        name: "MSLA P7",
+        badge: "Compact",
+        color: "purple",
+        tagline: "6.6인치 4K · 주얼리 주조 / 피규어",
+        highlights: [
+            { k: "LCD", v: "6.6인치 4K 고해상도 Mono LCD" },
+            { k: "XY 정확도", v: "9 μm (그레이스케일 조정)" },
+            { k: "인쇄 정확도", v: "0.02 mm 이내" },
+            { k: "레이어 두께", v: "25 ~ 150 μm 가변" },
+            { k: "출력 온도", v: "실내 30°C 자동 유지" },
+            { k: "광 균일도", v: "85% 향상된 빛 균일도" },
+        ],
+        features: [
+            "DLP 수준 세부 성능 — 주얼리 주조 모델 생산 표준 충족",
+            "균일한 광원으로 인쇄 정확도 0.02 mm 이내 제어",
+            "인쇄실 내부 30°C 유지 — 추운 날씨 고성공률 보장",
+            "머리카락 굵기 수준의 미세 디테일·선명한 모서리 표현",
+            "다양한 레진 완벽 호환 — 표현의 영역 확장",
+            "직관적 UI — 비전문가도 쉬운 사용 설계",
+        ],
     },
 ];
 
-/* 상세 사양 (WOW-D1 기준) */
-const specs = [
-    { key: "광원 방식", val: "DLP (Digital Light Processing) 프로젝터" },
-    { key: "광원 파장", val: "405nm UV LED" },
-    { key: "빌드 볼륨", val: "192 × 108 × 200mm (WOW-D1 기준)" },
-    { key: "XY 해상도", val: "0.050mm (Full HD 기준)" },
-    { key: "레이어 두께", val: "0.01 ~ 0.3mm 가변 (Z방향)" },
-    { key: "출력 속도", val: "2~5초/레이어" },
-    { key: "Z축 리프팅", val: "수입 정밀 가이드 레일 + 고정밀 스크류" },
-    { key: "지원 레진", val: "ABS-Like, Dental, Castable, 고강도, 투명" },
-    { key: "슬라이싱 SW", val: "Chitubox / LycheeSlicer 호환" },
-    { key: "연결 방식", val: "USB / Wi-Fi" },
-    { key: "전원", val: "100-240V, 50/60Hz, 10A" },
-    { key: "작동 온도", val: "10 ~ 38°C" },
-    { key: "기계 중량", val: "15kg 미만" },
-    { key: "외형 크기", val: "360 × 270 × 610mm" },
+/* ─────────────── 공통 특징 ─────────────── */
+const commonFeatures = [
+    { icon: "🎯", name: "초고정밀 출력", val: "마이크로 단위 정밀도로\n피규어·주얼리·미니어처 완벽 구현" },
+    { icon: "⚡", name: "고속 레이어 경화", val: "전체 레이어 동시 경화 방식\n기존 FDM 대비 획기적 속도 향상" },
+    { icon: "🌡️", name: "자체 온도 관리", val: "내장 가열 시스템으로\n외부 온도 무관 안정적 출력" },
+    { icon: "💡", name: "85% 빛 균일도", val: "향상된 광 균일도로\n품질 저하 없는 전면 고른 경화" },
+    { icon: "🧪", name: "레진 범용 호환", val: "일반·덴탈·캐스터블·피규어 레진\n다양한 소재 제한 없이 지원" },
+    { icon: "🔒", name: "최대 99% 성공률", val: "압력 완화 플랫폼 + 듀얼 가이드\n실패 없는 안정적 장시간 출력" },
 ];
 
+/* ─────────────── 활용 분야 ─────────────── */
 const useCases = [
-    { icon: "🦷", name: "의료 / 치과", val: "치아 보철·교정·임시 크라운 제작\n정밀 구강 모델 출력" },
-    { icon: "💍", name: "주얼리 / 공예", val: "캐스터블 레진으로 왁스 대체\n정밀 금형·귀금속 원형 제작" },
-    { icon: "🏭", name: "산업·제조", val: "시제품(프로토타입) 신속 제작\n지그·픽스처·소형 부품 출력" },
-    { icon: "🎓", name: "교육 / 연구", val: "3D프린팅 실습 교육 장비\nNCS 교육과정 연계 활용" },
-    { icon: "🎨", name: "디자인·모형", val: "건축 모형·캐릭터·피규어 제작\n고정밀 미니어처 출력" },
-    { icon: "🔩", name: "R&D / 엔지니어링", val: "정밀 시제품 반복 검증\n빠른 프로토타이핑 사이클" },
+    { icon: "💍", name: "주얼리 / 공예", val: "캐스터블 레진 원형 제작\n9μm 정밀도로 주조 표준 충족" },
+    { icon: "🎨", name: "피규어 / 미니어처", val: "선명한 모서리·머리카락 굵기 디테일\n수집품·아트 피규어 고품질 출력" },
+    { icon: "🦷", name: "덴탈 (치과)", val: "치아 보철·교정 트레이·임시 크라운\n가장 빠른 덴탈 전용 DLP 솔루션" },
+    { icon: "🏭", name: "프로토타입 제작", val: "시제품 신속 반복 검증\n0.05mm 정확도로 기능성 파트 출력" },
+    { icon: "🎓", name: "3D프린팅 교육", val: "NCS 연계 3D프린팅 실습 교육\n활용법부터 소재 교육까지 원스톱" },
+    { icon: "🔬", name: "R&D / 연구", val: "마이크로 스케일 연구 모델\n반복 정밀 출력으로 연구 효율화" },
 ];
 
 export default function PrinterPage() {
     return (
         <div className={styles.detailPage}>
+
             {/* Breadcrumb */}
             <nav className={styles.breadcrumb}>
                 <Link href="/">홈</Link>
@@ -84,26 +95,61 @@ export default function PrinterPage() {
                 <span>MSLA-DLP 3D Print</span>
             </nav>
 
-            {/* Hero */}
+            {/* ── Hero ── */}
             <section className={styles.detailHero}>
                 <div className={styles.detailHeroContent}>
-                    <span className={styles.detailBadge}>MSLA / DLP 3D Printer · WOW Series</span>
+                    <span className={styles.detailBadge}>WOW3DHD · MSLA / DLP 3D Printer</span>
                     <h1 className={styles.detailTitle}>
-                        고정밀 광경화 방식<br />산업용 MSLA·DLP 3D 프린터
+                        {heroSlogan}<br />
+                        <span className={styles.heroGrad}>MSLA · DLP 3D 프린터</span>
                     </h1>
-                    <p className={styles.detailDesc}>
-                        독자적인 광 강도 보정 기술과 고정밀 가이드 레일 설계로 출력 성공률을 극대화한
-                        (주)와우쓰리디의 MSLA·DLP 3D 프린터 시리즈. 치과·주얼리·교육·산업 현장에 최적화된 솔루션입니다.
-                    </p>
+                    <p className={styles.detailDesc}>{heroSub}</p>
                 </div>
             </section>
 
             <div className={styles.detailBody}>
-                {/* Features */}
+
+                {/* ── 모델 카드 ── */}
                 <section>
-                    <h2 className={styles.sectionTitle}>주요 특징</h2>
+                    <h2 className={styles.sectionTitle}>제품 라인업</h2>
+                    <div className={styles.modelGrid}>
+                        {models.map(m => (
+                            <div key={m.id} className={`${styles.modelCard} ${styles[`model_${m.color}`]}`}>
+                                <div className={styles.modelCardTop}>
+                                    <span className={`${styles.modelBadge} ${styles[`badge_${m.color}`]}`}>{m.badge}</span>
+                                    <h3 className={styles.modelName}>{m.name}</h3>
+                                    <p className={styles.modelTagline}>{m.tagline}</p>
+                                </div>
+
+                                {/* 핵심 스펙 */}
+                                <div className={styles.modelSpecs}>
+                                    {m.highlights.map(h => (
+                                        <div key={h.k} className={styles.modelSpecRow}>
+                                            <span className={styles.modelSpecKey}>{h.k}</span>
+                                            <span className={styles.modelSpecVal}>{h.v}</span>
+                                        </div>
+                                    ))}
+                                </div>
+
+                                {/* 주요 기능 */}
+                                <ul className={styles.modelFeatureList}>
+                                    {m.features.map(f => (
+                                        <li key={f} className={styles.modelFeatureItem}>
+                                            <span className={styles.modelFeatureDot} />
+                                            {f}
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        ))}
+                    </div>
+                </section>
+
+                {/* ── 공통 특징 ── */}
+                <section>
+                    <h2 className={styles.sectionTitle}>공통 핵심 특징</h2>
                     <div className={styles.featureGrid}>
-                        {features.map(f => (
+                        {commonFeatures.map(f => (
                             <div key={f.name} className={styles.featureCard}>
                                 <div className={styles.featureIcon}>{f.icon}</div>
                                 <div className={styles.featureName}>{f.name}</div>
@@ -113,30 +159,35 @@ export default function PrinterPage() {
                     </div>
                 </section>
 
-                {/* Model Lineup */}
+                {/* ── 비교 스펙표 ── */}
                 <section>
-                    <h2 className={styles.sectionTitle}>WOW 시리즈 모델 라인업</h2>
+                    <h2 className={styles.sectionTitle}>모델 사양 비교</h2>
                     <div className={styles.tableWrap}>
                         <table className={styles.specTable}>
                             <thead>
                                 <tr>
-                                    <th>모델명</th>
-                                    <th>방식</th>
-                                    <th>빌드 볼륨</th>
-                                    <th>XY 해상도</th>
-                                    <th>출력 속도</th>
-                                    <th>지원 레진</th>
+                                    <th>사양 항목</th>
+                                    <th>MSLA P10 (Flagship)</th>
+                                    <th>MSLA P7 (Compact)</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {models.map(m => (
-                                    <tr key={m.model}>
-                                        <td className={styles.specKey}>{m.model}</td>
-                                        <td>{m.type}</td>
-                                        <td>{m.buildVol}</td>
-                                        <td>{m.xyRes}</td>
-                                        <td>{m.speed}</td>
-                                        <td>{m.resin}</td>
+                                {[
+                                    ["LCD", "10인치 8K Mono LCD", "6.6인치 4K Mono LCD"],
+                                    ["XY 해상도", "14.85 μm", "9 μm (그레이스케일 조정)"],
+                                    ["Z축 정밀도", "7 μm 이내", "–"],
+                                    ["인쇄 정확도", "0.05 mm", "0.02 mm 이내"],
+                                    ["빌드 볼륨", "228 × 128 × 250 mm", "피규어/주얼리 최적화"],
+                                    ["레이어 두께", "–", "25 ~ 150 μm"],
+                                    ["광 균일도", "향상된 빛 균일도", "85% 향상"],
+                                    ["온도 관리", "자체 가열 시스템", "30°C 실내 자동 유지"],
+                                    ["인쇄 성공률", "최대 99%", "고성공률 (한냉지 포함)"],
+                                    ["주요 용도", "주얼리·프로토타입·덴탈", "주얼리·피규어·미니어처"],
+                                ].map(([item, p10, p7]) => (
+                                    <tr key={item}>
+                                        <td className={styles.specKey}>{item}</td>
+                                        <td>{p10}</td>
+                                        <td>{p7}</td>
                                     </tr>
                                 ))}
                             </tbody>
@@ -144,52 +195,32 @@ export default function PrinterPage() {
                     </div>
                 </section>
 
-                {/* Detailed Specs */}
-                <section>
-                    <h2 className={styles.sectionTitle}>상세 사양 (WOW-D1 기준)</h2>
-                    <table className={styles.specTable}>
-                        <thead>
-                            <tr>
-                                <th>항목</th>
-                                <th>사양</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {specs.map(s => (
-                                <tr key={s.key}>
-                                    <td className={styles.specKey}>{s.key}</td>
-                                    <td>{s.val}</td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </section>
-
-                {/* Use Cases */}
+                {/* ── 활용 분야 ── */}
                 <section>
                     <h2 className={styles.sectionTitle}>활용 분야</h2>
                     <div className={styles.featureGrid}>
-                        {useCases.map(item => (
-                            <div key={item.name} className={styles.featureCard}>
-                                <div className={styles.featureIcon}>{item.icon}</div>
-                                <div className={styles.featureName}>{item.name}</div>
-                                <div className={styles.featureVal} style={{ whiteSpace: 'pre-line' }}>{item.val}</div>
+                        {useCases.map(u => (
+                            <div key={u.name} className={styles.featureCard}>
+                                <div className={styles.featureIcon}>{u.icon}</div>
+                                <div className={styles.featureName}>{u.name}</div>
+                                <div className={styles.featureVal} style={{ whiteSpace: 'pre-line' }}>{u.val}</div>
                             </div>
                         ))}
                     </div>
                 </section>
 
-                {/* CTA */}
+                {/* ── CTA ── */}
                 <section className={styles.ctaSection}>
-                    <h2 className={styles.ctaTitle}>도입 문의 & 데모 출력 신청</h2>
+                    <h2 className={styles.ctaTitle}>데모 출력 & 무료 상담 신청</h2>
                     <p className={styles.ctaDesc}>
-                        MSLA·DLP 3D 프린터 도입을 검토 중이신가요?<br />
-                        전문 담당자가 용도에 맞는 최적 모델과 레진을 맞춤 추천해 드립니다.
+                        MSLA P10 / P7 도입을 검토 중이신가요?<br />
+                        용도에 맞는 최적 모델과 레진을 전문 담당자가 1:1로 맞춤 추천해 드립니다.
                     </p>
                     <Link href="/contact/" className={styles.ctaBtn}>
                         무료 상담 신청 <ArrowRight size={16} />
                     </Link>
                 </section>
+
             </div>
         </div>
     );
