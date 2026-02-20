@@ -50,7 +50,7 @@ export default function Navbar() {
     { href: '/', label: '홈' },
     {
       href: '/services/',
-      label: '서비스 소개',
+      label: '소프트웨어 소개',
       children: [
         { href: '/services/retail/', label: 'WOW-Smart Manager' },
         { href: '/services/academy/', label: 'NCS On-Track (온트랙)' },
