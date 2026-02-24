@@ -47,7 +47,6 @@ export default function Navbar() {
   }, []);
 
   const navLinks: NavLink[] = [
-    { href: '/', label: '홈' },
     {
       href: '/services/',
       label: 'AI S/W 솔루션',
