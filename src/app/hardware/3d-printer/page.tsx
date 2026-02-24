@@ -183,6 +183,34 @@ const TECH_ADVANTAGES = [
   { icon: "🛠️", title: "전문 A/S 지원", desc: "전문 엔지니어 기반 사후지원 및 기술 백업." },
 ];
 
+/* 제품 인증 현황 */
+const CERTIFICATIONS = [
+  {
+    title: "KC 인증",
+    subtitle: "적합등록 필증",
+    desc: "방송통신기자재등의 적합등록 (모델명: DP-P7, P9, P13)",
+    image: "/images/certification/kc-cert.png"
+  },
+  {
+    title: "직접생산확인증명서",
+    subtitle: "중소기업중앙회",
+    desc: "3차원프린터 직접 생산 시설 및 공정 보유 공식 인증",
+    image: "/images/certification/production-patent.png"
+  },
+  {
+    title: "특허등록증",
+    subtitle: "특허청",
+    desc: "복합소재 성형용 3D프린팅 장치 기술 특허 보유",
+    image: "/images/certification/production-patent.png"
+  },
+  {
+    title: "입찰참가자격등록",
+    subtitle: "조달청",
+    desc: "국가종합전자조달시스템 경쟁입찰참가자격 공식 등록",
+    image: "/images/certification/tendering-cert.png"
+  }
+];
+
 export default function PrinterPage() {
   const [activeModel, setActiveModel] = useState("p10pro");
   const [activeResin, setActiveResin] = useState("general");
@@ -392,6 +420,29 @@ export default function PrinterPage() {
               <p>P10 Pro / P13 시리즈: Built-in Active Carbon (공기 정화)</p>
               <p>P13 Pro / P13: 91 units LED Matrix</p>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── 제품 인증 현황 ── */}
+      <section className={styles.certSection}>
+        <div className={styles.certInner}>
+          <h2 className={styles.sectionHeading}>(주)와우쓰리디 제품인증현황</h2>
+          <p className={styles.sectionSub}>(주)와우쓰리디는 품질과 기술력을 입증하는 국가 공인 인증 및 특허를 보유하고 있습니다.</p>
+          <div className={styles.certGrid}>
+            {CERTIFICATIONS.map((cert, idx) => (
+              <div key={idx} className={styles.certCard}>
+                <div className={styles.certImageWrap}>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={cert.image} alt={cert.title} className={styles.certImg} />
+                </div>
+                <div className={styles.certInfo}>
+                  <span className={styles.certSubtitle}>{cert.subtitle}</span>
+                  <h3 className={styles.certTitle}>{cert.title}</h3>
+                  <p className={styles.certDesc}>{cert.desc}</p>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
