@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { ChevronRight, ArrowRight, Cpu, Thermometer, Zap, Wifi } from "lucide-react";
 import styles from "./printer.module.css";
+import Image from "next/image";
 
 /* ═══════════════════════════════════════════════════════════════════
    DATA — P-Pro Series 스펙 (PDF 2026-02-19 기준)
@@ -433,8 +434,7 @@ export default function PrinterPage() {
             {CERTIFICATIONS.map((cert, idx) => (
               <div key={idx} className={styles.certCard}>
                 <div className={styles.certImageWrap}>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={cert.image} alt={cert.title} className={styles.certImg} />
+                  <Image src={cert.image} alt={cert.title} className={styles.certImg} width={400} height={533} />
                 </div>
                 <div className={styles.certInfo}>
                   <span className={styles.certSubtitle}>{cert.subtitle}</span>
