@@ -3,6 +3,14 @@
 import Link from "next/link";
 import { ArrowRight, ChevronRight, CheckCircle2, Wifi, Zap, Smartphone, Layers, Layout, Maximize } from "lucide-react";
 import styles from "./hologram.module.css";
+import Image from "next/image";
+
+// 이미지 정적 import (404 방지)
+import heroImg from "../../../../public/images/hologram/hero.png";
+import featuresImg from "../../../../public/images/hologram/features.png";
+import modesImg from "../../../../public/images/hologram/modes.png";
+import detailsImg from "../../../../public/images/hologram/details.png";
+import scenariosImg from "../../../../public/images/hologram/scenarios.png";
 
 /* ═══════════════════════════════════════════════════════
    데이터 정의 (기존 데이터 유지 및 확장)
@@ -67,8 +75,7 @@ export default function HologramPage() {
                         진보된 LED 팬 기술로 구현하는 압도적인 몰입감과 선명함을 제공합니다.
                     </p>
                     <div className={styles.heroImageWrap}>
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img src="/images/hologram/hero.png" alt="3D 홀로그램 메인" className={styles.heroImg} />
+                        <Image src={heroImg} alt="3D 홀로그램 메인" className={styles.heroImg} priority />
                     </div>
                 </div>
             </section>
@@ -105,8 +112,7 @@ export default function HologramPage() {
                             </ul>
                         </div>
                         <div className={styles.rowImageWrap}>
-                            {/* eslint-disable-next-line @next/next/no-img-element */}
-                            <img src="/images/hologram/features.png" alt="홀로그램 특장점" className={styles.rowImg} />
+                            <Image src={featuresImg} alt="홀로그램 특장점" className={styles.rowImg} />
                         </div>
                     </div>
                 </div>
@@ -135,8 +141,7 @@ export default function HologramPage() {
                             </div>
                         </div>
                         <div className={styles.rowImageWrap}>
-                            {/* eslint-disable-next-line @next/next/no-img-element */}
-                            <img src="/images/hologram/modes.png" alt="홀로그램 제어 모드" className={styles.rowImg} />
+                            <Image src={modesImg} alt="홀로그램 제어 모드" className={styles.rowImg} />
                         </div>
                     </div>
                 </div>
@@ -151,8 +156,7 @@ export default function HologramPage() {
                     </div>
                     <div className={styles.row}>
                         <div className={styles.rowImageWrap}>
-                            {/* eslint-disable-next-line @next/next/no-img-element */}
-                            <img src="/images/hologram/details.png" alt="홀로그램 상세 설계" className={styles.rowImg} />
+                            <Image src={detailsImg} alt="홀로그램 상세 설계" className={styles.rowImg} />
                         </div>
                         <div className={styles.rowContent}>
                             <ul className={styles.featureList}>
@@ -225,8 +229,7 @@ export default function HologramPage() {
                         <p className={styles.sectionDesc}>식당, 쇼핑몰, 전시장부터 교육 현장까지 다양한 환경에서 입체적인 시각 경험을 제공합니다.</p>
                     </div>
                     <div className={styles.scenariosImageWrap}>
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img src="/images/hologram/scenarios.png" alt="홀로그램 활용 사례" className={styles.rowImg} />
+                        <Image src={scenariosImg} alt="홀로그램 활용 사례" className={styles.rowImg} />
                     </div>
                 </div>
             </section>
