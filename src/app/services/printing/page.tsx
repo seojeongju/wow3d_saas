@@ -23,7 +23,7 @@ export default function PrintingServicePage() {
                                 복잡한 상담 과정 없이 웹에서 바로 확인하고 주문하세요.
                             </p>
                             <div className={styles.heroActions}>
-                                <Link href="#quote-section" className={styles.btnPrimary}>
+                                <Link href="https://wow3d-all-print.jayseo36.workers.dev/" className={styles.btnPrimary}>
                                     지금 바로 견적 내기 <ArrowRight size={18} />
                                 </Link>
                                 <Link href="/contact" className={styles.btnSecondary}>
