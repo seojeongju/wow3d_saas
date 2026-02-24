@@ -167,26 +167,32 @@
 .galleryCardImageWrap {
     position: relative;
     aspect-ratio: 1;
-    background: #e2e8f0;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
 }
 
 .galleryCardImage {
     width: 100%;
     height: 100%;
-    object-fit: cover;
-    position: absolute;
-    inset: 0;
+    object-fit: contain;
+    position: relative;
+    z-index: 2;
 }
 
 .galleryCardPlaceholder {
     position: absolute;
     inset: 0;
-    display: flex;
+    display: none;
+    /* 이미지가 있으면 숨김 */
     flex-direction: column;
     align-items: center;
     justify-content: center;
     gap: 0.25rem;
     color: rgba(255, 255, 255, .95);
+    z-index: 1;
 }
 
 .galleryCardPlaceholderText {
