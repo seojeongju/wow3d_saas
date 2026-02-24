@@ -53,6 +53,7 @@ export default function Navbar() {
       label: '솔루션',
       children: [
         { href: '/services/retail/', label: '스마트 리테일 (Smart Manager)', description: '실시간 매장 관리 및 데이터 분석 솔루션' },
+        { href: '/services/academy/', label: '직업교육 특화 (On-Track)', description: 'NCS 기반 직업훈련기관 전용 행정망' },
         { href: '/services/cbt/', label: '자격검정 솔루션 (CBT)', description: '컴퓨터 기반 시험 및 교육 평가 시스템' },
         { href: '/services/printing/', label: 'AI 실시간 견적 시스템', description: '3D 프린팅 자동 견적 및 발주 관리' },
       ]
@@ -61,7 +62,6 @@ export default function Navbar() {
       href: '/services/academy/',
       label: '교육 센터',
       children: [
-        { href: '/services/academy/', label: '직업교육 특화 (On-Track)', description: 'NCS 기반 직업훈련기관 전용 행정망' },
         { href: '/contact/', label: '기술 세미나/교육 문의', description: '전문적인 기술 전수 및 사용자 교육 상담' },
       ]
     },
