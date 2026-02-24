@@ -3,6 +3,7 @@ export const dynamic = "force-dynamic";
 
 import Link from 'next/link';
 import { useState } from 'react';
+import Image from 'next/image';
 import { Check, ArrowRight, HelpCircle, Shield, Clock, Users, TrendingUp, Award, Box, BarChart3, Cloud, Timer, BookOpen, LineChart, ShieldCheck } from 'lucide-react';
 import PricingTable from '@/components/PricingTable';
 import styles from './pricing.module.css';
@@ -15,7 +16,7 @@ const services = [
     subtitle: '스마트 재고/매출 관리 팩',
     description: '도소매업, 요식업 사장님을 위한 재고/발주 및 매출 심층 분석 솔루션',
     color: '#2563EB',
-    image: '/images/dashboard-hero.png',
+    image: '/images/dashboard-hero.jpg',
     features: [
       {
         icon: <BarChart3 size={36} />,
@@ -321,8 +322,7 @@ export default function PricingPage() {
                 </Link>
               </div>
               <div className={styles.serviceImage}>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={currentService.image} alt={currentService.name} />
+                <Image src={currentService.image} alt={currentService.name} width={800} height={500} className={styles.responsiveImage} />
               </div>
             </div>
 
