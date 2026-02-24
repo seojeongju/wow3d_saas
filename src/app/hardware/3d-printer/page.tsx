@@ -6,7 +6,7 @@ import { ChevronRight, ArrowRight, Cpu, Thermometer, Zap, Wifi } from "lucide-re
 import styles from "./printer.module.css";
 
 /* ═══════════════════════════════════════════════════════════════════
-   DATA — Magforms P-Pro Series 스펙 (PDF 2026-02-19 기준)
+   DATA — P-Pro Series 스펙 (PDF 2026-02-19 기준)
 ══════════════════════════════════════════════════════════════════ */
 
 const MODELS = [
