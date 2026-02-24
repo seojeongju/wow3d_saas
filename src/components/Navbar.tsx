@@ -169,9 +169,6 @@ export default function Navbar() {
 
           {/* Desktop Actions */}
           <div className={styles.desktopActions}>
-            <Link href="/services/cbt/" className={clsx(styles.btnNavDemo, isNavOpaque ? styles.btnDemoDark : styles.btnDemoLight)}>
-              데모 체험
-            </Link>
             <Link href="/contact" className={clsx(styles.btnNavCta, isNavOpaque ? styles.btnSolid : styles.btnGlass)}>
               무료 상담 신청 <ChevronRight size={16} />
             </Link>
