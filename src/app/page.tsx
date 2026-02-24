@@ -24,7 +24,7 @@ const heroSlides = [
     id: 1,
     badge: "Retail & Food",
     title: "WOW-Smart Manager",
-    subtitle: "스마트 재고/매출 관리 팩",
+    subtitle: "스마트 AI재고/매출 관리 시스템",
     description: "도소매업, 요식업 사장님을 위한 재고/발주 및 매출 심층 분석 솔루션입니다. 복잡한 재고 수불부 작성, 이제 자동으로 해결하세요.",
     image: "/images/wow-smart-manager-hero.jpg",
     ctaLink: "/services/retail",
@@ -36,7 +36,7 @@ const heroSlides = [
   {
     id: 2,
     badge: "Education Tech",
-    title: "NCS On-Track (온트랙)",
+    title: "NCS On-Track (HRD학사관리시스템)",
     subtitle: "스마트 아카데미 NCS매니지먼트",
     description: "학원, 교육센터터, 교육 서비스업을 위한 올인원 에듀테크 솔루션. NCS 학사 관리부터 비대면 온라인 시험(CBT)까지 한 번에 관리하세요.",
     image: "/images/lms-dashboard.png",
@@ -49,7 +49,7 @@ const heroSlides = [
   {
     id: 3,
     badge: "Exam & Certification",
-    title: "WOW-CBT (와우CBT)",
+    title: "WOW-CBT (문제은행 시스템)",
     subtitle: "실전 모의고사 & 문제은행 시스템",
     description: "실전처럼 연습하고 한 번에 합격할 수 있도록, 실제 시험 환경을 그대로 구현한 CBT 모의고사 시스템입니다. 시험지 자동 생성, 즉시 채점, 오답 노트까지.",
     image: "/images/cbt-exam.png",
@@ -212,7 +212,7 @@ export default function Home() {
                 </div>
                 <h3>WOW-Smart Manager</h3>
                 <p className={styles.serviceSubtitle}>
-                  스마트 재고/매출 관리 팩
+                  스마트 재고/매출 관리시스템
                 </p>
                 <p className={styles.serviceDesc}>
                   도소매업, 요식업 사장님을 위한 재고/발주 및 매출 심층 분석 솔루션입니다.
@@ -243,7 +243,7 @@ export default function Home() {
                 <div className={clsx(styles.iconWrapper, styles.iconWrapperIndigo)}>
                   <Users size={32} />
                 </div>
-                <h3>NCS On-Track (온트랙)</h3>
+                <h3>NCS On-Track (HRD학사관리시스템)</h3>
                 <p className={styles.serviceSubtitle}>
                   스마트 아카데미 매니지먼트
                 </p>
@@ -276,7 +276,7 @@ export default function Home() {
                 <div className={clsx(styles.iconWrapper, styles.iconWrapperPurple)}>
                   <Timer size={32} />
                 </div>
-                <h3>WOW-CBT (와우CBT)</h3>
+                <h3>WOW-CBT (CBT-문제은행시스템)</h3>
                 <p className={styles.serviceSubtitle}>
                   실전 모의고사 & 문제은행 시스템
                 </p>
