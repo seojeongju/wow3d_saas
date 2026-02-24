@@ -1,23 +1,22 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight, ChevronRight } from "lucide-react";
-import styles from "../hardware.module.css";
+import { ArrowRight, ChevronRight, CheckCircle2, Wifi, Zap, Smartphone, Layers, Layout, Maximize } from "lucide-react";
+import styles from "./hologram.module.css";
 
-/* =====================================================
-   실제 wow3dhd.co.kr 제품 데이터 기반
-   ===================================================== */
+/* ═══════════════════════════════════════════════════════
+   데이터 정의 (기존 데이터 유지 및 확장)
+   ═══════════════════════════════════════════════════════ */
 
 const features = [
-    { icon: "🌀", name: "360° 입체 홀로그램", val: "초소형 RGB LED와 눈의 착시 현상을 이용해\n허공에 제품・로고・영상을 3D로 구현" },
-    { icon: "📡", name: "Wi-Fi 원격 제어", val: "전용 앱(iOS/Android)과 웹으로\n콘텐츠를 실시간 업로드 및 제어" },
-    { icon: "🔗", name: "멀티 동기화", val: "최대 16대 네트워크 연결 및 동기화\n대형 전시 패널·미디어월 구성 가능" },
-    { icon: "💡", name: "고휘도 RGB LED", val: "밝은 실내에서도 선명한 영상 구현\n최대 1600 cd/m² (모델별 상이)" },
-    { icon: "🎬", name: "다양한 포맷 지원", val: "MP4 · AVI · RMVB · MPEG · GIF 지원\n자체 제작 콘텐츠 업로드 가능" },
-    { icon: "🛡️", name: "높은 내구성", val: "PC 알루미늄 바디 구조\n수명 30,000시간 · 7×24 연속 가동" },
+    { icon: <Maximize size={24} />, name: "360° 입체 홀로그램", val: "초소형 RGB LED와 눈의 착시 현상을 이용해 허공에 제품・로고・영상을 3D로 구현합니다." },
+    { icon: <Wifi size={24} />, name: "Wi-Fi 원격 제어", val: "전용 앱(iOS/Android)과 웹으로 콘텐츠를 실시간 업로드하고 제어할 수 있습니다." },
+    { icon: <Layers size={24} />, name: "멀티 동기화", val: "최대 16대 네트워크 연결 및 동기화를 통해 대형 전시 패널과 미디어월을 구성합니다." },
+    { icon: <Zap size={24} />, name: "고휘도 RGB LED", val: "최대 2500 cd/m²의 밝기로 밝은 실내 및 전시장에서도 선명한 영상을 보장합니다." },
+    { icon: <Layout size={24} />, name: "다양한 포맷 지원", val: "MP4, AVI, GIF 등 주요 영상·이미지 포맷을 지원하며 자체 콘텐츠 업로드가 가능합니다." },
+    { icon: <Smartphone size={24} />, name: "스마트 제어", val: "밝기 조절, 각도 조정, 블루투스 오디오 연동 등 지능형 원격 제어 기능을 제공합니다." },
 ];
 
-/* 모델 라인업 비교표 */
 const models = [
     { model: "LDP-42F", diameter: "42cm", led: "448ea", power: "45W", weight: "0.6kg", brightness: "1200 cd/m²" },
     { model: "LDP-50F", diameter: "50cm", led: "512ea", power: "70W", weight: "0.8kg", brightness: "1600 cd/m²" },
@@ -27,7 +26,6 @@ const models = [
     { model: "LDP-100F", diameter: "100cm", led: "1024ea", power: "200W", weight: "2.8kg", brightness: "2500 cd/m²" },
 ];
 
-/* 기본 사양 (LDP-50F 기준) */
 const specs = [
     { key: "디스플레이 방식", val: "LED 팬 블레이드 홀로그래픽 (4-Blade ROE)" },
     { key: "CPU", val: "Quad-Core Cortex™-A7" },
@@ -42,64 +40,155 @@ const specs = [
     { key: "작동 온도", val: "-30°C ~ 60°C" },
     { key: "재질", val: "PC 알루미늄" },
     { key: "수명", val: "30,000시간" },
-    { key: "적용 환경", val: "실내" },
-];
-
-const useCases = [
-    { icon: "🏪", name: "리테일 / 매장", val: "제품 홍보·전시, 브랜드 체험존 구성" },
-    { icon: "🎓", name: "교육 기관", val: "3D 구조물 시각화, 과학·미술 교육 콘텐츠" },
-    { icon: "🏥", name: "의료 / 치과", val: "해부학 구조물, 치아 모형 입체 설명" },
-    { icon: "🎪", name: "전시 / 이벤트", val: "박람회 부스, 팝업 스토어 어트랙션" },
-    { icon: "📺", name: "광고 / 사이니지", val: "혁신적 OOH 광고, 브랜드 아이덴티티 강화" },
-    { icon: "🎮", name: "엔터테인먼트", val: "게임 센터, 테마파크, 미디어아트 설치" },
 ];
 
 export default function HologramPage() {
     return (
-        <div className={styles.detailPage}>
+        <div className={styles.page}>
             {/* Breadcrumb */}
             <nav className={styles.breadcrumb}>
                 <Link href="/">홈</Link>
-                <ChevronRight size={14} />
+                <ChevronRight size={13} />
                 <Link href="/hardware/">하드웨어 소개</Link>
-                <ChevronRight size={14} />
-                <span>3D Hologram Display</span>
+                <ChevronRight size={13} />
+                <span>3D 홀로그램 디스플레이</span>
             </nav>
 
-            {/* Hero */}
-            <section className={styles.detailHero}>
-                <div className={styles.detailHeroContent}>
-                    <span className={styles.detailBadge}>WOW 3D Hologram · LDP Series</span>
-                    <h1 className={styles.detailTitle}>
-                        공간의 경계를 넘는<br />3D 홀로그램 디스플레이
+            {/* Hero Section */}
+            <section className={styles.hero}>
+                <div className={styles.heroInner}>
+                    <span className={styles.heroBadge}>IMPRESSIVE 3D VISUAL SOLUTION</span>
+                    <h1 className={styles.heroTitle}>
+                        시선을 사로잡는<br />
+                        <span className={styles.heroGradText}>3D 홀로그램 디스플레이</span>
                     </h1>
-                    <p className={styles.detailDesc}>
-                        최첨단 LED 기술과 정밀 제어 시스템으로 제품, 로고, 영상을 허공에 투사하는
-                        "경계 없는 디스플레이". (주)와우쓰리디의 LDP 시리즈로 광고·교육·전시 환경을 혁신하세요.
+                    <p className={styles.heroDesc}>
+                        공중에 떠 있는 고화질 3D 영상을 통해 브랜드 가치를 극대화하세요.<br />
+                        진보된 LED 팬 기술로 구현하는 압도적인 몰입감과 선명함을 제공합니다.
                     </p>
+                    <div className={styles.heroImageWrap}>
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src="/images/hologram/hero.png" alt="3D 홀로그램 메인" className={styles.heroImg} />
+                    </div>
                 </div>
             </section>
 
-            <div className={styles.detailBody}>
-                {/* Features */}
-                <section>
-                    <h2 className={styles.sectionTitle}>주요 특징</h2>
-                    <div className={styles.featureGrid}>
-                        {features.map(f => (
-                            <div key={f.name} className={styles.featureCard}>
-                                <div className={styles.featureIcon}>{f.icon}</div>
-                                <div className={styles.featureName}>{f.name}</div>
-                                <div className={styles.featureVal} style={{ whiteSpace: 'pre-line' }}>{f.val}</div>
-                            </div>
-                        ))}
+            {/* Features Info Section (Using input_file_1.png content) */}
+            <section className={styles.section}>
+                <div className={styles.container}>
+                    <div className={styles.row}>
+                        <div className={styles.rowContent}>
+                            <span className={styles.sectionBadge}>Advanced Technology</span>
+                            <h2 className={styles.rowTitle}>스마트한 제어와<br />무한한 시각적 효과</h2>
+                            <ul className={styles.featureList}>
+                                <li className={styles.featureItem}>
+                                    <div className={styles.featureIconWrap}><Smartphone /></div>
+                                    <div className={styles.featureTextWrap}>
+                                        <h4>스마트 앱 제어</h4>
+                                        <p>전용 모바일 앱을 통해 밝기, 각도, 콘텐츠를 손쉽게 관리할 수 있습니다.</p>
+                                    </div>
+                                </li>
+                                <li className={styles.featureItem}>
+                                    <div className={styles.featureIconWrap}><Layers /></div>
+                                    <div className={styles.featureTextWrap}>
+                                        <h4>다중 기기 동기화 </h4>
+                                        <p>여러 대의 기기를 결합하여 대형 스크린이나 복합 미디어월을 자유롭게 구성합니다.</p>
+                                    </div>
+                                </li>
+                                <li className={styles.featureItem}>
+                                    <div className={styles.featureIconWrap}><Wifi /></div>
+                                    <div className={styles.featureTextWrap}>
+                                        <h4>실시간 무선 전송</h4>
+                                        <p>Wi-Fi를 통해 PC나 스마트폰의 콘텐츠를 즉시 디스플레이에 투사합니다.</p>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div className={styles.rowImageWrap}>
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img src="/images/hologram/features.png" alt="홀로그램 특장점" className={styles.rowImg} />
+                        </div>
                     </div>
-                </section>
+                </div>
+            </section>
 
-                {/* Model Lineup */}
-                <section>
-                    <h2 className={styles.sectionTitle}>LDP 시리즈 모델 라인업</h2>
+            {/* Remote Control Info Section (Using input_file_2.png content) */}
+            <section className={`${styles.section} ${styles.sectionAlt}`}>
+                <div className={styles.container}>
+                    <div className={`${styles.row} ${styles.rowReverse}`}>
+                        <div className={styles.rowContent}>
+                            <span className={styles.sectionBadge}>Easy Control</span>
+                            <h2 className={styles.rowTitle}>누구나 쉽게 다루는<br />지능형 인터페이스</h2>
+                            <p className={styles.sectionDesc} style={{ textAlign: 'left', marginBottom: '1.5rem' }}>
+                                복잡한 설정 없이 직관적인 UI를 통해 3D 결과물을 즉각적으로 확인하세요.
+                                가동 상태부터 홀로그램 모드 전환까지 손가락 하나로 제어 가능합니다.
+                            </p>
+                            <div className={styles.featureGrid} style={{ gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                                <div className={styles.featureCard}>
+                                    <CheckCircle2 size={18} color="#2563eb" />
+                                    <div className={styles.featureName}>실시간 모니터링</div>
+                                </div>
+                                <div className={styles.featureCard}>
+                                    <CheckCircle2 size={18} color="#2563eb" />
+                                    <div className={styles.featureName}>블루투스 오디오</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className={styles.rowImageWrap}>
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img src="/images/hologram/modes.png" alt="홀로그램 제어 모드" className={styles.rowImg} />
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* Product Details (Using input_file_3.png content) */}
+            <section className={styles.section}>
+                <div className={styles.container}>
+                    <div className={styles.sectionHeading}>
+                        <span className={styles.sectionBadge}>Build Construction</span>
+                        <h2 className={styles.sectionTitle}>압도적 성능을 위한 설계</h2>
+                    </div>
+                    <div className={styles.row}>
+                        <div className={styles.rowImageWrap}>
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img src="/images/hologram/details.png" alt="홀로그램 상세 설계" className={styles.rowImg} />
+                        </div>
+                        <div className={styles.rowContent}>
+                            <ul className={styles.featureList}>
+                                <li className={styles.featureItem}>
+                                    <div className={styles.featureTextWrap}>
+                                        <h4>고성능 LED 램프 비드</h4>
+                                        <p>높은 내구성과 에너지 효율을 갖춘 선명한 RGB LED를 사용하여 장시간 사용에도 변함없는 화질을 유지합니다.</p>
+                                    </div>
+                                </li>
+                                <li className={styles.featureItem}>
+                                    <div className={styles.featureTextWrap}>
+                                        <h4>특수 무광 엠보싱 하우징</h4>
+                                        <p>내마모성이 뛰어난 무광 소재의 케이스로 세련된 외관과 튼튼한 내구성, 안정적인 그립감을 제공합니다.</p>
+                                    </div>
+                                </li>
+                                <li className={styles.featureItem}>
+                                    <div className={styles.featureTextWrap}>
+                                        <h4>U-SHAPED 안정형 베이스</h4>
+                                        <p>더욱 정밀해진 U자형 베이스 설계로 설치 안정성을 높여 진동 없이 선명한 입체 영상을 투사합니다.</p>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* Model Lineup Table */}
+            <section className={`${styles.section} ${styles.sectionAlt}`}>
+                <div className={styles.container}>
+                    <div className={styles.sectionHeading}>
+                        <span className={styles.sectionBadge}>LDP Series Line-up</span>
+                        <h2 className={styles.sectionTitle}>용도에 맞는 최적의 모델 선택</h2>
+                    </div>
                     <div className={styles.tableWrap}>
-                        <table className={styles.specTable}>
+                        <table className={styles.table}>
                             <thead>
                                 <tr>
                                     <th>모델명</th>
@@ -124,55 +213,36 @@ export default function HologramPage() {
                             </tbody>
                         </table>
                     </div>
-                </section>
+                </div>
+            </section>
 
-                {/* Detailed Spec */}
-                <section>
-                    <h2 className={styles.sectionTitle}>상세 사양 (LDP-50F 기준)</h2>
-                    <table className={styles.specTable}>
-                        <thead>
-                            <tr>
-                                <th>항목</th>
-                                <th>사양</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {specs.map(s => (
-                                <tr key={s.key}>
-                                    <td className={styles.specKey}>{s.key}</td>
-                                    <td>{s.val}</td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </section>
-
-                {/* Use Cases */}
-                <section>
-                    <h2 className={styles.sectionTitle}>활용 분야</h2>
-                    <div className={styles.featureGrid}>
-                        {useCases.map(item => (
-                            <div key={item.name} className={styles.featureCard}>
-                                <div className={styles.featureIcon}>{item.icon}</div>
-                                <div className={styles.featureName}>{item.name}</div>
-                                <div className={styles.featureVal}>{item.val}</div>
-                            </div>
-                        ))}
+            {/* Use Cases (Using input_file_4.png content) */}
+            <section className={styles.section}>
+                <div className={styles.container}>
+                    <div className={styles.sectionHeading}>
+                        <span className={styles.sectionBadge}>Applications</span>
+                        <h2 className={styles.sectionTitle}>어디서나 돋보이는 존재감</h2>
+                        <p className={styles.sectionDesc}>식당, 쇼핑몰, 전시장부터 교육 현장까지 다양한 환경에서 입체적인 시각 경험을 제공합니다.</p>
                     </div>
-                </section>
+                    <div className={styles.scenariosImageWrap}>
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src="/images/hologram/scenarios.png" alt="홀로그램 활용 사례" className={styles.rowImg} />
+                    </div>
+                </div>
+            </section>
 
-                {/* CTA */}
-                <section className={styles.ctaSection}>
-                    <h2 className={styles.ctaTitle}>도입 문의 & 데모 신청</h2>
+            {/* CTA Section */}
+            <section className={styles.container} style={{ marginBottom: '6rem' }}>
+                <div className={styles.cta}>
+                    <h2 className={styles.ctaTitle}>새로운 시각적 혁신을 시작하세요</h2>
                     <p className={styles.ctaDesc}>
-                        3D 홀로그램 디스플레이 도입을 검토 중이신가요?<br />
-                        전문 담당자가 공간 맞춤 솔루션 및 콘텐츠 제작까지 원스톱으로 지원합니다.
+                        전문 컨설턴트가 비즈니스 모델에 맞는 최적의 홀로그램 솔루션을 제안해 드립니다.
                     </p>
                     <Link href="/contact/" className={styles.ctaBtn}>
-                        무료 상담 신청 <ArrowRight size={16} />
+                        무료 상담 신청하기 <ArrowRight size={20} />
                     </Link>
-                </section>
-            </div>
+                </div>
+            </section>
         </div>
     );
 }
