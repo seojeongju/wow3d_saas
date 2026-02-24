@@ -77,7 +77,8 @@ export default function Navbar() {
       href: '/services/academy/',
       label: '교육 센터',
       children: [
-        { href: '/contact/', label: '기술 세미나/교육 문의', description: '전문적인 기술 전수 및 사용자 교육 상담' },
+        { href: '/services/academy/center/', label: '홍대 교육 센터 안내', description: '와우쓰리디 홍대센터 교육 과정 및 시설 안내' },
+        { href: 'https://3dcookiehd.pages.dev/', label: '교육센터 공식 사이트', description: '전문적인 기술 전수 및 실시간 수강 신청' },
       ]
     },
     {
