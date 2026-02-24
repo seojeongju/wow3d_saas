@@ -292,58 +292,100 @@
 @keyframes dropdownFadeIn {
   from {
     opacity: 0;
-    transform: translateY(-8px) scale(0.96);
+    transform: translateX(-50%) translateY(-12px) scale(0.98);
   }
 
   to {
     opacity: 1;
-    transform: translateY(0) scale(1);
+    transform: translateX(-50%) translateY(0) scale(1);
   }
 }
 
 .dropdownItem {
-  display: block;
-  padding: 0.75rem 1rem;
+  display: flex;
+  align-items: flex-start;
+  padding: 0.875rem 1rem;
   color: #475569;
-  font-size: 0.9375rem;
-  font-weight: 500;
-  border-radius: 8px;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  white-space: nowrap;
+  border-radius: 10px;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   text-decoration: none;
   position: relative;
   overflow: hidden;
+  margin-bottom: 0.25rem;
 }
 
-.dropdownItem::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 3px;
-  background: linear-gradient(180deg, #2563eb, #3b82f6);
-  transform: scaleY(0);
-  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+.dropdownItem:last-child {
+  margin-bottom: 0;
+}
+
+.dropdownItemContent {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+}
+
+.dropdownItemLabel {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: #0f172a;
+  transition: color 0.2s ease;
+}
+
+.dropdownItemDesc {
+  font-size: 0.75rem;
+  color: #64748b;
+  line-height: 1.4;
+  white-space: normal;
+  max-width: 240px;
 }
 
 .dropdownItem:hover {
-  background: linear-gradient(90deg, rgba(37, 99, 235, 0.06), rgba(59, 130, 246, 0.04));
-  color: #2563eb;
+  background: linear-gradient(90deg, #f8faff 0%, #f1f5f9 100%);
   padding-left: 1.25rem;
-  transform: translateX(2px);
+  box-shadow: inset 2px 0 0 #2563eb;
 }
 
-.dropdownItem:hover::before {
-  transform: scaleY(1);
+.dropdownItem:hover .dropdownItemLabel {
+  color: #2563eb;
 }
 
 /* ============================================
    CTA Button
    ============================================ */
 
+/* 데모 체험 버튼 */
 .desktopActions {
-  display: none;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.btnNavDemo {
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.25s ease;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+}
+
+.btnDemoLight {
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.btnDemoLight:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: #fff;
+}
+
+.btnDemoDark {
+  color: #475569;
+}
+
+.btnDemoDark:hover {
+  color: #0f172a;
+  background: #f1f5f9;
 }
 
 .btnNavCta {
@@ -573,34 +615,41 @@
 .mobileSublink {
   display: block;
   padding: 0.875rem 1.5rem;
-  color: #64748b;
-  font-size: 0.9375rem;
-  font-weight: 500;
+  color: #1e293b;
   text-decoration: none;
   transition: all 0.2s ease;
   position: relative;
-  padding-left: 2.5rem;
+  border-bottom: 1px solid rgba(226, 232, 240, 0.4);
 }
 
-.mobileSublink::before {
-  content: '→';
-  position: absolute;
-  left: 1.5rem;
-  opacity: 0;
-  transform: translateX(-4px);
-  transition: all 0.2s ease;
-  color: #2563eb;
+.mobileSublink:last-child {
+  border-bottom: none;
+}
+
+.mobileSublinkContent {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+}
+
+.mobileSublinkLabel {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.mobileSublinkDesc {
+  font-size: 0.75rem;
+  color: #64748b;
+  line-height: 1.4;
 }
 
 .mobileSublink:hover {
-  color: #2563eb;
   background: rgba(37, 99, 235, 0.04);
-  padding-left: 2.75rem;
 }
 
-.mobileSublink:hover::before {
-  opacity: 1;
-  transform: translateX(0);
+.mobileSublink:hover .mobileSublinkLabel {
+  color: #2563eb;
 }
 
 .mobilectaContainer {

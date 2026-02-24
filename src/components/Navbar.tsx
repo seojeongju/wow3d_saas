@@ -9,7 +9,7 @@ import styles from './Navbar.module.css';
 type NavLink = {
   href: string;
   label: string;
-  children?: { href: string; label: string }[];
+  children?: { href: string; label: string; description?: string }[];
 };
 
 export default function Navbar() {
@@ -50,26 +50,46 @@ export default function Navbar() {
     { href: '/', label: '홈' },
     {
       href: '/services/',
-      label: '소프트웨어 소개',
+      label: '솔루션',
       children: [
-        { href: '/services/retail/', label: 'WOW-Smart Manager' },
-        { href: '/services/academy/', label: 'NCS On-Track (온트랙)' },
-        { href: '/services/cbt/', label: 'WOW-CBT (와우CBT)' },
-        { href: '/services/printing/', label: '3D프린팅 AI 실시간 견적' },
+        { href: '/services/retail/', label: '스마트 리테일 (Smart Manager)', description: '실시간 매장 관리 및 데이터 분석 솔루션' },
+        { href: '/services/cbt/', label: '자격검정 솔루션 (CBT)', description: '컴퓨터 기반 시험 및 교육 평가 시스템' },
+        { href: '/services/printing/', label: 'AI 실시간 견적 시스템', description: '3D 프린팅 자동 견적 및 발주 관리' },
+      ]
+    },
+    {
+      href: '/services/academy/',
+      label: '교육 센터',
+      children: [
+        { href: '/services/academy/', label: '직업교육 특화 (On-Track)', description: 'NCS 기반 직업훈련기관 전용 행정망' },
+        { href: '/contact/', label: '기술 세미나/교육 문의', description: '전문적인 기술 전수 및 사용자 교육 상담' },
       ]
     },
     {
       href: '/hardware/',
-      label: '하드웨어 소개',
+      label: '제품 (Hardware)',
       children: [
-        { href: '/hardware/3d-printer/', label: 'MSLA-DLP 3D Print' },
-        { href: '/hardware/hologram/', label: '3D Hologram Display' },
+        { href: '/hardware/3d-printer/', label: '산업용 3D 프린터', description: '9K/16K 초정밀 MSLA 3D 프린팅 프로 시리즈' },
+        { href: '/hardware/hologram/', label: '3D 홀로그램 디스플레이', description: '시선을 사로잡는 혁신적인 3D 디스플레이 솔루션' },
       ]
     },
-    { href: '/pricing/', label: '도입 안내' },
-    { href: '/archive/', label: '자료실(게시판)' },
+    {
+      href: '/pricing/',
+      label: '비즈니스 가이드',
+      children: [
+        { href: '/pricing/', label: '정부지원사업 안내', description: '정부지원 국비 지원 프로그램 및 혜택 안내' },
+        { href: '/contact/', label: '도입 성공 사례', description: '실제 도입 기업의 성공 스토리와 결과' },
+      ]
+    },
+    {
+      href: '/archive/',
+      label: '고객지원',
+      children: [
+        { href: '/archive/', label: '자료실 (매뉴얼)', description: '제품 매뉴얼, 소프트웨어 가이드 및 드라이버' },
+        { href: '/contact/', label: '1:1 문의/기술지원', description: '전문 엔지니어의 빠른 기술 지원 및 상담' },
+      ]
+    },
     { href: '/about/', label: '회사 소개' },
-    { href: '/contact/', label: '문의하기' },
   ];
 
   const handleLinkClick = () => {
@@ -134,7 +154,10 @@ export default function Navbar() {
                           href={child.href}
                           className={styles.dropdownItem}
                         >
-                          {child.label}
+                          <div className={styles.dropdownItemContent}>
+                            <span className={styles.dropdownItemLabel}>{child.label}</span>
+                            {child.description && <span className={styles.dropdownItemDesc}>{child.description}</span>}
+                          </div>
                         </Link>
                       ))}
                     </div>
@@ -146,6 +169,9 @@ export default function Navbar() {
 
           {/* Desktop Actions */}
           <div className={styles.desktopActions}>
+            <Link href="/services/cbt/" className={clsx(styles.btnNavDemo, isNavOpaque ? styles.btnDemoDark : styles.btnDemoLight)}>
+              데모 체험
+            </Link>
             <Link href="/contact" className={clsx(styles.btnNavCta, isNavOpaque ? styles.btnSolid : styles.btnGlass)}>
               무료 상담 신청 <ChevronRight size={16} />
             </Link>
@@ -208,7 +234,10 @@ export default function Navbar() {
                       className={styles.mobileSublink}
                       onClick={handleLinkClick}
                     >
-                      - {child.label}
+                      <div className={styles.mobileSublinkContent}>
+                        <span className={styles.mobileSublinkLabel}>{child.label}</span>
+                        {child.description && <span className={styles.mobileSublinkDesc}>{child.description}</span>}
+                      </div>
                     </Link>
                   ))}
                 </div>
