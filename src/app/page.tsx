@@ -10,9 +10,9 @@ const heroSlides = [
   {
     id: 0,
     badge: "New Service",
-    title: "3D프린팅 AI실시간 자동견적시스템",
+    title: "3D프린팅 AI\n실시간 자동견적시스템",
     subtitle: "당신의 상상력을 현실로",
-    description: "STL, OBJ, 3MF,STEP 파일을 업로드하면 AI가 부피·표면적을 분석해 실시간 견적을 제공합니다. 클릭 한 번으로 시제품부터 양산까지.",
+    description: "STL, OBJ, 3MF, STEP 파일을 업로드하면\nAI가 부피·표면적을 분석해 실시간 견적을 제공합니다.\n클릭 한 번으로 시제품부터 양산까지 한 번에 해결하세요.",
     image: "/images/ai-quote-system.png",
     ctaLink: "/services/printing",
     gradient: "linear-gradient(135deg, #020617 0%, #1e293b 100%)",
@@ -23,9 +23,9 @@ const heroSlides = [
   {
     id: 1,
     badge: "Retail & Food",
-    title: "WOW-Smart Manager",
-    subtitle: "스마트 AI재고/매출 관리 시스템",
-    description: "도소매업, 요식업 사장님을 위한 재고/발주 및 매출 심층 분석 솔루션입니다. 복잡한 재고 수불부 작성, 이제 자동으로 해결하세요.",
+    title: "WOW-Smart Manager\nAI 재고/매출 관리 시스템",
+    subtitle: "스마트한 경영의 시작",
+    description: "도소매업, 요식업 사장님을 위한 재고/발주 솔루션.\n복잡한 수불부 작성을 자동화하고\nAI 분석을 통해 최적의 경영 전략을 제안합니다.",
     image: "/images/wow-smart-manager-hero.jpg",
     ctaLink: "/services/retail",
     gradient: "linear-gradient(135deg, #1E293B 0%, #0F172A 100%)",
@@ -36,9 +36,9 @@ const heroSlides = [
   {
     id: 2,
     badge: "Education Tech",
-    title: "NCS On-Track (HRD학사관리시스템)",
-    subtitle: "스마트 아카데미 NCS매니지먼트",
-    description: "학원, 교육센터터, 교육 서비스업을 위한 올인원 에듀테크 솔루션. NCS 학사 관리부터 비대면 온라인 시험(CBT)까지 한 번에 관리하세요.",
+    title: "NCS On-Track\nHRD 학사관리 시스템",
+    subtitle: "직업훈련기관을 위한 올인원 솔루션",
+    description: "학원, 교육센터를 위한 NCS 기반 행정 시스템입니다.\n출결 관리부터 수강생 성취도 리포트까지,\n에듀테크 기술로 교육 운영의 효율을 극대화하세요.",
     image: "/images/lms-dashboard.png",
     ctaLink: "/services/academy",
     gradient: "linear-gradient(135deg, #312E81 0%, #4338CA 100%)",
@@ -49,9 +49,9 @@ const heroSlides = [
   {
     id: 3,
     badge: "Exam & Certification",
-    title: "WOW-CBT (문제은행 시스템)",
-    subtitle: "실전 모의고사 & 문제은행 시스템",
-    description: "실전처럼 연습하고 한 번에 합격할 수 있도록, 실제 시험 환경을 그대로 구현한 CBT 모의고사 시스템입니다. 시험지 자동 생성, 즉시 채점, 오답 노트까지.",
+    title: "WOW-CBT\n맞춤형 문제은행 시스템",
+    subtitle: "실전 모의고사 & 자동 채점",
+    description: "실제 시험 환경을 그대로 구현한 CBT 시스템.\n시험지 자동 생성, 즉시 채점, 오답 분석을 통해\n수강생의 합격률을 획기적으로 높여드립니다.",
     image: "/images/cbt-exam.png",
     ctaLink: "/services/cbt",
     gradient: "linear-gradient(135deg, #6B21A8 0%, #7C3AED 100%)",
@@ -100,64 +100,70 @@ export default function Home() {
         className={styles.hero}
         style={{ background: currentSlideData.gradient }}
       >
-        <div className={styles.heroSlider}>
-          {/* Slide Content */}
-          <div className={clsx("container", styles.heroContent)}>
-            <div className={styles.heroTextArea}>
-              <div
-                className={styles.badge}
-                style={{
-                  background: currentSlideData.badgeColor,
-                  color: currentSlideData.badgeTextColor,
-                  borderColor: currentSlideData.badgeBorder
-                }}
-              >
-                {currentSlideData.badge}
-              </div>
-              <h1 className={styles.heroTitle}>
-                {currentSlideData.title}
-              </h1>
-              <p className={styles.heroSubtitle}>
-                {currentSlideData.subtitle}
-              </p>
-              <p className={styles.heroDesc}>
-                {currentSlideData.description}
-              </p>
-              <div className={styles.heroActions}>
-                <Link href={currentSlideData.ctaLink} className={clsx("btn", "btn-cta", styles.btnLg)}>
-                  자세히 보기
-                </Link>
-                <Link href="/services" className={clsx("btn", styles.btnOutlineLight, styles.btnLg)}>
-                  모든 서비스 보기
-                </Link>
-              </div>
-            </div>
+        <div className={styles.heroSliderContainer}>
+          <div
+            className={styles.heroTrack}
+            style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+          >
+            {heroSlides.map((slide) => (
+              <div key={slide.id} className={styles.heroSlide}>
+                <div className={clsx("container", styles.heroContent)}>
+                  <div className={styles.heroTextArea}>
+                    <div
+                      className={styles.badge}
+                      style={{
+                        background: slide.badgeColor,
+                        color: slide.badgeTextColor,
+                        borderColor: slide.badgeBorder
+                      }}
+                    >
+                      {slide.badge}
+                    </div>
+                    <h1 className={styles.heroTitle}>
+                      {slide.title}
+                    </h1>
+                    <p className={styles.heroSubtitle}>
+                      {slide.subtitle}
+                    </p>
+                    <p className={styles.heroDesc}>
+                      {slide.description}
+                    </p>
+                    <div className={styles.heroActions}>
+                      <Link href={slide.ctaLink} className={clsx("btn", "btn-cta", styles.btnLg)}>
+                        자세히 보기
+                      </Link>
+                      <Link href="/services" className={clsx("btn", styles.btnOutlineLight, styles.btnLg)}>
+                        모든 서비스 보기
+                      </Link>
+                    </div>
+                  </div>
 
-            {/* Hero Image */}
-            <div className={styles.heroImageWrapper}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={currentSlideData.image}
-                alt={currentSlideData.title}
-                className={styles.heroImage}
-              />
-            </div>
+                  {/* Hero Image */}
+                  <div className={styles.heroImageWrapper}>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={slide.image}
+                      alt={slide.title}
+                      className={styles.heroImage}
+                    />
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
 
           {/* Navigation Arrows */}
           <button
-            className={styles.sliderNavButton}
+            className={clsx(styles.sliderNavButton, styles.prev)}
             onClick={prevSlide}
             aria-label="Previous slide"
-            style={{ left: '2rem' }}
           >
             <ChevronLeft size={24} />
           </button>
           <button
-            className={styles.sliderNavButton}
+            className={clsx(styles.sliderNavButton, styles.next)}
             onClick={nextSlide}
             aria-label="Next slide"
-            style={{ right: '2rem' }}
           >
             <ChevronRight size={24} />
           </button>
