@@ -6,7 +6,7 @@
   position: relative;
   text-align: left;
   overflow: hidden;
-  min-height: 800px;
+  min-height: 580px;
   display: flex;
   align-items: center;
   transition: background 0.8s cubic-bezier(0.4, 0, 0.2, 1);
@@ -70,8 +70,8 @@
 }
 
 .heroContent {
-  padding-bottom: 10rem;
-  /* Space for curve */
+  padding-bottom: 6rem;
+  /* Reduced space for curve */
   display: grid;
   grid-template-columns: 1fr;
   gap: 3rem;
@@ -279,7 +279,7 @@
 /* Slider Indicators */
 .sliderIndicators {
   position: absolute;
-  bottom: 8rem;
+  bottom: 4rem;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
