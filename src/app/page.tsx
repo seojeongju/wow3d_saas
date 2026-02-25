@@ -10,7 +10,7 @@ const heroSlides = [
   {
     id: 0,
     badge: "New Service",
-    title: "3D프린팅 AI\n실시간 자동견적시스템",
+    title: "3D프린팅 AI\n실시간 자동견적\n시스템",
     subtitle: "당신의 상상력을 현실로",
     description: "STL, OBJ, 3MF, STEP 파일을 업로드하면\nAI가 부피·표면적을 분석해 실시간 견적을 제공합니다.\n클릭 한 번으로 시제품부터 양산까지 한 번에 해결하세요.",
     image: "/images/ai-quote-system.png",
