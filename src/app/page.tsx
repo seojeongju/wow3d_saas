@@ -36,7 +36,7 @@ const heroSlides = [
   {
     id: 2,
     badge: "Education Tech",
-    title: "NCS On-Track\nHRD 학사관리 시스템",
+    title: "NCS On-Track\nHRD 학사관리 \n시스템",
     subtitle: "직업훈련기관을 위한 올인원 솔루션",
     description: "학원, 교육센터를 위한 NCS 기반 행정 시스템입니다.\n출결 관리부터 수강생 성취도 리포트까지,\n에듀테크 기술로 교육 운영의 효율을 극대화하세요.",
     image: "/images/lms-dashboard.png",
@@ -49,7 +49,7 @@ const heroSlides = [
   {
     id: 3,
     badge: "Exam & Certification",
-    title: "WOW-CBT\n맞춤형 문제은행 시스템",
+    title: "WOW-CBT\n 맞춤형 문제은행\n 시스템",
     subtitle: "실전 모의고사 & 자동 채점",
     description: "실제 시험 환경을 그대로 구현한 CBT 시스템.\n시험지 자동 생성, 즉시 채점, 오답 분석을 통해\n수강생의 합격률을 획기적으로 높여드립니다.",
     image: "/images/cbt-exam.png",
