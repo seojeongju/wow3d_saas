@@ -67,8 +67,7 @@ export const metadata: Metadata = {
     },
   },
   verification: {
-    // 여기에 네이버 서치어드바이저, 구글 서치콘솔 인증 코드를 넣을 수 있습니다.
-    // google: 'google-site-verification-code',
+    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || 'd80QQEjoUFOsd7_31',
     other: {
       'naver-site-verification': '71fb7d98263e39574312032d11782b32c3cf86ad',
     },
@@ -81,12 +80,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   const naverVerification = '71fb7d98263e39574312032d11782b32c3cf86ad';
+  const googleVerification = process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || 'd80QQEjoUFOsd7_31';
 
   return (
     <html lang="ko">
       <head>
-        {/* 네이버 서치어드바이저 소유확인 — 메타만으로 안 될 때를 위해 head에 직접 출력 */}
         <meta name="naver-site-verification" content={naverVerification} />
+        {googleVerification && (
+          <meta name="google-site-verification" content={googleVerification} />
+        )}
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <Navbar />
