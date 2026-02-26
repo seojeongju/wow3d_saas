@@ -80,8 +80,14 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const naverVerification = '71fb7d98263e39574312032d11782b32c3cf86ad';
+
   return (
     <html lang="ko">
+      <head>
+        {/* 네이버 서치어드바이저 소유확인 — 메타만으로 안 될 때를 위해 head에 직접 출력 */}
+        <meta name="naver-site-verification" content={naverVerification} />
+      </head>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <Navbar />
         <main style={{ minHeight: 'calc(100vh - var(--header-height) - 300px)' }}>
