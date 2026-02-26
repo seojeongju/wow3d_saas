@@ -67,9 +67,10 @@ export const metadata: Metadata = {
     },
   },
   verification: {
-    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || 'd80QQEjoUFOsd7_31',
+    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || 'd80QQEjoUFOsd7_3bW9Z_YDPO62Hq0AktzeKtjINNoo',
     other: {
       'naver-site-verification': '71fb7d98263e39574312032d11782b32c3cf86ad',
+      'google-site-verification': process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || 'd80QQEjoUFOsd7_3bW9Z_YDPO62Hq0AktzeKtjINNoo',
     },
   },
 };
@@ -80,7 +81,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   const naverVerification = '71fb7d98263e39574312032d11782b32c3cf86ad';
-  const googleVerification = process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || 'd80QQEjoUFOsd7_31';
+  const googleVerification = process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || 'd80QQEjoUFOsd7_3bW9Z_YDPO62Hq0AktzeKtjINNoo';
 
   return (
     <html lang="ko">

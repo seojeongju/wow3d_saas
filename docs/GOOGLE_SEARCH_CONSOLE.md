@@ -42,7 +42,16 @@ NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION=여기에_복사한_content_값
 1. 메타 태그가 반영된 상태로 배포된 뒤, Search Console 화면에서 **확인** 클릭
 2. "소유권이 확인되었습니다" 메시지가 나오면 완료
 
-## 5. 사이트맵 제출
+## 5. "확인 메타 태그를 찾을 수 없습니다" 나올 때
+
+- **배포 확인**: Cloudflare Pages에서 최신 커밋(Google 메타 포함)이 배포됐는지 확인한 뒤, https://wow3dsw.co.kr → 페이지 소스 보기에서 `google-site-verification` 메타가 있는지 확인하세요.
+- **HTML 파일로 확인**: Search Console 소유권 확인 화면에서 **HTML 파일** 방식을 선택한 뒤,
+  1. Google이 안내하는 파일(예: `googleXXXXXXXX.html`) 다운로드
+  2. 해당 파일을 이 프로젝트의 **`public/`** 폴더에 그대로 넣기
+  3. 커밋 후 푸시·배포
+  4. 브라우저에서 `https://wow3dsw.co.kr/해당파일이름.html` 접속해 내용이 보이는지 확인 후, Search Console에서 **확인** 클릭
+
+## 6. 사이트맵 제출
 
 1. Search Console 왼쪽 메뉴 **색인 생성** → **Sitemaps**
 2. **새 사이트맵 추가**에 아래 주소 입력:
@@ -53,7 +62,7 @@ NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION=여기에_복사한_content_값
 
 이후 Google이 사이트맵을 수집하고, 며칠 안에 색인 요청·URL 검사 등이 가능해집니다.
 
-## 요약
+## 7. 요약
 
 | 단계 | 할 일 |
 |------|--------|
