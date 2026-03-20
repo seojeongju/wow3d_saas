@@ -185,7 +185,7 @@ export default function AdminDashboard() {
                             type="password" 
                             placeholder="비밀번호" 
                             value={password}
-                            onChange={e => setPassword(e.target.value)}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
                             required 
                         />
                         <button type="submit">로그인</button>
@@ -199,7 +199,7 @@ export default function AdminDashboard() {
         <div className={styles.adminPage}>
             {/* Notification Stack */}
             <div className={styles.notificationStack}>
-                {notifications.map(n => (
+                {notifications.map((n: Notification) => (
                     <div key={n.id} className={`${styles.notification} ${styles[`notif_${n.type}`]}`}>
                         <span>{n.message}</span>
                         <button onClick={() => setNotifications((p: Notification[]) => p.filter((x: Notification) => x.id !== n.id))}><X size={14} /></button>
@@ -239,7 +239,7 @@ export default function AdminDashboard() {
                             <input 
                                 ref={fileInputRef}
                                 type="file" 
-                                onChange={e => handleUpload(e.target.files?.[0] || null)}
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleUpload(e.target.files?.[0] || null)}
                                 disabled={uploading}
                             />
                             {uploading ? <Loader2 className={styles.spin} size={18} /> : <Upload size={18} />}
@@ -261,7 +261,7 @@ export default function AdminDashboard() {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {files.filter(f => f.filename.toLowerCase().includes(searchQuery.toLowerCase())).map(file => (
+                                    {files.filter((f: ArchiveFile) => f.filename.toLowerCase().includes(searchQuery.toLowerCase())).map((file: ArchiveFile) => (
                                         <tr key={file.id}>
                                             <td className={styles.fileNameCell}>
                                                 {getFileIcon(file.content_type)}
