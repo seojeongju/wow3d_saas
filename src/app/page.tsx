@@ -123,9 +123,9 @@ export default function Home() {
                     >
                       {slide.badge}
                     </div>
-                    <h1 className={styles.heroTitle}>
+                    <h2 className={styles.heroTitle}>
                       {slide.title}
-                    </h1>
+                    </h2>
                     <p className={styles.heroSubtitle}>
                       {slide.subtitle}
                     </p>
@@ -201,9 +201,9 @@ export default function Home() {
         <div className="container">
           <div className={styles.trustContent}>
             <div className={styles.trustText}>
-              <h2 className={styles.trustTitle}>
+              <h1 className={styles.trustTitle}>
                 (주)와우쓰리디(WOW3D)는 정부지원사업 <strong>공식공급업체</strong>입니다.
-              </h2>
+              </h1>
               <p className={styles.trustDesc}>
                 스마트공장·스마트제조·스마트서비스·스마트상점 보급 및 확산 사업을 통해 
                 대한민국 제조 및 소상공인의 디지털 전환을 선도합니다.
