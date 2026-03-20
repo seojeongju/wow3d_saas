@@ -69,7 +69,7 @@ export default function Navbar() {
       href: '/pricing/',
       label: '비즈니스 가이드',
       children: [
-        { href: '/pricing/', label: '정부지원사업 안내', description: '정부지원 국비 지원 프로그램 및 혜택 안내' },
+        { href: '/contact/', label: '구축문의', description: '솔루션 도입 및 맞춤형 시스템 구축 상담' },
         { href: '/contact/', label: '도입 성공 사례', description: '실제 도입 기업의 성공 스토리와 결과' },
       ]
     },
