@@ -17,11 +17,11 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL('https://wow3dsw.co.kr'),
   title: {
-    default: "와우데이터비즈 (WOW DataBiz) - 스마트 경영지원 데이터 솔루션",
-    template: "%s | 와우데이터비즈"
+    default: "(주)와우쓰리디 - 스마트공장·3D프린팅·정부지원사업 공식공급업체",
+    template: "%s | (주)와우쓰리디"
   },
-  description: "도소매·요식업 재고관리(Smart Manager), HRD 학사관리(On-Track), CBT 문제은행, 3D프린팅 AI 견적시스템까지. 소상공인을 위한 최적의 SaaS 솔루션을 만나보세요.",
-  keywords: ["와우데이터비즈", "와우쓰리디", "재고관리시스템", "학사관리시스템", "CBT문제은행", "3D프린팅견적", "스마트매니저", "온트랙", "SaaS솔루션"],
+  description: "(주)와우쓰리디(WOW3D)는 스마트공장, 스마트제조, 스마트서비스, 스마트상점 정부지원사업 공식공급업체입니다. 3D프린팅 시제품 제작 대행부터 지능형 공장 구축까지 최적의 솔루션을 제공합니다.",
+  keywords: ["와우쓰리디", "WOW3D", "스마트공장", "스마트제조", "스마트상점", "스마트서비스", "정부지원사업", "공식공급업체", "3D프린팅", "시제품제작"],
   authors: [{ name: "(주)와우쓰리디" }],
   creator: "(주)와우쓰리디",
   publisher: "(주)와우쓰리디",
@@ -34,10 +34,10 @@ export const metadata: Metadata = {
     canonical: '/',
   },
   openGraph: {
-    title: "와우데이터비즈 - 스마트 경영지원 데이터 솔루션",
-    description: "데이터로 앞서가는 스마트 경영. 재고관리부터 학사관리까지 올인원 SaaS 솔루션",
+    title: "(주)와우쓰리디 - 스마트공장·3D프린팅 공식공급업체",
+    description: "(주)와우쓰리디(WOW3D)는 보급형부터 산업용 3D프린터, 스마트공장 구축 솔루션까지 제조 혁신을 선도합니다.",
     url: 'https://wow3dsw.co.kr',
-    siteName: '와우데이터비즈',
+    siteName: '(주)와우쓰리디',
     images: [
       {
         url: '/images/wow-smart-manager-hero.jpg',

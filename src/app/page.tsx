@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import Link from "next/link";
 import { Box, Users, ArrowRight, CheckCircle2, MessageCircle, ChevronLeft, ChevronRight, Timer, Printer } from "lucide-react";
@@ -12,8 +12,9 @@ const heroSlides = [
     badge: "New Service",
     title: "3D프린팅 AI\n실시간 자동견적\n시스템",
     subtitle: "당신의 상상력을 현실로",
-    description: "STL, OBJ, 3MF, STEP 파일을 업로드하면\nAI가 부피·표면적을 분석해 실시간 견적을 제공합니다.\n클릭 한 번으로 시제품부터 양산까지 한 번에 해결하세요.",
+    description: "STL, OBJ, 3MF, STEP 파일을 업로드하면 AI가 부피·표면적을 분석해 실시간 견적을 제공합니다. (주)와우쓰리디의 시제품 제작 대행 서비스를 만나보세요.",
     image: "/images/ai-quote-system.png",
+    alt: "3D프린팅 AI 실시간 자동견적 시스템 대시보드 화면",
     ctaLink: "/services/printing",
     gradient: "linear-gradient(135deg, #020617 0%, #1e293b 100%)",
     badgeColor: "rgba(34, 197, 94, 0.25)",
@@ -25,8 +26,9 @@ const heroSlides = [
     badge: "Retail & Food",
     title: "WOW-Smart Manager\nAI 재고/매출 관리 시스템",
     subtitle: "스마트한 경영의 시작",
-    description: "도소매업, 요식업 사장님을 위한 재고/발주 솔루션.\n복잡한 수불부 작성을 자동화하고\nAI 분석을 통해 최적의 경영 전략을 제안합니다.",
+    description: "스마트공장·스마트상점 공급기업 (주)와우쓰리디의 솔루션. 복잡한 수불부 작성을 자동화하고 AI 분석을 통해 최적의 경영 전략을 제안합니다.",
     image: "/images/wow-smart-manager-hero.jpg",
+    alt: "스마트공장 및 재고관리 솔루션 WOW-Smart Manager 실행 화면",
     ctaLink: "/services/retail",
     gradient: "linear-gradient(135deg, #1E293B 0%, #0F172A 100%)",
     badgeColor: "rgba(37, 99, 235, 0.25)",
@@ -38,8 +40,9 @@ const heroSlides = [
     badge: "Education Tech",
     title: "NCS On-Track\nHRD 학사관리 \n시스템",
     subtitle: "직업훈련기관을 위한 올인원 솔루션",
-    description: "학원, 교육센터를 위한 NCS 기반 행정 시스템입니다.\n출결 관리부터 수강생 성취도 리포트까지,\n에듀테크 기술로 교육 운영의 효율을 극대화하세요.",
+    description: "직업훈련기관을 위한 NCS 기반 행정 시스템입니다. 에듀테크 기술로 교육 운영의 효율을 극대화하고 체계적인 학사 관리를 지원합니다.",
     image: "/images/lms-dashboard.png",
+    alt: "NCS On-Track HRD 학사관리 시스템 대시보드",
     ctaLink: "/services/academy",
     gradient: "linear-gradient(135deg, #312E81 0%, #4338CA 100%)",
     badgeColor: "rgba(99, 102, 241, 0.25)",
@@ -51,8 +54,9 @@ const heroSlides = [
     badge: "Exam & Certification",
     title: "WOW-CBT\n 맞춤형 문제은행\n 시스템",
     subtitle: "실전 모의고사 & 자동 채점",
-    description: "실제 시험 환경을 그대로 구현한 CBT 시스템.\n시험지 자동 생성, 즉시 채점, 오답 분석을 통해\n수강생의 합격률을 획기적으로 높여드립니다.",
+    description: "실제 시험 환경을 그대로 구현한 CBT 시스템. 문제은행 구축 및 자동 출제를 통해 교육기관의 평가 업무를 혁신합니다.",
     image: "/images/cbt-exam.png",
+    alt: "WOW-CBT 온라인 문제은행 및 시험 시스템 화면",
     ctaLink: "/services/cbt",
     gradient: "linear-gradient(135deg, #6B21A8 0%, #7C3AED 100%)",
     badgeColor: "rgba(139, 92, 246, 0.25)",
@@ -143,7 +147,7 @@ export default function Home() {
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={slide.image}
-                      alt={slide.title}
+                      alt={slide.alt || slide.title}
                       className={styles.heroImage}
                     />
                   </div>
@@ -192,6 +196,29 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Official Supplier Trust Section */}
+      <section className={styles.trustBanner}>
+        <div className="container">
+          <div className={styles.trustContent}>
+            <div className={styles.trustText}>
+              <h2 className={styles.trustTitle}>
+                (주)와우쓰리디(WOW3D)는 정부지원사업 <strong>공식공급업체</strong>입니다.
+              </h2>
+              <p className={styles.trustDesc}>
+                스마트공장·스마트제조·스마트서비스·스마트상점 보급 및 확산 사업을 통해 
+                대한민국 제조 및 소상공인의 디지털 전환을 선도합니다.
+              </p>
+            </div>
+            <div className={styles.trustBadges}>
+              <div className={styles.trustBadge}>#스마트공장</div>
+              <div className={styles.trustBadge}>#스마트제조</div>
+              <div className={styles.trustBadge}>#스마트서비스</div>
+              <div className={styles.trustBadge}>#스마트상점</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Main Services Section - Alternating Layout */}
       <section className="section bg-white">
         <div className="container">
@@ -208,7 +235,7 @@ export default function Home() {
                 <div className={styles.mockupWindow}>
                   <div className={clsx(styles.mockupContent, styles.blueGradient)}>
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src="/images/dashboard-hero.jpg" alt="Retail Dashboard" className={styles.mockupImg} />
+                    <img src="/images/dashboard-hero.jpg" alt="스마트공장 및 도소매 재고관리 시스템 실행 화면" className={styles.mockupImg} />
                   </div>
                 </div>
               </div>
@@ -241,7 +268,7 @@ export default function Home() {
                 <div className={styles.mockupWindow}>
                   <div className={clsx(styles.mockupContent, styles.indigoGradient)}>
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src="/images/lms-dashboard.png" alt="Education Dashboard" className={styles.mockupImg} />
+                    <img src="/images/lms-dashboard.png" alt="NCS On-Track HRD 학사관리 시스템 메인 화면" className={styles.mockupImg} />
                   </div>
                 </div>
               </div>
@@ -274,7 +301,7 @@ export default function Home() {
                 <div className={styles.mockupWindow}>
                   <div className={clsx(styles.mockupContent, styles.purpleGradient)}>
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src="/images/cbt-exam.png" alt="WOW-CBT 모의고사" className={styles.mockupImg} />
+                    <img src="/images/cbt-exam.png" alt="WOW-CBT 온라인 시험 및 문제은행 대시보드" className={styles.mockupImg} />
                   </div>
                 </div>
               </div>
@@ -307,7 +334,7 @@ export default function Home() {
                 <div className={styles.mockupWindow}>
                   <div className={clsx(styles.mockupContent, styles.greenGradient)}>
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src="/images/ai-quote-system.png" alt="AI 3D Printing Quote" className={styles.mockupImg} />
+                    <img src="/images/ai-quote-system.png" alt="3D프린팅 AI 실시간 자동견적 시스템 웹 화면" className={styles.mockupImg} />
                   </div>
                 </div>
               </div>

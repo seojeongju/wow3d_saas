@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://wow3dsw.co.kr/sitemap.xml
