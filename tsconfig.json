@@ -28,7 +28,10 @@
       ]
     },
     "types": [
-      "@cloudflare/workers-types"
+      "@cloudflare/workers-types",
+      "react",
+      "react-dom",
+      "node"
     ]
   },
   "include": [
