@@ -37,8 +37,8 @@ export default function ContactPage() {
 
     // Prepare template parameters (Must match the variable names in your EmailJS template)
     const templateParams = {
-      from_name: formData.name,
-      from_email: formData.email,
+      name: formData.name,
+      email: formData.email,
       phone: formData.phone,
       company: formData.company,
       service: formData.service,
