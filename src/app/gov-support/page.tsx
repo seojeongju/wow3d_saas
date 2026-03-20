@@ -44,7 +44,7 @@ const sections = [
       },
       {
         label: '지원 규모',
-        content: '전체 사업비의 최대 50% 이내 국비 지원'
+        content: '전체 사업비의 최대 50% ~ 60% 이내 국비 지원'
       }
     ]
   },
@@ -112,12 +112,12 @@ const sections = [
     id: 'shop',
     title: '스마트상점',
     subtitle: 'Smart Shop',
-    desc: '소상공인의 자생력과 경쟁력을 강화하기 위해 키오스크, 서빙로봇 등 최신 기술을 점포에 도입하여 운영의 효율성을 극대화합니다.',
+    desc: '소상공인의 자생력과 경쟁력을 강화하기 위해 3D디지털장비, 3D홀로그램사이니지 등 최신 기술을 점포에 도입하여 운영의 효율성을 극대화합니다.',
     icon: <Store size={30} />,
     color: '#F59E0B',
     bgColor: 'rgba(245, 158, 11, 0.1)',
     imageUrl: '/images/gov/smart_shop.jpg',
-    imageAlt: '키오스크와 자동화 기기가 설치된 현대적인 스마트 상점',
+    imageAlt: '소상공인 대상 제조,서비스업종',
     details: [
       {
         label: '지원 대상',
@@ -127,14 +127,14 @@ const sections = [
         label: '기술 보급',
         content: '경영 효율화 및 서비스 개선을 위한 맞춤형 스마트 기술 패키지',
         list: [
-          '일반: 테이블오더, 전자 메뉴판 등',
-          '고도화: 서빙로봇, 무인 제어 시스템 등',
+          '3D : MSLA-DLP 3D프린터 P7-Pro, P10-Pro,P13-Pro,P15-Pro 등',
+          '디지털 사이니지: 3D 홀로그램 디지털 사이니지 등',
           '장애인 배려형 베리어프리 키오스크 우대'
         ]
       },
       {
         label: '지원 규모',
-        content: '도입 비용의 일부 지원 (최대 지원금 상이)'
+        content: '도입 비용의 일부 지원 (최대 500만원 지원금의 50% ~80%)'
       }
     ]
   }
@@ -183,14 +183,14 @@ export default function GovSupportPage() {
                 <span className={styles.sectionSubtitle} style={{ color: section.color }}>{section.subtitle}</span>
                 <p className={styles.sectionDesc}>{section.desc}</p>
               </div>
-              
+
               {(section as any).imageUrl && (
                 <div className={styles.sectionImageWrapper}>
-                  <Image 
-                    src={(section as any).imageUrl} 
-                    alt={(section as any).imageAlt} 
-                    width={500} 
-                    height={300} 
+                  <Image
+                    src={(section as any).imageUrl}
+                    alt={(section as any).imageAlt}
+                    width={500}
+                    height={300}
                     className={styles.sectionImage}
                   />
                 </div>
