@@ -69,6 +69,7 @@ export default function Navbar() {
       href: '/pricing/',
       label: '비즈니스 가이드',
       children: [
+        { href: '/pricing/', label: '도입 안내', description: '솔루션 도입 절차 및 혜택 안내' },
         { href: '/contact/', label: '구축문의', description: '솔루션 도입 및 맞춤형 시스템 구축 상담' },
         { href: '/gov-support/', label: '정부지원사업 안내', description: '스마트제조, 스마트공장 등 정부지원 사업 안내' },
       ]
