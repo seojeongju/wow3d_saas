@@ -2,8 +2,14 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import emailjs from '@emailjs/browser';
 import { Mail, Phone, MapPin, Send, MessageCircle, Clock, CheckCircle2, AlertCircle } from "lucide-react";
 import styles from "./contact.module.css";
+
+// EmailJS Configuration Keys (Updated with new Service/Template/Key)
+const SERVICE_ID = "service_fi5rcel";
+const TEMPLATE_ID = "template_wuuedcj";
+const PUBLIC_KEY = "BYZjv4SnPbTQjpq-e";
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -29,19 +35,25 @@ export default function ContactPage() {
     setIsSubmitting(true);
     setErrorMessage("");
 
-    try {
-      const response = await fetch('/api/contact', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
+    // Prepare template parameters (Must match the variable names in your EmailJS template)
+    const templateParams = {
+      from_name: formData.name,
+      from_email: formData.email,
+      phone: formData.phone,
+      company: formData.company,
+      service: formData.service,
+      message: formData.message,
+      to_email: 'wow3d16@naver.com' 
+    };
 
-      if (!response.ok) {
-        const errorData = await response.json() as { error?: { message?: string } };
-        throw new Error(errorData.error?.message || "메일 전송에 실패했습니다.");
-      }
+    try {
+      // Send email using EmailJS
+      await emailjs.send(
+        SERVICE_ID,
+        TEMPLATE_ID,
+        templateParams,
+        PUBLIC_KEY
+      );
 
       setIsSubmitting(false);
       setIsSubmitted(true);
@@ -55,7 +67,7 @@ export default function ContactPage() {
       });
 
     } catch (error) {
-      console.error('Contact submit failed:', error);
+      console.error('Email send failed:', error);
       setIsSubmitting(false);
       setErrorMessage("메일 전송에 실패했습니다. 잠시 후 다시 시도해주세요.");
     }
