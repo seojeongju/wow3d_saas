@@ -26,7 +26,7 @@ const sections = [
     icon: <Cpu size={30} />,
     color: '#3B82F6',
     bgColor: 'rgba(59, 130, 246, 0.1)',
-    imageUrl: '/images/gov/smart_manufacturing.png',
+    imageUrl: '/images/gov/smart_manufacturing.jpg',
     imageAlt: 'AI 및 디지털 트윈이 적용된 스마트 제조 공정 시각화',
     details: [
       {
