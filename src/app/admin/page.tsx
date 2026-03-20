@@ -46,9 +46,9 @@ export default function AdminDashboard() {
 
     const addNotification = useCallback((type: NotificationType, message: string) => {
         const id = crypto.randomUUID();
-        setNotifications(prev => [...prev, { id, type, message }]);
+        setNotifications((prev: Notification[]) => [...prev, { id, type, message }]);
         setTimeout(() => {
-            setNotifications(prev => prev.filter(n => n.id !== id));
+            setNotifications((prev: Notification[]) => prev.filter((n: Notification) => n.id !== id));
         }, 4000);
     }, []);
 
@@ -149,7 +149,7 @@ export default function AdminDashboard() {
             if (!res.ok) throw new Error("삭제 실패");
 
             addNotification("success", `"${file.filename}" 삭제 완료`);
-            setFiles(prev => prev.filter(f => f.id !== file.id));
+            setFiles((prev: ArchiveFile[]) => prev.filter((f: ArchiveFile) => f.id !== file.id));
         } catch (error: any) {
             addNotification("error", error.message);
         } finally {
@@ -202,7 +202,7 @@ export default function AdminDashboard() {
                 {notifications.map(n => (
                     <div key={n.id} className={`${styles.notification} ${styles[`notif_${n.type}`]}`}>
                         <span>{n.message}</span>
-                        <button onClick={() => setNotifications(p => p.filter(x => x.id !== n.id))}><X size={14} /></button>
+                        <button onClick={() => setNotifications((p: Notification[]) => p.filter((x: Notification) => x.id !== n.id))}><X size={14} /></button>
                     </div>
                 ))}
             </div>
@@ -232,7 +232,7 @@ export default function AdminDashboard() {
                                 type="text" 
                                 placeholder="파일명 검색..." 
                                 value={searchQuery}
-                                onChange={e => setSearchQuery(e.target.value)}
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchQuery(e.target.value)}
                             />
                         </div>
                         <label className={styles.uploadBtn}>
