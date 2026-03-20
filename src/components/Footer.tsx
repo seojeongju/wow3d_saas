@@ -51,6 +51,7 @@ export default function Footer() {
               <h4>회사</h4>
               <Link href="/about">회사 소개</Link>
               <Link href="/contact">연락처</Link>
+              <Link href="/admin" style={{ opacity: 0.5, fontSize: '0.8rem' }}>Admin</Link>
             </div>
           </div>
 

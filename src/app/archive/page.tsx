@@ -64,13 +64,9 @@ function formatDate(dateStr: string): string {
 export default function ArchivePage() {
     const [files, setFiles] = useState<ArchiveFile[]>([]);
     const [loading, setLoading] = useState(true);
-    const [uploading, setUploading] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
     const [notifications, setNotifications] = useState<Notification[]>([]);
-    const [deletingId, setDeletingId] = useState<string | null>(null);
-    const [isDragOver, setIsDragOver] = useState(false);
     const [apiError, setApiError] = useState<string | null>(null);
-    const fileInputRef = useRef<HTMLInputElement>(null);
 
     const addNotification = useCallback((type: NotificationType, message: string) => {
         const id = crypto.randomUUID();
@@ -104,55 +100,6 @@ export default function ArchivePage() {
         fetchFiles();
     }, [fetchFiles]);
 
-    const handleUpload = async (fileToUpload: File | null) => {
-        if (!fileToUpload) return;
-        if (fileToUpload.size > 50 * 1024 * 1024) {
-            addNotification("error", "파일 크기는 50MB 이하여야 합니다.");
-            return;
-        }
-        try {
-            setUploading(true);
-            const formData = new FormData();
-            formData.append("file", fileToUpload);
-            const res = await fetch("/api/archive", { method: "POST", body: formData });
-            if (!res.ok) {
-                const errData = await res.json().catch(() => ({ error: "업로드 실패" })) as { error?: string };
-                throw new Error(errData.error || "업로드 실패");
-            }
-            addNotification("success", `"${fileToUpload.name}" 업로드 완료!`);
-            await fetchFiles();
-        } catch (error: unknown) {
-            const msg = error instanceof Error ? error.message : "업로드 오류";
-            addNotification("error", msg);
-        } finally {
-            setUploading(false);
-            if (fileInputRef.current) fileInputRef.current.value = "";
-        }
-    };
-
-    const handleDelete = async (file: ArchiveFile) => {
-        if (!confirm(`"${file.filename}"을(를) 삭제하시겠습니까?`)) return;
-        try {
-            setDeletingId(file.id);
-            const res = await fetch(`/api/archive?id=${file.id}`, { method: "DELETE" });
-            if (!res.ok) throw new Error("삭제 실패");
-            addNotification("success", `"${file.filename}" 삭제 완료`);
-            setFiles(prev => prev.filter(f => f.id !== file.id));
-        } catch {
-            addNotification("error", "파일 삭제 중 오류가 발생했습니다.");
-        } finally {
-            setDeletingId(null);
-        }
-    };
-
-    const handleDragOver = (e: React.DragEvent) => { e.preventDefault(); setIsDragOver(true); };
-    const handleDragLeave = () => setIsDragOver(false);
-    const handleDrop = (e: React.DragEvent) => {
-        e.preventDefault();
-        setIsDragOver(false);
-        const file = e.dataTransfer.files[0];
-        if (file) handleUpload(file);
-    };
 
     const filteredFiles = files.filter(f =>
         f.filename.toLowerCase().includes(searchQuery.toLowerCase())
@@ -225,30 +172,10 @@ export default function ArchivePage() {
                         <button className={styles.refreshBtn} onClick={fetchFiles} disabled={loading} title="새로고침">
                             <RefreshCw size={16} className={loading ? styles.spin : ""} />
                         </button>
-                        <label className={`${styles.uploadBtn} ${uploading ? styles.uploadBtnLoading : ""}`}>
-                            <input
-                                ref={fileInputRef}
-                                type="file"
-                                className={styles.fileInput}
-                                onChange={e => handleUpload(e.target.files?.[0] || null)}
-                                disabled={uploading}
-                            />
-                            {uploading ? <Loader2 size={18} className={styles.spin} /> : <Upload size={18} />}
-                            {uploading ? "업로드 중..." : "파일 업로드"}
-                        </label>
                     </div>
                 </div>
 
-                {/* Drag & Drop Zone */}
-                <div
-                    className={`${styles.dropZone} ${isDragOver ? styles.dropZoneActive : ""}`}
-                    onDragOver={handleDragOver}
-                    onDragLeave={handleDragLeave}
-                    onDrop={handleDrop}
-                >
-                    <Upload size={20} />
-                    <span>파일을 여기에 드래그하여 업로드</span>
-                </div>
+                {/* File Table */}
 
                 {/* File Table */}
                 <div className={styles.tableCard}>
@@ -295,17 +222,6 @@ export default function ArchivePage() {
                                             >
                                                 <Download size={16} />
                                             </a>
-                                            <button
-                                                className={`${styles.actionBtn} ${styles.actionBtnDanger}`}
-                                                onClick={() => handleDelete(file)}
-                                                disabled={deletingId === file.id}
-                                                title="삭제"
-                                            >
-                                                {deletingId === file.id
-                                                    ? <Loader2 size={16} className={styles.spin} />
-                                                    : <Trash2 size={16} />
-                                                }
-                                            </button>
                                         </td>
                                     </tr>
                                 ))}

@@ -25,6 +25,9 @@ export const onRequest = async (context: { request: Request; env: Env }) => {
     }
 
     try {
+        const authHeader = request.headers.get('Authorization');
+        const isAdmin = authHeader === `Bearer ${env.ADMIN_PASSWORD}`;
+
         if (method === 'GET') {
             const { results } = await env.DB.prepare(
                 'SELECT id, filename, content_type, size, created_at FROM files ORDER BY created_at DESC'
@@ -33,6 +36,9 @@ export const onRequest = async (context: { request: Request; env: Env }) => {
         }
 
         if (method === 'POST') {
+            if (!isAdmin) {
+                return Response.json({ error: 'Unauthorized' }, { status: 401, headers: corsHeaders });
+            }
             const formData = await request.formData();
             const file = formData.get('file') as File;
             if (!file) {
@@ -56,6 +62,9 @@ export const onRequest = async (context: { request: Request; env: Env }) => {
         }
 
         if (method === 'DELETE') {
+            if (!isAdmin) {
+                return Response.json({ error: 'Unauthorized' }, { status: 401, headers: corsHeaders });
+            }
             const url = new URL(request.url);
             const id = url.searchParams.get('id');
             if (!id) {
