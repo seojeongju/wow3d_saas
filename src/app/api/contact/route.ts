@@ -1,6 +1,6 @@
 import { Resend } from 'resend';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+
 
 interface ContactFormData {
   name: string;
@@ -13,6 +13,7 @@ interface ContactFormData {
 
 export async function POST(req: Request) {
   try {
+    const resend = new Resend(process.env.RESEND_API_KEY);
     const { name, email, phone, company, service, message } = await req.json() as ContactFormData;
 
     const { data, error } = await resend.emails.send({
