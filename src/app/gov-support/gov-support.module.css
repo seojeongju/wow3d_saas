@@ -46,6 +46,26 @@
   backdrop-filter: blur(8px);
 }
 
+.officialBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  padding: 0.625rem 1.25rem;
+  border-radius: 2rem;
+  font-size: 0.9375rem;
+  margin-bottom: 2rem;
+  margin-left: 1rem;
+  backdrop-filter: blur(8px);
+}
+
+.officialBadge strong {
+  color: #fbbf24;
+  margin-left: 0.25rem;
+}
+
 .heroTitle {
   font-size: 3.5rem;
   font-weight: 800;

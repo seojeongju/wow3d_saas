@@ -1,17 +1,17 @@
 "use client";
 
 import Link from 'next/link';
-import { 
-  Factory, 
-  Store, 
-  Settings, 
-  Cpu, 
-  ArrowRight, 
-  CheckCircle2, 
-  Info, 
-  TrendingUp, 
-  Database, 
-  MessageSquare 
+import {
+  Factory,
+  Store,
+  Settings,
+  Cpu,
+  ArrowRight,
+  CheckCircle2,
+  Info,
+  TrendingUp,
+  Database,
+  MessageSquare
 } from 'lucide-react';
 import styles from './gov-support.module.css';
 
@@ -141,6 +141,10 @@ export default function GovSupportPage() {
               <Info size={18} />
               <span>사업 안내</span>
             </div>
+            <div className={styles.officialBadge}>
+              <CheckCircle2 size={16} />
+              <span>(주)와우쓰리디(WOW3D)는 스마트공장, 스마트제조, 스마트서비스, 스마트상점 <strong>공식공급업체</strong>입니다.</span>
+            </div>
             <h1 className={styles.heroTitle}>
               정부지원사업으로<br />
               <span className={styles.highlight}>비즈니스 혁신을 시작하세요</span>
@@ -158,8 +162,8 @@ export default function GovSupportPage() {
         {sections.map((section) => (
           <section key={section.id} className={styles.sectionCard} id={section.id}>
             <div className={styles.sectionInfo}>
-              <div 
-                className={styles.iconWrapper} 
+              <div
+                className={styles.iconWrapper}
                 style={{ backgroundColor: section.bgColor, color: section.color }}
               >
                 {section.icon}
