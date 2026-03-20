@@ -70,7 +70,7 @@ export default function Navbar() {
       label: '비즈니스 가이드',
       children: [
         { href: '/contact/', label: '구축문의', description: '솔루션 도입 및 맞춤형 시스템 구축 상담' },
-        { href: '/contact/', label: '도입 성공 사례', description: '실제 도입 기업의 성공 스토리와 결과' },
+        { href: '/gov-support/', label: '정부지원사업 안내', description: '스마트제조, 스마트공장 등 정부지원 사업 안내' },
       ]
     },
     {
