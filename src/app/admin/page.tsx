@@ -117,7 +117,7 @@ export default function AdminDashboard() {
             });
 
             if (!res.ok) {
-                const errData = await res.json().catch(() => ({ error: "업로드 실패" }));
+                const errData = await res.json().catch(() => ({ error: "업로드 실패" })) as { error?: string };
                 throw new Error(errData.error || "업로드 실패");
             }
 
