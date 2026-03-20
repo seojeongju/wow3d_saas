@@ -8,6 +8,7 @@
 interface Env {
     DB: D1Database;
     BUCKET: R2Bucket;
+    ADMIN_PASSWORD?: string;
 }
 
 export const onRequest = async (context: { request: Request; env: Env }) => {

@@ -8,6 +8,7 @@ import { NextRequest, NextResponse } from 'next/server';
 interface CloudflareEnv {
     DB: D1Database;
     BUCKET: R2Bucket;
+    ADMIN_PASSWORD?: string;
 }
 
 // @ts-ignore - Cloudflare Pages 환경에서 getRequestContext를 통해 바인딩에 접근
