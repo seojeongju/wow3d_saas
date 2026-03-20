@@ -148,7 +148,7 @@ export default function EducationCenterPage() {
                         </div>
                         <div className={styles.infoImage}>
                             <Image
-                                src="/images/wow-smart-manager-hero.jpg"
+                                src="/images/ncs-curriculum.png"
                                 alt="Education Center"
                                 width={600}
                                 height={400}
