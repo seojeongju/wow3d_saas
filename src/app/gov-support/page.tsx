@@ -116,7 +116,7 @@ const sections = [
     icon: <Store size={30} />,
     color: '#F59E0B',
     bgColor: 'rgba(245, 158, 11, 0.1)',
-    imageUrl: '/images/gov/smart_shop.png',
+    imageUrl: '/images/gov/smart_shop.jpg',
     imageAlt: '키오스크와 자동화 기기가 설치된 현대적인 스마트 상점',
     details: [
       {
