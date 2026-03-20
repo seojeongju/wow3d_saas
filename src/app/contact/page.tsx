@@ -43,7 +43,8 @@ export default function ContactPage() {
       company: formData.company,
       service: formData.service,
       message: formData.message,
-      to_email: 'wow3d16@naver.com' 
+      to_email: 'wow3d16@naver.com',
+      site_name: 'wow3d-SaaS'
     };
 
     try {
