@@ -2,18 +2,8 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import emailjs from '@emailjs/browser';
 import { Mail, Phone, MapPin, Send, MessageCircle, Clock, CheckCircle2, AlertCircle } from "lucide-react";
 import styles from "./contact.module.css";
-
-// EmailJS Configuration Keys (Replace these with your actual keys from EmailJS Dashboard)
-// It is recommended to put these in .env.local file as:
-// NEXT_PUBLIC_EMAILJS_SERVICE_ID=...
-// NEXT_PUBLIC_EMAILJS_TEMPLATE_ID=...
-// NEXT_PUBLIC_EMAILJS_PUBLIC_KEY=...
-const SERVICE_ID = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || "service_mtlwmkf";
-const TEMPLATE_ID = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || "template_phkwwx3";
-const PUBLIC_KEY = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || "nc21fq4bp_z8wmpLA";
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -39,27 +29,19 @@ export default function ContactPage() {
     setIsSubmitting(true);
     setErrorMessage("");
 
-    // Prepare template parameters
-    // These names must match the variable names in your EmailJS template (e.g., {{from_name}}, {{message}}, etc.)
-    const templateParams = {
-      from_name: formData.name,
-      from_email: formData.email,
-      phone: formData.phone,
-      company: formData.company,
-      service: formData.service,
-      message: formData.message,
-      to_email: 'wow3d16@naver.com' // You can use this variable in EmailJS template as {{to_email}}
-    };
-
     try {
-      // Send email using EmailJS
-      // Note: You must sign up at https://www.emailjs.com/ to get these IDs
-      await emailjs.send(
-        SERVICE_ID,
-        TEMPLATE_ID,
-        templateParams,
-        PUBLIC_KEY
-      );
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json() as { error?: { message?: string } };
+        throw new Error(errorData.error?.message || "메일 전송에 실패했습니다.");
+      }
 
       setIsSubmitting(false);
       setIsSubmitted(true);
@@ -73,7 +55,7 @@ export default function ContactPage() {
       });
 
     } catch (error) {
-      console.error('Email send failed:', error);
+      console.error('Contact submit failed:', error);
       setIsSubmitting(false);
       setErrorMessage("메일 전송에 실패했습니다. 잠시 후 다시 시도해주세요.");
     }
