@@ -12,9 +12,9 @@ export default function Footer() {
           <div className={styles.footerBrand}>
             <div className={styles.footerLogo}>
               <span className={styles.logoWow}>WOW</span>
-              <span className={styles.logoDatabiz}>DataBiz</span>
+              <span className={styles.logoDatabiz}>3D</span>
             </div>
-            <p className={styles.brandDesc}>데이터 기반 스마트 경영 솔루션</p>
+            <p className={styles.brandDesc}>(주)와우쓰리디 - 스마트 제조 혁신 솔루션</p>
             
             {/* Company Info */}
             <div className={styles.companyInfo}>

@@ -120,7 +120,7 @@ export default function Navbar() {
             <div className={clsx(styles.logoWrapper)}>
               <div className={clsx(styles.brandLogo, (isNavOpaque || isOpen) && styles.scrolled)}>
                 <span className={styles.logoWow}>WOW</span>
-                <span className={styles.logoDatabiz}>DataBiz</span>
+                <span className={styles.logoDatabiz}>3D</span>
               </div>
               <span className={clsx(styles.logoCompany, (isNavOpaque || isOpen) && styles.scrolled)}>
                 (주)와우쓰리디
