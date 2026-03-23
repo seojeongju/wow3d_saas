@@ -31,11 +31,11 @@ export const metadata: Metadata = {
     telephone: false,
   },
   alternates: {
-    canonical: '/',
+    canonical: 'https://wow3dsw.co.kr/',
   },
   openGraph: {
     title: "(주)와우쓰리디 | 스마트제조 및 맞춤형 솔루션(ERP/CRM) 공식공급업체",
-    description: "(주)와우쓰리디(WOW3D)는 맞춤형 소프트웨어(ERP, MES, CRM, LMS) 및 스마트공장 구축 솔루션으로 비즈니스 제조 혁신을 선도합니다.",
+    description: "(주)와우쓰리디(WOW3D)는 맞춤형 소프트웨어(ERP, MES, CRM, LMS) 개발 및 스마트공장 솔루션으로 비즈니스 제조 혁신을 선도합니다.",
     url: 'https://wow3dsw.co.kr',
     siteName: '(주)와우쓰리디',
     images: [
@@ -70,7 +70,6 @@ export const metadata: Metadata = {
     google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || 'd80QQEjoUFOsd7_3bW9Z_YDPO62Hq0AktzeKtjINNoo',
     other: {
       'naver-site-verification': '71fb7d98263e39574312032d11782b32c3cf86ad',
-      'google-site-verification': process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || 'd80QQEjoUFOsd7_3bW9Z_YDPO62Hq0AktzeKtjINNoo',
     },
   },
 };
@@ -80,9 +79,6 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const naverVerification = '71fb7d98263e39574312032d11782b32c3cf86ad';
-  const googleVerification = process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || 'd80QQEjoUFOsd7_3bW9Z_YDPO62Hq0AktzeKtjINNoo';
-
   // Structured Data (JSON-LD) for SEO
   const jsonLd = {
     "@context": "https://schema.org",
@@ -116,16 +112,6 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <head>
-        <meta name="naver-site-verification" content={naverVerification} />
-        {googleVerification && (
-          <meta name="google-site-verification" content={googleVerification} />
-        )}
-        
-        {/* 네이버 썸네일 노출을 위한 추가 이미지 태그 */}
-        <link rel="image_src" href="https://wow3dsw.co.kr/images/wow-smart-manager-hero.jpg" />
-        <meta itemProp="image" content="https://wow3dsw.co.kr/images/wow-smart-manager-hero.jpg" />
-        <meta name="image" content="https://wow3dsw.co.kr/images/wow-smart-manager-hero.jpg" />
-
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
