@@ -24,7 +24,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
         '/services/printing/',
     ].map((route) => ({
         url: `${baseUrl}${route}`,
-        lastModified: new Date(),
+        lastModified: new Date().toISOString().split('T')[0],
         changeFrequency: 'weekly' as const,
         priority: route === '/' ? 1 : 0.8,
     }));
