@@ -112,6 +112,8 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <head>
+        <link rel="image_src" href="https://wow3dsw.co.kr/images/wow-smart-manager-hero.jpg" />
+        <meta itemProp="image" content="https://wow3dsw.co.kr/images/wow-smart-manager-hero.jpg" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
