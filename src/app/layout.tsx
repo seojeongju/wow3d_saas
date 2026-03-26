@@ -86,7 +86,7 @@ export default function RootLayout({
     "name": "(주)와우쓰리디",
     "alternateName": ["WOW3D", "와우쓰리디"],
     "url": "https://wow3dsw.co.kr",
-    "logo": "https://wow3dsw.co.kr/logo.png",
+    "logo": "https://wow3dsw.co.kr/images/logo.jpg",
     "contactPoint": {
       "@type": "ContactPoint",
       "telephone": "+82-2-3144-3137",
