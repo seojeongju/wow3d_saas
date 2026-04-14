@@ -71,7 +71,7 @@ export default function EducationCenterPage() {
                             >
                                 교육 센터 공식 사이트 방문 <ExternalLink size={18} />
                             </a>
-                            <Link href="/contact" className={styles.btnSecondary}>
+                            <Link href="/contact/" className={styles.btnSecondary}>
                                 교육 상담 신청
                             </Link>
                         </div>

@@ -230,7 +230,7 @@ export default function GovSupportPage() {
               정부지원사업 신청 절차부터 솔루션 구축까지,<br />
               전담 컨설턴트가 상세히 안내해 드립니다.
             </p>
-            <Link href="/contact" className={styles.ctaButton}>
+            <Link href="/contact/" className={styles.ctaButton}>
               <MessageSquare size={20} />
               1:1 구축 상담 신청하기 <ArrowRight size={20} />
             </Link>

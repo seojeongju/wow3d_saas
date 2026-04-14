@@ -23,7 +23,7 @@ export default function WowCbtServicePage() {
                 시험지 자동 생성, 즉시 채점, 오답 노트까지.
               </p>
               <div className={styles.heroActions}>
-                <Link href="/contact" className={styles.btnPrimary}>
+                <Link href="/contact/" className={styles.btnPrimary}>
                   무료 상담 신청 <ArrowRight size={18} />
                 </Link>
                 <a
@@ -212,7 +212,7 @@ export default function WowCbtServicePage() {
           <div className={styles.ctaContent}>
             <h2 className={styles.ctaTitle}>WOW-CBT로 시험 운영과 학습 효율을 동시에</h2>
             <p className={styles.ctaDesc}>운영 환경(학원/기관/기업/자격증 대비)에 맞춰 데모와 도입 방안을 제안해 드립니다.</p>
-            <Link href="/contact" className={styles.ctaButton}>
+            <Link href="/contact/" className={styles.ctaButton}>
               무료 상담 신청하기 <ArrowRight size={20} />
             </Link>
           </div>

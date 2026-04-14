@@ -37,21 +37,21 @@ export default function Footer() {
           <div className={styles.footerLinks}>
             <div className={styles.linkGroup}>
               <h4>서비스</h4>
-              <Link href="/services/retail">WOW-Smart Manager</Link>
-              <Link href="/services/academy">NCS On-Track (온트랙)</Link>
-              <Link href="/services">전체 서비스 보기</Link>
+              <Link href="/services/retail/">WOW-Smart Manager</Link>
+              <Link href="/services/academy/">NCS On-Track (온트랙)</Link>
+              <Link href="/services/">전체 서비스 보기</Link>
             </div>
             <div className={styles.linkGroup}>
               <h4>고객지원</h4>
-              <Link href="/contact">문의하기</Link>
-              <Link href="/pricing">도입 안내</Link>
-              <Link href="/pricing">자주 묻는 질문</Link>
+              <Link href="/contact/">문의하기</Link>
+              <Link href="/pricing/">도입 안내</Link>
+              <Link href="/pricing/">자주 묻는 질문</Link>
             </div>
             <div className={styles.linkGroup}>
               <h4>회사</h4>
-              <Link href="/about">회사 소개</Link>
-              <Link href="/contact">연락처</Link>
-              <Link href="/admin" style={{ opacity: 0.5, fontSize: '0.8rem' }}>Admin</Link>
+              <Link href="/about/">회사 소개</Link>
+              <Link href="/contact/">연락처</Link>
+              <Link href="/admin/" style={{ opacity: 0.5, fontSize: '0.8rem' }}>Admin</Link>
             </div>
           </div>
 
@@ -97,9 +97,9 @@ export default function Footer() {
               © 2026 (주)와우쓰리디. All rights reserved.
             </p>
             <div className={styles.footerPolicies}>
-              <Link href="/terms">이용약관</Link>
+              <Link href="/terms/">이용약관</Link>
               <span className={styles.divider}>|</span>
-              <Link href="/privacy">개인정보처리방침</Link>
+              <Link href="/privacy/">개인정보처리방침</Link>
             </div>
           </div>
         </div>

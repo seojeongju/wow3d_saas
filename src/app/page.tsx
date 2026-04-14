@@ -15,7 +15,7 @@ const heroSlides = [
     description: "STL, OBJ, 3MF, STEP 파일을 업로드하면 AI가 부피·표면적을 분석해 실시간 견적을 제공합니다. (주)와우쓰리디의 시제품 제작 대행 서비스를 만나보세요.",
     image: "/images/ai-quote-system-hero.png",
     alt: "3D프린팅 AI 실시간 자동견적 시스템 대시보드 화면",
-    ctaLink: "/services/printing",
+    ctaLink: "/services/printing/",
     gradient: "linear-gradient(135deg, #020617 0%, #1e293b 100%)",
     badgeColor: "rgba(34, 197, 94, 0.25)",
     badgeTextColor: "#4ade80",
@@ -29,7 +29,7 @@ const heroSlides = [
     description: "스마트공장·스마트상점 공급기업 (주)와우쓰리디의 솔루션. 복잡한 수불부 작성을 자동화하고 AI 분석을 통해 최적의 경영 전략을 제안합니다.",
     image: "/images/wow-smart-manager-dashboard.png",
     alt: "스마트공장 및 재고관리 솔루션 WOW-Smart Manager 실행 화면",
-    ctaLink: "/services/retail",
+    ctaLink: "/services/retail/",
     gradient: "linear-gradient(135deg, #1E293B 0%, #0F172A 100%)",
     badgeColor: "rgba(37, 99, 235, 0.25)",
     badgeTextColor: "#93C5FD",
@@ -43,7 +43,7 @@ const heroSlides = [
     description: "직업훈련기관을 위한 NCS 기반 행정 시스템입니다. 에듀테크 기술로 교육 운영의 효율을 극대화하고 체계적인 학사 관리를 지원합니다.",
     image: "/images/lms-dashboard-hero.png",
     alt: "NCS On-Track HRD 학사관리 시스템 대시보드",
-    ctaLink: "/services/academy",
+    ctaLink: "/services/academy/",
     gradient: "linear-gradient(135deg, #312E81 0%, #4338CA 100%)",
     badgeColor: "rgba(99, 102, 241, 0.25)",
     badgeTextColor: "#C7D2FE",
@@ -57,7 +57,7 @@ const heroSlides = [
     description: "실제 시험 환경을 그대로 구현한 CBT 시스템. 문제은행 구축 및 자동 출제를 통해 교육기관의 평가 업무를 혁신합니다.",
     image: "/images/wow-cbt-hero.png",
     alt: "WOW-CBT 온라인 문제은행 및 시험 시스템 화면",
-    ctaLink: "/services/cbt",
+    ctaLink: "/services/cbt/",
     gradient: "linear-gradient(135deg, #6B21A8 0%, #7C3AED 100%)",
     badgeColor: "rgba(139, 92, 246, 0.25)",
     badgeTextColor: "#DDD6FE",
@@ -136,7 +136,7 @@ export default function Home() {
                       <Link href={slide.ctaLink} className={clsx("btn", "btn-cta", styles.btnLg)}>
                         자세히 보기
                       </Link>
-                      <Link href="/services" className={clsx("btn", styles.btnOutlineLight, styles.btnLg)}>
+                      <Link href="/services/" className={clsx("btn", styles.btnOutlineLight, styles.btnLg)}>
                         모든 서비스 보기
                       </Link>
                     </div>
@@ -256,7 +256,7 @@ export default function Home() {
                   <li><CheckCircle2 size={20} /> AI 기반 일별/월별 매출 트렌드 예측</li>
                   <li><CheckCircle2 size={20} /> 발주서 관리 및 배송 트랙킹까지 한눈에 OK</li>
                 </ul>
-                <Link href="/services/retail" className="btn btn-outline">
+                <Link href="/services/retail/" className="btn btn-outline">
                   자세히 보기 <ArrowRight size={16} className={styles.ml2} />
                 </Link>
               </div>
@@ -289,7 +289,7 @@ export default function Home() {
                   <li><CheckCircle2 size={20} /> 온라인 CBT 문제은행 & 과제 시스템</li>
                   <li><CheckCircle2 size={20} /> 수강생별 맞춤형 학습 성취도 리포트</li>
                 </ul>
-                <Link href="/services/academy" className="btn btn-outline">
+                <Link href="/services/academy/" className="btn btn-outline">
                   자세히 보기 <ArrowRight size={16} className={styles.ml2} />
                 </Link>
               </div>
@@ -322,7 +322,7 @@ export default function Home() {
                   <li><CheckCircle2 size={20} /> 자동 출제 & 즉시 채점 시스템</li>
                   <li><CheckCircle2 size={20} /> 오답 노트 & 취약 유형 분석</li>
                 </ul>
-                <Link href="/services/cbt" className="btn btn-outline">
+                <Link href="/services/cbt/" className="btn btn-outline">
                   자세히 보기 <ArrowRight size={16} className={styles.ml2} />
                 </Link>
               </div>
@@ -355,7 +355,7 @@ export default function Home() {
                   <li><CheckCircle2 size={20} /> 다양한 3D 파일 포맷 완벽 지원</li>
                   <li><CheckCircle2 size={20} /> 시제품 제작부터 양산까지 원클릭 주문</li>
                 </ul>
-                <Link href="/services/printing" className="btn btn-outline">
+                <Link href="/services/printing/" className="btn btn-outline">
                   자세히 보기 <ArrowRight size={16} className={styles.ml2} />
                 </Link>
               </div>
@@ -390,7 +390,7 @@ export default function Home() {
 
       {/* Floating CTA */}
       <div className={styles.floatingCta}>
-        <Link href="/contact" className={styles.ctaButton}>
+        <Link href="/contact/" className={styles.ctaButton}>
           <MessageCircle size={28} />
           <span className={styles.tooltip}>문의하기</span>
         </Link>

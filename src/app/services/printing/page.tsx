@@ -26,7 +26,7 @@ export default function PrintingServicePage() {
                                 <Link href="https://wow3d-all-print.jayseo36.workers.dev/" className={styles.btnPrimary}>
                                     지금 바로 견적 내기 <ArrowRight size={18} />
                                 </Link>
-                                <Link href="/contact" className={styles.btnSecondary}>
+                                <Link href="/contact/" className={styles.btnSecondary}>
                                     대량 양산 문의
                                 </Link>
                             </div>

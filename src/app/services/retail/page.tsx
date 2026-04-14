@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import PricingTable from '@/components/PricingTable';
 import { Box, Users, BarChart3, Cloud, CheckCircle2, ArrowRight } from 'lucide-react';
@@ -23,7 +23,7 @@ export default function RetailServicePage() {
                 재고부터 주문, 고객 관리까지 하나의 시스템으로 완성하세요.
               </p>
               <div className={styles.heroActions}>
-                <Link href="/contact" className={styles.btnPrimary}>
+                <Link href="/contact/" className={styles.btnPrimary}>
                   무료 상담 신청 <ArrowRight size={18} />
                 </Link>
                 <a href="https://wow3d-stock-sales-manager.pages.dev/login" target="_blank" rel="noreferrer" className={styles.btnSecondary}>
@@ -195,7 +195,7 @@ export default function RetailServicePage() {
           <div className={styles.ctaContent}>
             <h2 className={styles.ctaTitle}>WOW-Smart Manager로 매장 관리가 쉬워집니다</h2>
             <p className={styles.ctaDesc}>와우데이터비즈 전문 컨설턴트가 무료로 진단해 드립니다.</p>
-            <Link href="/contact" className={styles.ctaButton}>
+            <Link href="/contact/" className={styles.ctaButton}>
               무료 상담 신청하기 <ArrowRight size={20} />
             </Link>
           </div>

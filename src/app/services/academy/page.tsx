@@ -23,7 +23,7 @@ export default function AcademyServicePage() {
                 NCS 학사 관리부터 비대면 온라인 시험(CBT)까지 한 번에.
               </p>
               <div className={styles.heroActions}>
-                <Link href="/contact" className={styles.btnPrimary}>
+                <Link href="/contact/" className={styles.btnPrimary}>
                   무료 상담 신청 <ArrowRight size={18} />
                 </Link>
                 <a
@@ -200,7 +200,7 @@ export default function AcademyServicePage() {
           <div className={styles.ctaContent}>
             <h2 className={styles.ctaTitle}>NCS On-Track (온트랙)으로 스마트한 학원 운영 시작</h2>
             <p className={styles.ctaDesc}>지금 바로 도입 상담을 신청하고 무료 체험 혜택을 받으세요.</p>
-            <Link href="/contact" className={styles.ctaButton}>
+            <Link href="/contact/" className={styles.ctaButton}>
               도입 상담 신청하기 <ArrowRight size={20} />
             </Link>
           </div>

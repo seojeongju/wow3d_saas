@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 import PricingTable from '@/components/PricingTable';
 import { Box, Users, BarChart3, Cloud, ShieldCheck, Timer, BookOpen, LineChart } from 'lucide-react';
 import Link from 'next/link';
@@ -378,7 +378,7 @@ export default function ServicesPage() {
         <div className="container">
           <h2 className="text-2xl font-bold mb-6 text-slate-900">아직 고민되시나요?</h2>
           <p className="mb-8 text-slate-600">전문 컨설턴트가 사장님 매장에 딱 맞는 솔루션을 추천해 드립니다.</p>
-          <Link href="/contact" className="btn btn-primary btn-lg bg-blue-600 text-white px-8 py-4 rounded-lg hover:bg-blue-700 transition">
+          <Link href="/contact/" className="btn btn-primary btn-lg bg-blue-600 text-white px-8 py-4 rounded-lg hover:bg-blue-700 transition">
             무료 컨설팅 신청하기
           </Link>
         </div>

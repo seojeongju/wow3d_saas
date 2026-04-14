@@ -169,7 +169,7 @@ export default function Navbar() {
 
           {/* Desktop Actions */}
           <div className={styles.desktopActions}>
-            <Link href="/contact" className={clsx(styles.btnNavCta, isNavOpaque ? styles.btnSolid : styles.btnGlass)}>
+            <Link href="/contact/" className={clsx(styles.btnNavCta, isNavOpaque ? styles.btnSolid : styles.btnGlass)}>
               무료 상담 신청 <ChevronRight size={16} />
             </Link>
           </div>
@@ -242,7 +242,7 @@ export default function Navbar() {
             </div>
           ))}
           <div className={styles.mobilectaContainer}>
-            <Link href="/contact" onClick={handleLinkClick} className={styles.btnMobileCta}>
+            <Link href="/contact/" onClick={handleLinkClick} className={styles.btnMobileCta}>
               무료 상담 신청하기
             </Link>
           </div>

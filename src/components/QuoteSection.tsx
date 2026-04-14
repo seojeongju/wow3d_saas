@@ -54,10 +54,10 @@ export default function QuoteSection() {
                     </p>
 
                     <div className={styles.actions}>
-                        <Link href="/services/cbt" className={styles.btnPrimary}>
+                        <Link href="/services/cbt/" className={styles.btnPrimary}>
                             3D 프린터 출력방식 (FDM, SLA, DLP) <ArrowRight size={18} />
                         </Link>
-                        <Link href="/materials" className={styles.btnSecondary}>
+                        <Link href="/materials/" className={styles.btnSecondary}>
                             소재 살펴보기
                         </Link>
                     </div>

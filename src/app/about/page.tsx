@@ -31,17 +31,17 @@ const services = [
   {
     name: "WOW-Smart Manager",
     description: "스마트 재고/매출 관리 팩",
-    link: "/services/retail"
+    link: "/services/retail/"
   },
   {
     name: "NCS On-Track (온트랙)",
     description: "스마트 아카데미 매니지먼트",
-    link: "/services/academy"
+    link: "/services/academy/"
   },
   {
     name: "WOW-CBT (와우CBT)",
     description: "실전 모의고사 & 문제은행 시스템",
-    link: "/services/cbt"
+    link: "/services/cbt/"
   }
 ];
 
@@ -230,7 +230,7 @@ export default function AboutPage() {
                 <a href="mailto:3dcookidhd@naver.com">3dcookidhd@naver.com</a>
               </div>
             </div>
-            <Link href="/contact" className={styles.ctaButton}>
+            <Link href="/contact/" className={styles.ctaButton}>
               문의하기
             </Link>
           </div>

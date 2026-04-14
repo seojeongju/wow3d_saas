@@ -289,13 +289,13 @@ export default function ContactPage() {
 
               <div className={styles.quickLinks}>
                 <h4>빠른 링크</h4>
-                <Link href="/services" className={styles.quickLink}>
+                <Link href="/services/" className={styles.quickLink}>
                   서비스 소개
                 </Link>
-                <Link href="/pricing" className={styles.quickLink}>
+                <Link href="/pricing/" className={styles.quickLink}>
                   도입 안내
                 </Link>
-                <Link href="/about" className={styles.quickLink}>
+                <Link href="/about/" className={styles.quickLink}>
                   회사 소개
                 </Link>
               </div>

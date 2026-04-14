@@ -314,7 +314,7 @@ export default function PricingPage() {
                 <p className={styles.serviceSubtitle}>{currentService.subtitle}</p>
                 <p className={styles.serviceDescription}>{currentService.description}</p>
                 <Link
-                  href={`/services/${currentService.id}`}
+                  href={`/services/${currentService.id}/`}
                   className={styles.btnServiceDetail}
                   style={{ backgroundColor: currentService.color }}
                 >
@@ -433,11 +433,11 @@ export default function PricingPage() {
               전문 컨설턴트의 도입 상담을 받아보세요.
             </p>
             <div className={styles.ctaButtons}>
-              <Link href="/contact" className={styles.ctaButtonPrimary}>
+              <Link href="/contact/" className={styles.ctaButtonPrimary}>
                 무료 체험 신청하기
                 <ArrowRight size={20} />
               </Link>
-              <Link href="/contact" className={styles.ctaButtonSecondary}>
+              <Link href="/contact/" className={styles.ctaButtonSecondary}>
                 도입 상담 문의하기
               </Link>
             </div>
