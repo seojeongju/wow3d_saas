@@ -17,10 +17,10 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL('https://wow3dsw.co.kr'),
   title: {
-    default: "(주)와우쓰리디 | 스마트제조 및 맞춤형 솔루션(ERP/CRM) 공식공급업체",
+    default: "(주)와우쓰리디 | 스마트제조·ERP/CRM 솔루션 공식공급",
     template: "%s | (주)와우쓰리디"
   },
-  description: "(주)와우쓰리디(WOW3D)는 맞춤형 소프트웨어(ERP, MES, CRM, LMS) 개발 및 스마트공장, 스마트제조, 스마트서비스, 스마트상점 정부지원사업 공식공급업체입니다. 전사적자원관리부터 고객관리, 생산관리, 학사관리 및 3D프린팅 시제품 제작 대행, 지능형 공장 구축까지 최적의 솔루션을 제공합니다.",
+  description: "(주)와우쓰리디는 스마트제조, ERP/CRM 개발 및 정부지원사업 공식공급업체입니다. 3D프린팅 및 지능형 공장 구축 솔루션을 제공합니다.",
   keywords: ["와우쓰리디", "WOW3D", "(주)와우쓰리디", "와우3D", "스마트공장", "스마트제조", "스마트상점", "스마트서비스", "정부지원사업", "공식공급업체", "3D프린팅", "시제품제작", "3D프린터출력", "소프트웨어", "ERP", "MES", "CRM", "LMS", "전사적자원관리", "생산관리", "고객관리", "학사관리"],
   authors: [{ name: "(주)와우쓰리디" }],
   creator: "(주)와우쓰리디",
@@ -30,12 +30,17 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
+  icons: {
+    icon: '/logo.png',
+    shortcut: '/logo.png',
+    apple: '/logo.png',
+  },
   alternates: {
     canonical: 'https://wow3dsw.co.kr/',
   },
   openGraph: {
-    title: "(주)와우쓰리디 | 스마트제조 및 맞춤형 솔루션(ERP/CRM) 공식공급업체",
-    description: "(주)와우쓰리디(WOW3D)는 맞춤형 소프트웨어(ERP, MES, CRM, LMS) 개발 및 스마트공장 솔루션으로 비즈니스 제조 혁신을 선도합니다.",
+    title: "(주)와우쓰리디 | 스마트제조·ERP/CRM 솔루션 공식공급",
+    description: "(주)와우쓰리디(WOW3D)는 스마트제조, ERP, CRM 개발 및 정부지원사업 솔루션으로 비즈니스 제조 혁신을 선도합니다.",
     url: 'https://wow3dsw.co.kr',
     siteName: '(주)와우쓰리디',
     images: [
@@ -51,8 +56,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: "(주)와우쓰리디 | 스마트제조 및 맞춤형 솔루션(ERP/CRM) 공식공급업체",
-    description: "(주)와우쓰리디(WOW3D)는 비즈니스 혁신을 위한 맞춤형 소프트웨어(ERP, CRM, MES, LMS)와 스마트공장 솔루션을 제공합니다.",
+    title: "(주)와우쓰리디 | 스마트제조·ERP/CRM 솔루션 공식공급",
+    description: "(주)와우쓰리디는 스마트제조, ERP/CRM 개발 및 정부지원사업 공식공급업체입니다.",
     images: ['https://wow3dsw.co.kr/images/wow-smart-manager-hero.jpg'],
   },
   robots: {
@@ -86,7 +91,7 @@ export default function RootLayout({
     "name": "(주)와우쓰리디",
     "alternateName": ["WOW3D", "와우쓰리디"],
     "url": "https://wow3dsw.co.kr",
-    "logo": "https://wow3dsw.co.kr/images/logo.jpg",
+    "logo": "https://wow3dsw.co.kr/logo.png",
     "contactPoint": {
       "@type": "ContactPoint",
       "telephone": "+82-2-3144-3137",
@@ -94,7 +99,7 @@ export default function RootLayout({
       "areaServed": "KR",
       "availableLanguage": "Korean"
     },
-    "description": "(주)와우쓰리디(WOW3D)는 맞춤형 소프트웨어(ERP, MES, CRM, LMS) 개발 및 스마트공장, 스마트제조, 스마트서비스, 스마트상점 정부지원사업 공식공급업체입니다."
+    "description": "(주)와우쓰리디는 스마트제조, ERP, CRM 개발 및 정부지원사업 공식공급업체입니다."
   };
 
   const websiteJsonLd = {
