@@ -178,7 +178,7 @@ export default function AdminDashboard() {
             <div className={styles.loginPage}>
                 <div className={styles.loginCard}>
                     <div className={styles.loginIcon}><Lock size={32} /></div>
-                    <h1>관리자 로그인</h1>
+                    <h2>관리자 로그인</h2>
                     <p>자료실 관리를 위해 관리자 비밀번호를 입력해주세요.</p>
                     <form onSubmit={handleLogin} className={styles.loginForm}>
                         <input 
