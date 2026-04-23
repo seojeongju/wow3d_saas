@@ -1,7 +1,7 @@
 "use client";
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Menu, X, ChevronRight, ChevronDown, Home, LayoutGrid, MessageCircle, Info } from 'lucide-react';
+import { Menu, X, ChevronRight, ChevronDown, Home, LayoutGrid, MessageCircle, Info, Box } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import clsx from 'clsx';
 import styles from './Navbar.module.css';
