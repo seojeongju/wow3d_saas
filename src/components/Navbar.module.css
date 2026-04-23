@@ -355,7 +355,7 @@
 
 /* 데모 체험 버튼 */
 .desktopActions {
-  display: flex;
+  display: none;
   align-items: center;
   gap: 1rem;
 }
@@ -709,7 +709,7 @@
   }
 
   .desktopActions {
-    display: block;
+    display: flex;
   }
 
   .mobileToggle {
