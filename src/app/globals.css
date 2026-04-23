@@ -24,6 +24,15 @@
   --radius-sm: 4px;
   --radius-md: 8px;
   --radius-lg: 16px;
+
+  /* Safe Area for Mobile */
+  --safe-area-top: env(safe-area-inset-top, 0px);
+  --safe-area-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-area-left: env(safe-area-inset-left, 0px);
+  --safe-area-right: env(safe-area-inset-right, 0px);
+
+  /* Bottom Nav Height */
+  --bottom-nav-height: 70px;
 }
 
 * {
@@ -206,3 +215,28 @@ a {
 .opacity-90 { opacity: 0.9; }
 
 .object-cover { object-fit: cover; }
+/* Mobile Optimizations */
+@media (max-width: 768px) {
+  .mobile-hide { display: none !important; }
+  .mobile-touch-target {
+    min-height: 44px;
+    min-width: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .safe-pb {
+    padding-bottom: calc(var(--bottom-nav-height) + var(--safe-area-bottom));
+  }
+
+  .text-fluid-h1 { font-size: clamp(2rem, 8vw, 3.5rem); }
+  .text-fluid-h2 { font-size: clamp(1.5rem, 6vw, 2.5rem); }
+}
+
+/* Haptic Feedback Emulation */
+.btn:active, 
+.mobile-nav-item:active {
+  transform: scale(0.96);
+  opacity: 0.8;
+}

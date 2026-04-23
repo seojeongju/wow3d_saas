@@ -657,50 +657,58 @@
   /* Adjust hero for mobile/tablet */
   .hero {
     text-align: center;
-    min-height: 450px;
-  }
-
-  .heroSlider {
-    min-height: 450px;
+    min-height: 550px;
+    padding-top: 5rem;
+    padding-bottom: 2rem;
   }
 
   .heroContent {
     align-items: center;
-    padding-bottom: 4.5rem;
+    padding-bottom: 3.5rem;
   }
 
   .heroActions {
     justify-content: center;
     flex-wrap: wrap;
+    gap: 1rem;
   }
 
   .heroTextArea {
     max-width: 100%;
+    padding: 0 1rem;
   }
 
   .heroTitle {
-    font-size: 2.5rem;
+    font-size: clamp(2rem, 9vw, 3rem);
+    line-height: 1.25;
+    margin-bottom: 1.5rem;
   }
 
   .heroSubtitle {
-    font-size: 1.25rem;
+    font-size: 1.15rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .heroDesc {
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 2.5rem;
+    padding: 0 0.5rem;
+  }
+
+  .btnLg {
+    padding: 0.875rem 1.75rem;
+    font-size: 1rem;
+    width: 100%;
+    max-width: 280px;
   }
 
   .sliderNavButton {
-    width: 40px;
-    height: 40px;
-  }
-
-  .sliderNavButton[style*="left"] {
-    left: 1rem;
-  }
-
-  .sliderNavButton[style*="right"] {
-    right: 1rem;
+    display: none; /* Hide arrows on mobile in favor of swipe */
   }
 
   .sliderIndicators {
-    bottom: 2.5rem;
+    bottom: 2rem;
   }
 }
 

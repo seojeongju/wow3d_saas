@@ -1,7 +1,7 @@
 "use client";
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Menu, X, ChevronRight, ChevronDown } from 'lucide-react';
+import { Menu, X, ChevronRight, ChevronDown, Home, LayoutGrid, MessageCircle, Info } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import clsx from 'clsx';
 import styles from './Navbar.module.css';
@@ -16,6 +16,8 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState<string | null>(null);
+  const [showBottomNav, setShowBottomNav] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
   const pathname = usePathname();
 
   // 홈(/) 이외의 페이지는 항상 불투명 네비게이션 표시
@@ -24,7 +26,16 @@ export default function Navbar() {
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
+      const currentScrollY = window.scrollY;
+      setScrolled(currentScrollY > 20);
+      
+      // 스크롤 방향에 따라 하단 바 표시/숨김
+      if (currentScrollY > lastScrollY && currentScrollY > 100) {
+        setShowBottomNav(false); // 아래로 스크롤 시 숨김
+      } else {
+        setShowBottomNav(true); // 위로 스크롤 시 표시
+      }
+      setLastScrollY(currentScrollY);
     };
 
     // 초기 스크롤 위치 확인
@@ -44,7 +55,7 @@ export default function Navbar() {
 
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
-  }, []);
+  }, [lastScrollY]);
 
   const navLinks: NavLink[] = [
     {
@@ -247,6 +258,33 @@ export default function Navbar() {
             </Link>
           </div>
         </div>
+      </div>
+      
+      {/* Mobile Bottom Navigation Bar */}
+      <div className={clsx(styles.bottomNav, !showBottomNav && styles.hide)}>
+        <Link href="/" className={clsx(styles.bottomNavItem, pathname === '/' && styles.active)}>
+          <Home size={22} />
+          <span>홈</span>
+        </Link>
+        <button 
+          className={clsx(styles.bottomNavItem, isOpen && styles.active)}
+          onClick={() => setIsOpen(!isOpen)}
+        >
+          <LayoutGrid size={22} />
+          <span>전체메뉴</span>
+        </button>
+        <Link href="/services/" className={clsx(styles.bottomNavItem, pathname.startsWith('/services') && styles.active)}>
+          <Box size={22} />
+          <span>솔루션</span>
+        </Link>
+        <Link href="/contact/" className={clsx(styles.bottomNavItem, pathname === '/contact' && styles.active)}>
+          <MessageCircle size={22} />
+          <span>문의</span>
+        </Link>
+        <Link href="/about/" className={clsx(styles.bottomNavItem, pathname === '/about' && styles.active)}>
+          <Info size={22} />
+          <span>회사소개</span>
+        </Link>
       </div>
     </>
   );
