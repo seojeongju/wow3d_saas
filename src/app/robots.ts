@@ -7,8 +7,9 @@ export default function robots(): MetadataRoute.Robots {
         rules: {
             userAgent: '*',
             allow: '/',
-            disallow: '/api/',
+            disallow: ['/api/', '/admin/'],
         },
+        host: 'https://wow3dsw.co.kr',
         sitemap: 'https://wow3dsw.co.kr/sitemap.xml',
     };
 }
