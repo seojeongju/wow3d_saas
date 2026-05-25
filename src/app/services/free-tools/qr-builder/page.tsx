@@ -103,11 +103,7 @@ export default function QrBuilderPage() {
       }
       rawText = urlValue.trim();
     } else if (qrType === 'wifi') {
-      if (!wifiSsid || wifiSsid.trim() === '') {
-        setIsGenerated(false);
-        return;
-      }
-      // 와이파이 자동 연동 표준 규격 빌드: WIFI:S:네트워크이름;T:보안종류;P:비밀번호;;
+      // 와이파이 SSID가 비어 있어도 무조건 빌드를 수행하도록 필수 제약 해제
       rawText = `WIFI:S:${wifiSsid.trim()};T:${wifiSecurity};P:${wifiPassword};;`;
     } else if (qrType === 'tel') {
       if (!telNumber || telNumber.trim() === '') {
@@ -176,11 +172,8 @@ export default function QrBuilderPage() {
         isValid = true;
       }
     } else if (qrType === 'wifi') {
-      if (!wifiSsid || wifiSsid.trim() === '') {
-        errorMsg = '와이파이 이름(SSID)을 입력해 주세요.';
-      } else {
-        isValid = true;
-      }
+      // 와이파이 SSID는 필수 항목이 아니므로 항시 통과 처리
+      isValid = true;
     } else if (qrType === 'tel') {
       if (!telNumber || telNumber.trim() === '') {
         errorMsg = '고객센터 / 매장 전화번호를 입력해 주세요.';
@@ -349,7 +342,7 @@ export default function QrBuilderPage() {
               <>
                 <div className={styles.inputField}>
                   <label className={styles.label} htmlFor="wifiSsidInput">
-                    와이파이 이름 (SSID) <span className={styles.requiredStar}>*</span>
+                    와이파이 이름 (SSID)
                   </label>
                   <input
                     id="wifiSsidInput"
