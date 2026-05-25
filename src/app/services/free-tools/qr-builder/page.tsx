@@ -422,11 +422,18 @@ export default function QrBuilderPage() {
               QR 디자인 튜닝
             </h2>
 
-            {/* 실시간 캔버스 미리보기 구역 */}
+            {/* 실시간 캔버스 미리보기 구역 (타이밍 버그 방지를 위해 항상 렌더 타겟을 DOM에 유지) */}
             <div className={styles.qrContainer}>
-              {isGenerated ? (
-                <div id="qrcode_target" ref={qrHolderRef} className={styles.qrOutput} />
-              ) : (
+              {/* 실제 QR 렌더 타겟 홀더 */}
+              <div 
+                id="qrcode_target" 
+                ref={qrHolderRef} 
+                className={styles.qrOutput} 
+                style={{ display: isGenerated ? 'flex' : 'none' }}
+              />
+
+              {/* 입력 이전 플레이스홀더 텍스트 */}
+              {!isGenerated && (
                 <div className={styles.placeholderText}>
                   <QrIcon size={36} style={{ display: 'block', margin: '0 auto 12px auto', color: '#94a3b8' }} />
                   {qrType === 'url' && (
