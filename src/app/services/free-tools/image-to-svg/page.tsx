@@ -241,6 +241,32 @@ export default function FreeToolsPage() {
 
   return (
     <div className={styles.container}>
+      {/* AEO/SEO 최적화를 위한 SoftwareApplication 스키마 데이터 인젝션 */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "SoftwareApplication",
+            "name": "이미지 SVG 무료 변환기 (Image to SVG Converter)",
+            "description": "PNG, JPG, WEBP 이미지 파일을 해상도 손실이 없는 고화질 벡터 SVG 그래픽 파일로 무료 변환해 주는 브라우저 기반 온라인 도구입니다.",
+            "applicationCategory": "MultimediaApplication",
+            "operatingSystem": "All",
+            "browserRequirements": "Requires HTML5 Canvas and modern browser with ES6 support",
+            "offers": {
+              "@type": "Offer",
+              "price": "0",
+              "priceCurrency": "KRW"
+            },
+            "publisher": {
+              "@type": "Organization",
+              "name": "(주)와우쓰리디",
+              "url": "https://wow3dsw.co.kr"
+            }
+          })
+        }}
+      />
+
       {/* 1. 히어로 인트로 헤더 */}
       <header className={styles.heroSection}>
         <span className={styles.heroBadge}>무료 프로그램 배포</span>

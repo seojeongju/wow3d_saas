@@ -66,8 +66,7 @@ export default function Navbar() {
         { href: '/services/academy/', label: 'HRD학사관리시스템 (On-Track)', description: 'NCS 기반 직업훈련기관 전용 행정망' },
         { href: '/services/cbt/', label: '문제은행 솔루션 (CBT)', description: '컴퓨터 기반 시험 및 교육 평가 시스템' },
         { href: '/services/printing/', label: 'AI 실시간 자동 견적 시스템', description: '3D 프린팅 자동 견적 및 발주 관리' },
-        { href: '/services/free-tools/', label: '무료 프로그램 센터 (Hub)', description: '와우쓰리디 무상 제공 비즈니스 유틸리티 모음' },
-        { href: '/services/free-tools/image-to-svg/', label: '└ 이미지 SVG 변환기', description: '일반 이미지를 선명한 벡터 SVG로 실시간 무료 변환' },
+        { href: '/services/free-tools/', label: '무료 프로그램', description: '와우쓰리디가 무상 지원하는 유용한 비즈니스 프로그램 도구' },
       ]
     },
     {

@@ -66,6 +66,27 @@ export default function FreeToolsHubPage() {
 
   return (
     <div className={styles.container}>
+      {/* AEO 최적화를 위한 JSON-LD 구조화 데이터 인젝션 */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "ItemList",
+            "name": "WOW3D 무료 비즈니스 프로그램 목록",
+            "description": "소상공인 및 소기업의 업무 생산성과 디지털 경영 전환을 돕기 위해 무상 제공하는 소프트웨어 유틸리티 도구 목록입니다.",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "이미지 SVG 변환기",
+                "url": "https://wow3dsw.co.kr/services/free-tools/image-to-svg/"
+              }
+            ]
+          })
+        }}
+      />
+
       {/* 1. 메인 히어로 소개 영역 */}
       <header className={styles.heroSection}>
         <span className={styles.heroBadge}>비즈니스 업무 지원</span>

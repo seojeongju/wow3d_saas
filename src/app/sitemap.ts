@@ -23,6 +23,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
         '/services/academy/center/',
         '/services/cbt/',
         '/services/printing/',
+        '/services/free-tools/',
+        '/services/free-tools/image-to-svg/',
     ].map((route) => ({
         url: `${baseUrl}${route}`,
         lastModified: new Date().toISOString().split('T')[0],
