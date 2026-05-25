@@ -230,7 +230,6 @@ export default function ThreeDViewerPage() {
     // 업로드된 메쉬가 있을 시 셰이더 및 재질 실시간 교체 반영
     if (modelMeshRef.current && currentGeometryRef.current) {
       const geometry = currentGeometryRef.current;
-      const parent = modelMeshRef.current.parent;
       
       // 기존 모델 씬에서 제거
       sceneRef.current.remove(modelMeshRef.current);
@@ -264,50 +263,40 @@ export default function ThreeDViewerPage() {
   }, [options, isScriptsLoaded]);
 
   // --- 4. STL 도면 파싱 및 WebGL 씬 마운트 핵심 함수 ---
+  // 대용량 파일 파싱 및 연산 시 브라우저 블로킹(렉)을 제거하기 위해 
+  // '즉각 3D 시각화(Instant Rendering) 및 백그라운드 스펙 산출(Lazy Metadata)' 모델로 고도화하였습니다.
   useEffect(() => {
     if (!uploadedFile || !sceneRef.current || !isScriptsLoaded) return;
 
     const THREE = (window as any).THREE;
     setIsLoadingMesh(true);
+    
+    // 분석 보드 상태 초기화 ("계산 중..." 노출)
+    if (fileMeta) {
+      setFileMeta(prev => prev ? {
+        ...prev,
+        polygons: '계산 중...',
+        dimensions: null
+      } : null);
+    }
 
-    const timer = setTimeout(() => {
+    // 마이크로태스크 기동으로 200ms 고정 대기 딜레이 원천 제거 및 고속 파싱 시작
+    Promise.resolve().then(() => {
       try {
         const loader = new THREE.STLLoader();
-        // ArrayBuffer 형식의 데이터를 파싱하여 BufferGeometry 생성
+        // 1단계: STL 구조 고속 파싱 (동기 구간 최소화)
         const geometry = loader.parse(uploadedFile);
         currentGeometryRef.current = geometry;
 
-        // 메타 데이터 연산: 삼각형 개수 집계
-        const polyCount = geometry.index 
-          ? geometry.index.count / 3 
-          : geometry.attributes.position.count / 3;
-
-        // 메타 데이터 연산: 바운딩 박스 정밀 크기 측정 (mm 단위)
-        geometry.computeBoundingBox();
-        const bbox = geometry.boundingBox;
-        const size = new THREE.Vector3();
-        bbox.getSize(size);
-
-        if (fileMeta) {
-          setFileMeta(prev => prev ? {
-            ...prev,
-            polygons: `${Math.round(polyCount).toLocaleString()} 개`,
-            dimensions: {
-              x: parseFloat(size.x.toFixed(1)),
-              y: parseFloat(size.y.toFixed(1)),
-              z: parseFloat(size.z.toFixed(1))
-            }
-          } : null);
-        }
-
-        // 기존 씬에 존재하던 메쉬 메모리 회수 및 청소
+        // 기존 씬에 존재하던 메쉬 메모리 회수 및 청소 (가비지 컬렉터 강제 지원)
         if (modelMeshRef.current) {
           sceneRef.current.remove(modelMeshRef.current);
           if (modelMeshRef.current.geometry) modelMeshRef.current.geometry.dispose();
           if (modelMeshRef.current.material) modelMeshRef.current.material.dispose();
+          modelMeshRef.current = null;
         }
 
-        // 새 메쉬 생성 및 추가
+        // 2단계: 메쉬 즉시 생성 및 씬 가동 (시각화 우선순위 최상위 처리)
         let mesh: any;
         if (options.renderMode === 'solid' || options.renderMode === 'wireframe') {
           const material = new THREE.MeshStandardMaterial({
@@ -330,16 +319,13 @@ export default function ThreeDViewerPage() {
         sceneRef.current.add(mesh);
         modelMeshRef.current = mesh;
 
-        // 3D 모델의 카메라 피팅 최적화 연산
+        // 3단계: 초고속 BoundingSphere 연산만 가동하여 카메라 피팅 씬 즉각 활성화
         geometry.computeBoundingSphere();
         const sphere = geometry.boundingSphere;
         const center = sphere.center;
         const radius = sphere.radius;
 
-        // 카메라 및 컨트롤 타겟을 모델 중심으로 보정
         controlsRef.current.target.copy(center);
-        
-        // 반지름에 비례해 카메라 후방 피팅
         cameraRef.current.position.set(
           center.x,
           center.y + radius * 1.8,
@@ -348,17 +334,50 @@ export default function ThreeDViewerPage() {
         cameraRef.current.lookAt(center);
         controlsRef.current.update();
 
-        showToast('3D 도면 렌더링에 성공하였습니다.');
+        // 4단계: 시각화 로딩 바 즉시 종료 (체감 파싱 시간 단축)
+        setIsLoadingMesh(false);
+        showToast('3D 도면 시각화가 완료되었습니다.');
+
+        // 5단계: 대용량 정점 순회가 소요되는 무거운 실측 mm 및 폴리곤 개수 계산은
+        // 메인 프레임 페인트(Paint)에 지장을 주지 않도록 백그라운드로 50ms 비동기 지연 실행 (Lazy Execution)
+        setTimeout(() => {
+          if (!currentGeometryRef.current) return;
+          
+          try {
+            const activeGeo = currentGeometryRef.current;
+            
+            // 정점 순회 및 삼각형 개수 집계
+            const polyCount = activeGeo.index 
+              ? activeGeo.index.count / 3 
+              : activeGeo.attributes.position.count / 3;
+
+            // 정점 전체 스캔을 통한 바운딩 박스 실측 크기 계산 (가장 무거운 연산 구간)
+            activeGeo.computeBoundingBox();
+            const bbox = activeGeo.boundingBox;
+            const size = new THREE.Vector3();
+            bbox.getSize(size);
+
+            setFileMeta(prev => prev ? {
+              ...prev,
+              polygons: `${Math.round(polyCount).toLocaleString()} 개`,
+              dimensions: {
+                x: parseFloat(size.x.toFixed(1)),
+                y: parseFloat(size.y.toFixed(1)),
+                z: parseFloat(size.z.toFixed(1))
+              }
+            } : null);
+          } catch (calcErr) {
+            console.error('메타데이터 비동기 계산 오류:', calcErr);
+          }
+        }, 50);
+
       } catch (err) {
         console.error(err);
         showToast('3D 파일 파싱 오류: 올바른 STL 파일 형식이 아닙니다.');
         handleReset();
-      } finally {
         setIsLoadingMesh(false);
       }
-    }, 200);
-
-    return () => clearTimeout(timer);
+    });
   }, [uploadedFile, isScriptsLoaded]);
 
   // --- 파일 업로드 처리 로직 ---
