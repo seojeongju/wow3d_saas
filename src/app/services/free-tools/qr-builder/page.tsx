@@ -164,6 +164,69 @@ export default function QrBuilderPage() {
     }));
   };
 
+  // --- 스마트 QR 수동 생성 및 필수값 정밀 검증 핸들러 ---
+  const handleGenerate = () => {
+    let isValid = false;
+    let errorMsg = '';
+
+    if (qrType === 'url') {
+      if (!urlValue || urlValue.trim() === '' || urlValue === 'https://' || urlValue === 'http://') {
+        errorMsg = '연결할 모바일 URL 주소를 올바르게 입력해 주세요.';
+      } else {
+        isValid = true;
+      }
+    } else if (qrType === 'wifi') {
+      if (!wifiSsid || wifiSsid.trim() === '') {
+        errorMsg = '와이파이 이름(SSID)을 입력해 주세요.';
+      } else {
+        isValid = true;
+      }
+    } else if (qrType === 'tel') {
+      if (!telNumber || telNumber.trim() === '') {
+        errorMsg = '고객센터 / 매장 전화번호를 입력해 주세요.';
+      } else {
+        isValid = true;
+      }
+    }
+
+    if (!isValid) {
+      showToast(errorMsg);
+      return;
+    }
+
+    // 수동 생성 버튼 클릭 시 즉시 캔버스 드로잉 수행 및 알림 제공
+    try {
+      const QRCode = (window as any).QRCode;
+      if (QRCode && qrHolderRef.current) {
+        let rawText = '';
+        if (qrType === 'url') {
+          rawText = urlValue.trim();
+        } else if (qrType === 'wifi') {
+          rawText = `WIFI:S:${wifiSsid.trim()};T:${wifiSecurity};P:${wifiPassword};;`;
+        } else if (qrType === 'tel') {
+          rawText = `tel:${telNumber.trim()}`;
+        }
+
+        qrHolderRef.current.innerHTML = '';
+        new QRCode(qrHolderRef.current, {
+          text: rawText,
+          width: designOpts.qrSize,
+          height: designOpts.qrSize,
+          colorDark: designOpts.fgColor,
+          colorLight: designOpts.bgColor,
+          correctLevel: QRCode.CorrectLevel[designOpts.correctLevel]
+        });
+        setIsGenerated(true);
+        showToast('스마트 QR 코드가 성공적으로 생성되어 디자인에 반영되었습니다.');
+      } else {
+        showToast('QR 라이브러리 로딩을 기다리는 중입니다. 잠시 후 다시 시도해 주세요.');
+      }
+    } catch (err) {
+      console.error(err);
+      showToast('QR 코드 생성 중 알 수 없는 오류가 발생했습니다.');
+    }
+  };
+
   // --- 고화질 PNG 이미지 파일 다운로드 ---
   const handleDownloadPng = () => {
     if (!isGenerated || !qrHolderRef.current) return;
@@ -264,7 +327,9 @@ export default function QrBuilderPage() {
             {/* 1. 일반 URL 연결 모드 */}
             {qrType === 'url' && (
               <div className={styles.inputField}>
-                <label className={styles.label} htmlFor="urlInput">연결할 모바일 URL 주소</label>
+                <label className={styles.label} htmlFor="urlInput">
+                  연결할 모바일 URL 주소 <span className={styles.requiredStar}>*</span>
+                </label>
                 <input
                   id="urlInput"
                   type="url"
@@ -283,7 +348,9 @@ export default function QrBuilderPage() {
             {qrType === 'wifi' && (
               <>
                 <div className={styles.inputField}>
-                  <label className={styles.label} htmlFor="wifiSsidInput">와이파이 이름 (SSID)</label>
+                  <label className={styles.label} htmlFor="wifiSsidInput">
+                    와이파이 이름 (SSID) <span className={styles.requiredStar}>*</span>
+                  </label>
                   <input
                     id="wifiSsidInput"
                     type="text"
@@ -326,7 +393,9 @@ export default function QrBuilderPage() {
             {/* 3. 전화번호 즉시 걸기 모드 */}
             {qrType === 'tel' && (
               <div className={styles.inputField}>
-                <label className={styles.label} htmlFor="telInput">고객센터 / 매장 전화번호</label>
+                <label className={styles.label} htmlFor="telInput">
+                  고객센터 / 매장 전화번호 <span className={styles.requiredStar}>*</span>
+                </label>
                 <input
                   id="telInput"
                   type="tel"
@@ -341,6 +410,15 @@ export default function QrBuilderPage() {
               </div>
             )}
           </div>
+
+          {/* 명시적 스마트 QR 생성 실행 버튼 */}
+          <button
+            className={styles.submitBtn}
+            onClick={handleGenerate}
+          >
+            <QrIcon size={18} />
+            스마트 QR 코드 생성하기
+          </button>
         </section>
 
         {/* 2-2. 우측 디자인 커스텀 및 다운로드 사이드바 */}
@@ -358,7 +436,28 @@ export default function QrBuilderPage() {
               ) : (
                 <div className={styles.placeholderText}>
                   <QrIcon size={36} style={{ display: 'block', margin: '0 auto 12px auto', color: '#94a3b8' }} />
-                  좌측 폼에 매장 정보를 입력하시면<br />실시간 커스텀 QR이 생성됩니다.
+                  {qrType === 'url' && (
+                    <>
+                      좌측에 <strong style={{ color: '#3b82f6' }}>연결할 모바일 URL 주소</strong>를<br />
+                      입력하시면 실시간으로 스마트 QR 코드가 생성됩니다.
+                    </>
+                  )}
+                  {qrType === 'wifi' && (
+                    <>
+                      좌측에 <strong style={{ color: '#3b82f6' }}>와이파이 이름 (SSID)</strong>을<br />
+                      입력하시면 실시간으로 스마트 QR 코드가 생성됩니다.
+                    </>
+                  )}
+                  {qrType === 'tel' && (
+                    <>
+                      좌측에 <strong style={{ color: '#3b82f6' }}>매장 전화번호</strong>를<br />
+                      입력하시면 실시간으로 스마트 QR 코드가 생성됩니다.
+                    </>
+                  )}
+                  <div style={{ marginTop: '14px', fontSize: '0.75rem', color: '#64748b', lineHeight: '1.4' }}>
+                    * 필수 항목 입력 시 자동 렌더링되며,<br />
+                    하단의 <strong>[스마트 QR 코드 생성하기]</strong> 버튼을 클릭해도 즉시 반영됩니다.
+                  </div>
                 </div>
               )}
             </div>
