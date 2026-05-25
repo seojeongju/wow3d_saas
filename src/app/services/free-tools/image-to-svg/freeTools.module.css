@@ -1,11 +1,11 @@
-/* 무료 이미지 SVG 변환기 전용 스타일시트 */
+/* 무료 이미지 SVG 변환기 라이트 글래스모피즘 스타일시트 */
 
 .container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 120px 20px 80px 20px;
   min-height: 100vh;
-  color: #f1f5f9;
+  color: #0f172a; /* 텍스트 가독성 극대화를 위한 다크 네이비 기본값 */
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
@@ -19,9 +19,9 @@
 .heroBadge {
   display: inline-block;
   padding: 6px 16px;
-  background: rgba(59, 130, 246, 0.15);
-  border: 1px solid rgba(59, 130, 246, 0.3);
-  color: #60a5fa;
+  background: rgba(59, 130, 246, 0.08);
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  color: #1d4ed8; /* 선명한 블루 배지 */
   border-radius: 9999px;
   font-size: 0.875rem;
   font-weight: 600;
@@ -34,7 +34,7 @@
   font-weight: 800;
   line-height: 1.2;
   letter-spacing: -0.03em;
-  background: linear-gradient(135deg, #ffffff 30%, #93c5fd 100%);
+  background: linear-gradient(135deg, #0f172a 30%, #1e40af 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   margin-bottom: 16px;
@@ -42,7 +42,7 @@
 
 .heroDesc {
   font-size: 1.125rem;
-  color: #94a3b8;
+  color: #475569; /* 가독성 좋은 차분한 흑회색 */
   max-width: 600px;
   margin: 0 auto;
   line-height: 1.6;
@@ -62,31 +62,31 @@
   }
 }
 
-/* 작업 영역 카드 공통 */
+/* 작업 영역 카드 라이트 글래스모피즘 적용 */
 .card {
-  background: rgba(15, 23, 42, 0.6);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(15, 23, 42, 0.08);
   border-radius: 20px;
   padding: 30px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.04);
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .card:hover {
-  border-color: rgba(59, 130, 246, 0.2);
-  box-shadow: 0 20px 40px rgba(59, 130, 246, 0.05);
+  border-color: rgba(59, 130, 246, 0.25);
+  box-shadow: 0 15px 35px rgba(59, 130, 246, 0.06);
 }
 
 /* 파일 업로드 존 */
 .uploadZone {
-  border: 2px dashed rgba(255, 255, 255, 0.15);
+  border: 2px dashed rgba(15, 23, 42, 0.15);
   border-radius: 16px;
   padding: 60px 40px;
   text-align: center;
   cursor: pointer;
-  background: rgba(30, 41, 59, 0.2);
+  background: rgba(241, 245, 249, 0.4);
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   display: flex;
   flex-direction: column;
@@ -97,41 +97,41 @@
 
 .uploadZone:hover, .uploadZoneActive {
   border-color: #3b82f6;
-  background: rgba(59, 130, 246, 0.05);
-  box-shadow: inset 0 0 20px rgba(59, 130, 246, 0.1);
+  background: rgba(59, 130, 246, 0.04);
+  box-shadow: inset 0 0 20px rgba(59, 130, 246, 0.05);
 }
 
 .uploadIconWrapper {
   width: 70px;
   height: 70px;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(0, 0, 0, 0.02);
+  border: 1px solid rgba(0, 0, 0, 0.06);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #94a3b8;
+  color: #64748b;
   margin-bottom: 20px;
   transition: all 0.3s ease;
 }
 
 .uploadZone:hover .uploadIconWrapper, .uploadZoneActive .uploadIconWrapper {
   color: #3b82f6;
-  background: rgba(59, 130, 246, 0.1);
-  border-color: rgba(59, 130, 246, 0.3);
+  background: rgba(59, 130, 246, 0.08);
+  border-color: rgba(59, 130, 246, 0.2);
   transform: translateY(-4px);
 }
 
 .uploadText {
   font-size: 1.125rem;
   font-weight: 600;
-  color: #e2e8f0;
+  color: #1e293b;
   margin-bottom: 8px;
 }
 
 .uploadSubtext {
   font-size: 0.875rem;
-  color: #64748b;
+  color: #475569;
   margin-bottom: 4px;
 }
 
@@ -152,7 +152,7 @@
 .fileName {
   font-size: 1.125rem;
   font-weight: 700;
-  color: #f8fafc;
+  color: #0f172a;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -161,14 +161,14 @@
 
 .fileMeta {
   font-size: 0.8125rem;
-  color: #64748b;
+  color: #475569;
   margin-top: 4px;
 }
 
 .btnReset {
-  background: rgba(239, 68, 68, 0.1);
+  background: rgba(239, 68, 68, 0.08);
   color: #ef4444;
-  border: 1px solid rgba(239, 68, 68, 0.2);
+  border: 1px solid rgba(239, 68, 68, 0.15);
   padding: 6px 14px;
   border-radius: 8px;
   font-size: 0.875rem;
@@ -196,8 +196,8 @@
 }
 
 .viewCard {
-  background: rgba(30, 41, 59, 0.3);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  background: rgba(248, 250, 252, 0.7);
+  border: 1px solid rgba(15, 23, 42, 0.04);
   border-radius: 12px;
   padding: 16px;
   display: flex;
@@ -208,7 +208,7 @@
 .viewTitle {
   font-size: 0.875rem;
   font-weight: 600;
-  color: #94a3b8;
+  color: #334155;
   display: flex;
   align-items: center;
   gap: 6px;
@@ -232,14 +232,14 @@
   min-height: 320px;
   max-height: 500px;
   position: relative;
-  border: 1px solid rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(0, 0, 0, 0.15);
 }
 
 .displayArea img, .displayArea svg {
   max-width: 90%;
   max-height: 90%;
   object-fit: contain;
-  filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.5));
+  filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.4));
 }
 
 /* 컨트롤 패널 (우측 사이드바) */
@@ -252,9 +252,9 @@
 .sectionTitle {
   font-size: 1.25rem;
   font-weight: 700;
-  color: #ffffff;
+  color: #0f172a;
   margin-bottom: 20px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
   padding-bottom: 12px;
 }
 
@@ -274,13 +274,13 @@
 .label {
   font-size: 0.875rem;
   font-weight: 600;
-  color: #cbd5e1;
+  color: #334155;
 }
 
 .valueIndicator {
   font-size: 0.8125rem;
-  background: rgba(255, 255, 255, 0.05);
-  color: #3b82f6;
+  background: rgba(59, 130, 246, 0.08);
+  color: #1d4ed8;
   padding: 2px 8px;
   border-radius: 4px;
   font-weight: 700;
@@ -291,7 +291,7 @@
   width: 100%;
   height: 6px;
   border-radius: 3px;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(15, 23, 42, 0.08);
   outline: none;
   transition: background 0.3s;
 }
@@ -305,7 +305,7 @@
   background: #3b82f6;
   cursor: pointer;
   border: 2px solid #ffffff;
-  box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+  box-shadow: 0 2px 6px rgba(59, 130, 246, 0.3);
   transition: transform 0.1s;
 }
 
@@ -317,16 +317,16 @@
 .tabGroup {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  background: rgba(255, 255, 255, 0.03);
+  background: rgba(0, 0, 0, 0.04);
   padding: 4px;
   border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.06);
 }
 
 .tabButton {
   background: transparent;
   border: none;
-  color: #94a3b8;
+  color: #64748b;
   padding: 8px;
   font-size: 0.875rem;
   font-weight: 600;
@@ -336,9 +336,9 @@
 }
 
 .tabButtonActive {
-  background: #3b82f6;
-  color: #ffffff;
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+  background: #ffffff;
+  color: #1d4ed8;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
 }
 
 /* 체크박스 스타일 */
@@ -348,7 +348,7 @@
   gap: 10px;
   cursor: pointer;
   font-size: 0.875rem;
-  color: #cbd5e1;
+  color: #334155;
   user-select: none;
   margin-top: 10px;
 }
@@ -358,7 +358,7 @@
   width: 18px;
   height: 18px;
   border-radius: 4px;
-  border: 2px solid rgba(255, 255, 255, 0.2);
+  border: 2px solid rgba(15, 23, 42, 0.18);
   background: transparent;
   cursor: pointer;
   display: grid;
@@ -416,9 +416,9 @@
 }
 
 .btnSecondary {
-  background: rgba(255, 255, 255, 0.05);
-  color: #e2e8f0;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(0, 0, 0, 0.02);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  color: #334155;
   padding: 12px;
   border-radius: 10px;
   font-size: 0.9375rem;
@@ -432,8 +432,8 @@
 }
 
 .btnSecondary:hover {
-  background: rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 0.2);
+  background: rgba(0, 0, 0, 0.06);
+  border-color: rgba(0, 0, 0, 0.15);
 }
 
 .disabled {
@@ -450,7 +450,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(15, 23, 42, 0.7);
+  background: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(4px);
   display: flex;
   flex-direction: column;
@@ -472,7 +472,7 @@
 .loadingText {
   font-size: 0.9375rem;
   font-weight: 600;
-  color: #3b82f6;
+  color: #1d4ed8;
 }
 
 /* 안내 및 가이드 섹션 */
@@ -484,7 +484,7 @@
 .guideTitle {
   font-size: 1.5rem;
   font-weight: 700;
-  color: #ffffff;
+  color: #0f172a;
   margin-bottom: 24px;
   text-align: center;
 }
@@ -502,17 +502,18 @@
 }
 
 .guideCard {
-  background: rgba(15, 23, 42, 0.4);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(15, 23, 42, 0.05);
   border-radius: 16px;
   padding: 24px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
 }
 
 .guideStepNumber {
   width: 32px;
   height: 32px;
-  background: rgba(59, 130, 246, 0.1);
-  color: #60a5fa;
+  background: rgba(59, 130, 246, 0.08);
+  color: #1d4ed8;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -525,13 +526,13 @@
 .guideStepTitle {
   font-size: 1.125rem;
   font-weight: 700;
-  color: #f1f5f9;
+  color: #1e293b;
   margin-bottom: 8px;
 }
 
 .guideStepDesc {
   font-size: 0.875rem;
-  color: #94a3b8;
+  color: #475569;
   line-height: 1.5;
 }
 
@@ -541,14 +542,14 @@
   bottom: 30px;
   left: 50%;
   transform: translateX(-50%) translateY(100px);
-  background: rgba(30, 41, 59, 0.9);
+  background: rgba(15, 23, 42, 0.95);
   border: 1px solid #10b981;
   color: #10b981;
   padding: 12px 24px;
   border-radius: 12px;
   font-weight: 600;
   font-size: 0.9375rem;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
   transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   z-index: 999;
 }
@@ -586,8 +587,8 @@
 
 /* 무료 한도 제한 알림 배너 */
 .limitBanner {
-  background: rgba(239, 68, 68, 0.08);
-  border: 1px solid rgba(239, 68, 68, 0.25);
+  background: rgba(239, 68, 68, 0.05);
+  border: 1px solid rgba(239, 68, 68, 0.2);
   border-radius: 16px;
   padding: 18px 24px;
   margin-bottom: 24px;
@@ -607,9 +608,9 @@
 }
 
 .limitText {
-  color: #fca5a5;
+  color: #b91c1c; /* 짙고 뚜렷한 붉은색으로 가독성 보장 */
   font-size: 0.9375rem;
-  font-weight: 500;
+  font-weight: 600;
   line-height: 1.5;
 }
 
@@ -633,5 +634,5 @@
 .btnContact:hover {
   background: #dc2626;
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.15);
 }
