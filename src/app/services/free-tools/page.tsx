@@ -21,6 +21,7 @@ interface ToolItem {
   badgeText: string;
   isActive: boolean;
   href: string;
+  isExternal?: boolean;
 }
 
 export default function FreeToolsHubPage() {
@@ -58,9 +59,10 @@ export default function FreeToolsHubPage() {
       title: '3D 프린팅 단가 계산기',
       description: '시제품 출력을 위해 모델링 파일 및 필라멘트 사양을 기반으로 가공비, 재료비, 난이도를 정밀 계산하여 아웃소싱 전 예상 공정 단가를 투명하게 시뮬레이션합니다.',
       icon: <Calculator size={28} />,
-      badgeText: '개발 예정',
-      isActive: false,
-      href: '#'
+      badgeText: '견적 서비스 연동',
+      isActive: true,
+      href: 'https://wow3dp.co.kr',
+      isExternal: true
     }
   ];
 
@@ -118,9 +120,20 @@ export default function FreeToolsHubPage() {
 
             <div className={styles.cardFooter}>
               {tool.isActive ? (
-                <Link href={tool.href} className={clsx(styles.btnAction, styles.btnActive)}>
-                  지금 사용하기 <ArrowRight size={16} />
-                </Link>
+                tool.isExternal ? (
+                  <a 
+                    href={tool.href} 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className={clsx(styles.btnAction, styles.btnActive)}
+                  >
+                    지금 사용하기 <ArrowRight size={16} />
+                  </a>
+                ) : (
+                  <Link href={tool.href} className={clsx(styles.btnAction, styles.btnActive)}>
+                    지금 사용하기 <ArrowRight size={16} />
+                  </Link>
+                )
               ) : (
                 <button className={clsx(styles.btnAction, styles.btnInactive)} disabled>
                   <Lock size={14} /> 추후 업데이트 예정
