@@ -66,6 +66,7 @@ export default function Navbar() {
         { href: '/services/academy/', label: 'HRD학사관리시스템 (On-Track)', description: 'NCS 기반 직업훈련기관 전용 행정망' },
         { href: '/services/cbt/', label: '문제은행 솔루션 (CBT)', description: '컴퓨터 기반 시험 및 교육 평가 시스템' },
         { href: '/services/printing/', label: 'AI 실시간 자동 견적 시스템', description: '3D 프린팅 자동 견적 및 발주 관리' },
+        { href: '/services/free-tools/', label: '무료 프로그램 (이미지 SVG 변환)', description: '이미지를 고품질 SVG 벡터 파일로 무료 변환' },
       ]
     },
     {
