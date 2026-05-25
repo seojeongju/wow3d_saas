@@ -746,15 +746,67 @@ export default function ThreeDViewerPage() {
       {/* 2. 대시보드 워크스페이스 */}
       <main className={styles.workspace}>
         {/* 2-1. 좌측 3D WebGL 렌더 캔버스 영역 */}
-        <section className={styles.card} ref={containerRef}>
-          {!uploadedFile ? (
-            // [업로드 이전] STL 도면 수령 드래그 존
+        <section className={styles.card} ref={containerRef} style={{ position: 'relative', minHeight: '480px' }}>
+          {/* WebGL 씬 디렉토리 (항상 DOM에 유지하여 단 1회만 WebGL 컨텍스트 초기화 수행) */}
+          <div className={styles.viewerContainer} style={{ display: uploadedFile ? 'flex' : 'none' }}>
+            <div className={styles.viewerHeader}>
+              <div>
+                <h2 className={styles.fileName}>{fileMeta?.name}</h2>
+                <p className={styles.fileMeta}>
+                  용량: {fileMeta?.size} | 3D 하드웨어 가속 구동 중
+                </p>
+              </div>
+              <button className={styles.btnReset} onClick={handleReset}>
+                새 도면 올리기
+              </button>
+            </div>
+
+            {/* WebGL 실제 렌더링 홀더 */}
+            <div className={styles.canvasContainer}>
+              {isLoadingMesh && (
+                <div className={styles.overlay}>
+                  <div className={styles.spinner} />
+                  <span className={styles.overlayText}>
+                    {loadingStage === 'reading' && `파일 데이터 읽는 중... (${loadingProgress}%)`}
+                    {loadingStage === 'parsing' && `3D 도면 지오메트리 파싱 및 빌드 중... (${loadingProgress}%)`}
+                  </span>
+                  {/* 실시간 진행도 게이지 바 */}
+                  <div className={styles.progressBarBg}>
+                    <div 
+                      className={styles.progressBarFill} 
+                      style={{ width: `${loadingProgress}%` }}
+                    />
+                  </div>
+                </div>
+              )}
+              
+              {/* 3D 렌더 타겟 도화지 캔버스 */}
+              <canvas ref={canvasRef} className={styles.canvasElement} />
+
+              {/* 마우스 조작 단축키 안내판 */}
+              <div className={styles.helperOverlay}>
+                <div className={styles.helperItem}>
+                  <span style={{ fontWeight: 800, color: '#60a5fa' }}>좌클릭 드래그:</span> 회전
+                </div>
+                <div className={styles.helperItem}>
+                  <span style={{ fontWeight: 800, color: '#60a5fa' }}>마우스 휠:</span> 줌
+                </div>
+                <div className={styles.helperItem}>
+                  <span style={{ fontWeight: 800, color: '#60a5fa' }}>우클릭 드래그:</span> 이동
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* [업로드 이전] STL 도면 수령 드래그 존 */}
+          {!uploadedFile && (
             <div 
               className={clsx(styles.uploadZone, isDragging && styles.uploadZoneActive)}
               onDragOver={handleDragOver}
               onDragLeave={handleDragLeave}
               onDrop={handleDrop}
               onClick={triggerFileInput}
+              style={{ minHeight: '480px' }}
             >
               <input 
                 type="file" 
@@ -769,57 +821,6 @@ export default function ThreeDViewerPage() {
               <h2 className={styles.uploadText}>3D 도면(STL) 파일을 여기에 끌어놓거나 클릭하세요</h2>
               <p className={styles.uploadSubtext}>지원 파일 확장자: .stl (ASCII 및 Binary 형식 완벽 호환)</p>
               <p className={styles.uploadSubtext}>외주 출력 전 파일 규격 확인 및 삼각형 폴리곤 개수 사전 검사에 아주 유용합니다</p>
-            </div>
-          ) : (
-            // [업로드 이후] WebGL 씬 디렉토리
-            <div className={styles.viewerContainer}>
-              <div className={styles.viewerHeader}>
-                <div>
-                  <h2 className={styles.fileName}>{fileMeta?.name}</h2>
-                  <p className={styles.fileMeta}>
-                    용량: {fileMeta?.size} | 3D 하드웨어 가속 구동 중
-                  </p>
-                </div>
-                <button className={styles.btnReset} onClick={handleReset}>
-                  새 도면 올리기
-                </button>
-              </div>
-
-              {/* WebGL 실제 렌더링 홀더 */}
-              <div className={styles.canvasContainer}>
-                {isLoadingMesh && (
-                  <div className={styles.overlay}>
-                    <div className={styles.spinner} />
-                    <span className={styles.overlayText}>
-                      {loadingStage === 'reading' && `파일 데이터 읽는 중... (${loadingProgress}%)`}
-                      {loadingStage === 'parsing' && `3D 도면 지오메트리 파싱 및 빌드 중... (${loadingProgress}%)`}
-                    </span>
-                    {/* 실시간 진행도 게이지 바 */}
-                    <div className={styles.progressBarBg}>
-                      <div 
-                        className={styles.progressBarFill} 
-                        style={{ width: `${loadingProgress}%` }}
-                      />
-                    </div>
-                  </div>
-                )}
-                
-                {/* 3D 렌더 타겟 도화지 캔버스 */}
-                <canvas ref={canvasRef} className={styles.canvasElement} />
-
-                {/* 마우스 조작 단축키 안내판 */}
-                <div className={styles.helperOverlay}>
-                  <div className={styles.helperItem}>
-                    <span style={{ fontWeight: 800, color: '#60a5fa' }}>좌클릭 드래그:</span> 회전
-                  </div>
-                  <div className={styles.helperItem}>
-                    <span style={{ fontWeight: 800, color: '#60a5fa' }}>마우스 휠:</span> 줌
-                  </div>
-                  <div className={styles.helperItem}>
-                    <span style={{ fontWeight: 800, color: '#60a5fa' }}>우클릭 드래그:</span> 이동
-                  </div>
-                </div>
-              </div>
             </div>
           )}
         </section>
