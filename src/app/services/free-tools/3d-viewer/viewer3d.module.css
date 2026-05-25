@@ -1,0 +1,567 @@
+/* 3D 도면 실시간 뷰어 전용 라이트 글래스모피즘 스타일시트 */
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 120px 20px 80px 20px;
+  min-height: 100vh;
+  color: #0f172a;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+/* 히어로 섹션 */
+.heroSection {
+  text-align: center;
+  margin-bottom: 50px;
+  animation: fadeInDown 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.heroBadge {
+  display: inline-block;
+  padding: 6px 16px;
+  background: rgba(59, 130, 246, 0.08);
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  color: #1d4ed8;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin-bottom: 16px;
+  letter-spacing: -0.01em;
+}
+
+.heroTitle {
+  font-size: 2.75rem;
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.03em;
+  background: linear-gradient(135deg, #0f172a 30%, #1e40af 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 16px;
+}
+
+.heroDesc {
+  font-size: 1.125rem;
+  color: #475569;
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* 대시보드 워크스페이스 */
+.workspace {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 30px;
+  animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
+}
+
+@media (max-width: 1024px) {
+  .workspace {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* 라이트 글래스모피즘 카드 */
+.card {
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.04);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  border-color: rgba(59, 130, 246, 0.25);
+  box-shadow: 0 15px 35px rgba(59, 130, 246, 0.06);
+}
+
+/* 파일 업로드 래퍼 */
+.uploadZone {
+  border: 2px dashed rgba(15, 23, 42, 0.15);
+  border-radius: 16px;
+  padding: 60px 40px;
+  text-align: center;
+  cursor: pointer;
+  background: rgba(241, 245, 249, 0.4);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 480px;
+}
+
+.uploadZone:hover, .uploadZoneActive {
+  border-color: #3b82f6;
+  background: rgba(59, 130, 246, 0.04);
+  box-shadow: inset 0 0 20px rgba(59, 130, 246, 0.05);
+}
+
+.uploadIconWrapper {
+  width: 70px;
+  height: 70px;
+  background: rgba(0, 0, 0, 0.02);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #64748b;
+  margin-bottom: 20px;
+  transition: all 0.3s ease;
+}
+
+.uploadZone:hover .uploadIconWrapper, .uploadZoneActive .uploadIconWrapper {
+  color: #3b82f6;
+  background: rgba(59, 130, 246, 0.08);
+  border-color: rgba(59, 130, 246, 0.2);
+  transform: translateY(-4px);
+}
+
+.uploadText {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 8px;
+}
+
+.uploadSubtext {
+  font-size: 0.875rem;
+  color: #475569;
+  margin-bottom: 4px;
+}
+
+/* 3D 캔버스 전용 뷰어 영역 */
+.viewerContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  height: 100%;
+}
+
+.viewerHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.fileName {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #0f172a;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 300px;
+}
+
+.fileMeta {
+  font-size: 0.8125rem;
+  color: #475569;
+  margin-top: 4px;
+}
+
+.btnReset {
+  background: rgba(239, 68, 68, 0.08);
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.15);
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btnReset:hover {
+  background: #ef4444;
+  color: #ffffff;
+}
+
+/* WebGL 캔버스 컨테이너 디자인 */
+.canvasContainer {
+  width: 100%;
+  height: 480px;
+  background: #111827; /* 어두운 WebGL 씬 배경 */
+  border-radius: 16px;
+  overflow: hidden;
+  position: relative;
+  border: 1px solid rgba(15, 23, 42, 0.15);
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.canvasElement {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* 3D 로딩/에러/가이드 오버레이 */
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(17, 24, 39, 0.85);
+  backdrop-filter: blur(4px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  z-index: 10;
+  color: #ffffff;
+}
+
+.spinner {
+  width: 45px;
+  height: 45px;
+  border: 3px solid rgba(59, 130, 246, 0.15);
+  border-radius: 50%;
+  border-top-color: #3b82f6;
+  animation: spin 1s linear infinite;
+}
+
+.overlayText {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: #60a5fa;
+}
+
+/* 마우스 조작 안내 뱃지 오버레이 */
+.helperOverlay {
+  position: absolute;
+  bottom: 16px;
+  left: 16px;
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 8px 12px;
+  border-radius: 8px;
+  color: #cbd5e1;
+  font-size: 0.75rem;
+  pointer-events: none;
+  display: flex;
+  gap: 12px;
+  z-index: 5;
+}
+
+.helperItem {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* 우측 사이드바 패널 */
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.sectionTitle {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 20px;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+  padding-bottom: 12px;
+}
+
+.controlGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #334155;
+  margin-bottom: 6px;
+  display: block;
+}
+
+/* 탭 버튼 설정 */
+.tabGroup {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  background: rgba(0, 0, 0, 0.04);
+  padding: 4px;
+  border-radius: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.tabButton {
+  background: transparent;
+  border: none;
+  color: #64748b;
+  padding: 8px 4px;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.tabButtonActive {
+  background: #ffffff;
+  color: #1d4ed8;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+/* 모델 컬러 선택기 (동그란 칩 방식) */
+.colorChips {
+  display: flex;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.colorChip {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.colorChip:hover {
+  transform: scale(1.15);
+}
+
+.colorChipActive {
+  border-color: #3b82f6;
+  transform: scale(1.1);
+  box-shadow: 0 0 8px rgba(59, 130, 246, 0.5);
+}
+
+/* 체크박스 가이드 옵션 */
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  color: #334155;
+  user-select: none;
+  margin-top: 8px;
+}
+
+.checkbox {
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  border: 2px solid rgba(15, 23, 42, 0.18);
+  background: transparent;
+  cursor: pointer;
+  display: grid;
+  place-content: center;
+  transition: all 0.2s;
+}
+
+.checkbox:checked {
+  border-color: #3b82f6;
+  background: #3b82f6;
+}
+
+.checkbox::before {
+  content: "";
+  width: 10px;
+  height: 10px;
+  transform: scale(0);
+  transition: 120ms transform ease-in-out;
+  background-color: white;
+  clip-path: polygon(14% 44%, 0 58%, 30% 88%, 100% 18%, 86% 5%, 30% 61%);
+}
+
+.checkbox:checked::before {
+  transform: scale(1);
+}
+
+/* 메타 3D 파일 규격 정보 보드 */
+.metaPanel {
+  background: rgba(0, 0, 0, 0.02);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 12px;
+  padding: 16px;
+  margin-top: 10px;
+}
+
+.metaTitle {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  padding-bottom: 6px;
+}
+
+.metaItem {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8125rem;
+  color: #475569;
+  line-height: 1.8;
+}
+
+.metaItem strong {
+  color: #0f172a;
+}
+
+/* 하단 버튼 및 리셋 액션 */
+.actionGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.btnPrimary {
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  color: #ffffff;
+  border: none;
+  padding: 14px;
+  border-radius: 10px;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.15);
+}
+
+.btnPrimary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.25);
+}
+
+.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+/* 도움말 가이드 섹션 */
+.guideSection {
+  margin-top: 60px;
+  animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
+}
+
+.guideTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.guideGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+@media (max-width: 768px) {
+  .guideGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.guideCard {
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(15, 23, 42, 0.05);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+}
+
+.guideStepNumber {
+  width: 32px;
+  height: 32px;
+  background: rgba(59, 130, 246, 0.08);
+  color: #1d4ed8;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.875rem;
+  margin-bottom: 16px;
+}
+
+.guideStepTitle {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 8px;
+}
+
+.guideStepDesc {
+  font-size: 0.875rem;
+  color: #475569;
+  line-height: 1.5;
+}
+
+/* 토스트 플래시 알림 */
+.toast {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background: rgba(15, 23, 42, 0.95);
+  border: 1px solid #10b981;
+  color: #10b981;
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 0.9375rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 999;
+}
+
+.toastShow {
+  transform: translateX(-50%) translateY(0);
+}
+
+/* 애니메이션 정의 */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

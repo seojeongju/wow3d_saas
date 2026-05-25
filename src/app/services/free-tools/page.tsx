@@ -38,11 +38,11 @@ export default function FreeToolsHubPage() {
     {
       id: '3d-viewer',
       title: '3D 도면 실시간 뷰어',
-      description: '설치 없이 웹 브라우저 상에서 직접 대용량 3D 프린터 설계 도면(STL, OBJ, 3MF) 파일을 업로드하여 입체 형상을 회전하고 정밀하게 단면을 관찰 및 측정합니다.',
+      description: '설치 없이 웹 브라우저 상에서 직접 3D 프린터 설계 도면(STL) 파일을 업로드하여 입체 형상을 자유롭게 회전/확대하고 실측 규격 mm 크기를 즉각 측정 및 검사합니다.',
       icon: <Box size={28} />,
-      badgeText: '개발 예정',
-      isActive: false,
-      href: '#'
+      badgeText: '서비스 제공 중',
+      isActive: true,
+      href: '/services/free-tools/3d-viewer/'
     },
     {
       id: 'qr-builder',

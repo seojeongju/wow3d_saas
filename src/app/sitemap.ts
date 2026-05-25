@@ -25,6 +25,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
         '/services/printing/',
         '/services/free-tools/',
         '/services/free-tools/image-to-svg/',
+        '/services/free-tools/3d-viewer/',
     ].map((route) => ({
         url: `${baseUrl}${route}`,
         lastModified: new Date().toISOString().split('T')[0],
