@@ -47,11 +47,11 @@ export default function FreeToolsHubPage() {
     {
       id: 'qr-builder',
       title: '매장용 스마트 QR 생성기',
-      description: '와이파이 자동 접속, 모바일 예약 사이트 연결, 테이블 오더 연동 등 소상공인 점포 운영에 필요한 다기능 스마트 QR 코드를 직접 커스텀 생성하고 내려받습니다.',
+      description: '고객용 무료 와이파이 자동 연동 QR부터 예약 페이지 연결, 테이블 오더 연동 등 소상공인 매장에 유용한 맞춤형 다기능 스마트 QR 코드를 실시간 커스텀 디자인하고 빌드합니다.',
       icon: <QrCode size={28} />,
-      badgeText: '개발 예정',
-      isActive: false,
-      href: '#'
+      badgeText: '서비스 제공 중',
+      isActive: true,
+      href: '/services/free-tools/qr-builder/'
     },
     {
       id: 'cost-calculator',
