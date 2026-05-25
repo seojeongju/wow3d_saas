@@ -11,7 +11,17 @@ export const metadata: Metadata = {
     'QR 코드 다운로드',
     'QR 코드 제작기',
     '테이블오더 QR',
-    '와우쓰리디 무료 도구'
+    '와우쓰리디 무료 도구',
+    '무료 QR코드 생성 사이트',
+    '스마트 QR 생성기',
+    '와이파이 자동접속 QR',
+    '전화걸기 QR코드',
+    '상담 예약 링크 QR',
+    'QR메뉴판 만들기',
+    '고화질 QR코드 인쇄',
+    '커스텀 QR코드 색상',
+    '스마트상점 QR코드',
+    '테이블 주문 QR코드 제작'
   ],
   alternates: {
     canonical: 'https://wow3dsw.co.kr/services/free-tools/qr-builder/',

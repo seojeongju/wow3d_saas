@@ -11,7 +11,18 @@ export const metadata: Metadata = {
     '3D 프린터 도면 보기',
     '3D CAD 뷰어',
     '온라인 3D 뷰어',
-    '와우쓰리디 무료 3D 도구'
+    '와우쓰리디 무료 3D 도구',
+    '무료 3D도면 뷰어',
+    '3D stl 파일 열기',
+    'Three.js STL 뷰어',
+    '무료 3D 렌더링',
+    '3D 프린터 출력 사전검사',
+    '온라인 CAD 뷰어',
+    'STL 크기 측정',
+    '삼각형 폴리곤 개수 계산',
+    '웹기반 stl 뷰어',
+    '도면 사이즈 실측',
+    '무료 3D 뷰어 프로그램'
   ],
   alternates: {
     canonical: 'https://wow3dsw.co.kr/services/free-tools/3d-viewer/',
