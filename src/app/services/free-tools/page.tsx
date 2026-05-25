@@ -35,6 +35,10 @@ export default function FreeToolsPage() {
   const [svgResult, setSvgResult] = useState<string | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   
+  // 무료 제한용 변환한 파일 목록 및 한도 달성 상태 관리
+  const [convertedFiles, setConvertedFiles] = useState<string[]>([]);
+  const [isLimitExceeded, setIsLimitExceeded] = useState<boolean>(false);
+
   // 기본 트레이싱 변환 옵션 정의
   const [options, setOptions] = useState<TracingOptions>({
     threshold: 128,
@@ -47,6 +51,24 @@ export default function FreeToolsPage() {
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  // 로컬 스토리지에 저장된 기존 변환 파일 목록 마운트 시 확인
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const stored = localStorage.getItem('wow3d_converted_files');
+      if (stored) {
+        try {
+          const parsed = JSON.parse(stored) as string[];
+          setConvertedFiles(parsed);
+          if (parsed.length >= 10) {
+            setIsLimitExceeded(true);
+          }
+        } catch (e) {
+          console.error(e);
+        }
+      }
+    }
+  }, []);
+
   // --- 토스트 알림 기능 ---
   const showToast = (message: string) => {
     setToastMessage(message);
@@ -57,8 +79,14 @@ export default function FreeToolsPage() {
 
   // --- 실시간 자동 변환 디바운싱 처리 (300ms) ---
   useEffect(() => {
-    if (!uploadedImage) {
+    if (!uploadedImage || !fileInfo) {
       setSvgResult(null);
+      return;
+    }
+
+    // 이미 변환된 목록에 등록되지 않은 파일이고, 한도를 초과했다면 변환 작동 차단
+    if (convertedFiles.length >= 10 && !convertedFiles.includes(fileInfo.name)) {
+      setIsLimitExceeded(true);
       return;
     }
 
@@ -68,6 +96,18 @@ export default function FreeToolsPage() {
         // 백그라운드 스레드 및 CPU 과부하 방지 최적화 처리된 변환 실행
         const result = await convertImageToSvg(uploadedImage, options);
         setSvgResult(result);
+
+        // 변환 성공 시, 아직 기록되지 않은 새로운 파일인 경우에 한해 목록에 등록
+        if (typeof window !== 'undefined' && !convertedFiles.includes(fileInfo.name)) {
+          const updated = [...convertedFiles, fileInfo.name];
+          setConvertedFiles(updated);
+          localStorage.setItem('wow3d_converted_files', JSON.stringify(updated));
+          
+          if (updated.length >= 10) {
+            setIsLimitExceeded(true);
+          }
+          showToast(`무료 변환 한도 잔여: ${10 - updated.length}개 파일`);
+        }
       } catch (err: any) {
         console.error(err);
         showToast(err.message || '변환 과정에서 오류가 발생했습니다.');
@@ -77,10 +117,17 @@ export default function FreeToolsPage() {
     }, 300); // 300ms 디바운스 적용으로 슬라이더 조작 시 렉 발생 방지
 
     return () => clearTimeout(timer);
-  }, [uploadedImage, options]);
+  }, [uploadedImage, options, fileInfo, convertedFiles]);
 
   // --- 파일 업로드 처리 로직 ---
   const processFile = (file: File) => {
+    // 10개 무료 변환 제한 도달 여부 사전 확인 (이미 한 번 변환한 파일은 무제한 재업로드 및 편집 허용)
+    if (convertedFiles.length >= 10 && !convertedFiles.includes(file.name)) {
+      setIsLimitExceeded(true);
+      showToast('무료 변환 한도(10개 파일)를 초과하였습니다.');
+      return;
+    }
+
     if (!file.type.startsWith('image/')) {
       showToast('이미지 파일(PNG, JPG, WEBP)만 업로드할 수 있습니다.');
       return;
@@ -191,6 +238,11 @@ export default function FreeToolsPage() {
       });
   };
 
+  // 새로 업로드하는 파일이 이미 변환했던 파일인지 판단
+  const isCurrentFileNew = fileInfo ? !convertedFiles.includes(fileInfo.name) : true;
+  // 무료 제한 도달 및 새로운 파일 변환 차단 상황 판단
+  const shouldBlockConversion = isLimitExceeded && isCurrentFileNew;
+
   return (
     <div className={styles.container}>
       {/* 1. 히어로 인트로 헤더 */}
@@ -201,6 +253,26 @@ export default function FreeToolsPage() {
           로고, 스케치, 아이콘 등 일반 래스터 이미지(PNG, JPG)를 해상도 손실 없이 영구적으로 확대 가능한 고품질 SVG 벡터 그래픽 파일로 무료 변환하세요.
         </p>
       </header>
+
+      {/* 1-2. 무료 변환 한도 초과(10개 파일) 경고 배너 */}
+      {isLimitExceeded && (
+        <div className={styles.limitBanner}>
+          <div className={styles.limitText}>
+            <strong>무료 이용 제한 안내:</strong> 이미 변환했던 파일 10개의 무료 변환 혜택이 모두 마감되었습니다. 
+            추가로 새로운 파일을 고품질 벡터 그래픽으로 대량 변환하고 싶으시면, (주)와우쓰리디 기술 솔루션 도입 문의를 남겨주세요.
+          </div>
+          <a href="/contact/" className={styles.btnContact}>
+            도입 및 구축 문의하기 <Sparkles size={14} />
+          </a>
+        </div>
+      )}
+
+      {/* 1-3. 이용 현황 인디케이터 (10개 미만일 때 잔여 횟수 표기) */}
+      {!isLimitExceeded && (
+        <div style={{ textAlign: 'right', marginBottom: '16px', fontSize: '0.875rem', color: '#94a3b8' }}>
+          무료 혜택 현황: <strong style={{ color: '#60a5fa' }}>{convertedFiles.length}</strong> / 10개 파일 변환 완료
+        </div>
+      )}
 
       {/* 2. 대시보드 워크스페이스 */}
       <main className={styles.workspace}>
@@ -262,21 +334,39 @@ export default function FreeToolsPage() {
                     <Sparkles size={16} color="#60a5fa" /> 변환된 SVG 벡터 그래픽
                   </h3>
                   <div className={styles.displayArea}>
-                    {isConverting && (
-                      <div className={styles.loadingOverlay}>
-                        <div className={styles.spinner} />
-                        <span className={styles.loadingText}>실시간 벡터화 처리 중...</span>
+                    {shouldBlockConversion ? (
+                      <div className={styles.loadingOverlay} style={{ background: 'rgba(15, 23, 42, 0.92)' }}>
+                        <span style={{ fontSize: '1.25rem', color: '#f87171', fontWeight: 800 }}>무료 변환 한도 초과</span>
+                        <p style={{ fontSize: '0.875rem', color: '#94a3b8', padding: '0 24px', textAlign: 'center', lineHeight: 1.5 }}>
+                          이미 10개의 고유 파일 변환 혜택이 모두 소진되었습니다. 무제한 변환 라이선스 획득 및 스마트상점 맞춤 도입은 구축문의를 주시면 신속하게 안내해 드립니다.
+                        </p>
+                        <a 
+                          href="/contact/" 
+                          className={styles.btnContact}
+                          style={{ marginTop: '10px' }}
+                        >
+                          도입 문의 바로가기
+                        </a>
                       </div>
-                    )}
-                    {svgResult ? (
-                      <div 
-                        style={{ width: '90%', height: '90%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-                        dangerouslySetInnerHTML={{ __html: svgResult }} 
-                      />
                     ) : (
-                      <div className={styles.loadingOverlay}>
-                        <span className={styles.loadingText}>대기 중...</span>
-                      </div>
+                      <>
+                        {isConverting && (
+                          <div className={styles.loadingOverlay}>
+                            <div className={styles.spinner} />
+                            <span className={styles.loadingText}>실시간 벡터화 처리 중...</span>
+                          </div>
+                        )}
+                        {svgResult ? (
+                          <div 
+                            style={{ width: '90%', height: '90%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                            dangerouslySetInnerHTML={{ __html: svgResult }} 
+                          />
+                        ) : (
+                          <div className={styles.loadingOverlay}>
+                            <span className={styles.loadingText}>대기 중...</span>
+                          </div>
+                        )}
+                      </>
                     )}
                   </div>
                 </div>
@@ -410,21 +500,33 @@ export default function FreeToolsPage() {
 
             {/* 다운로드 및 복사 버튼 액션 */}
             <div className={styles.actionGroup}>
-              <button 
-                className={clsx(styles.btnPrimary, !svgResult && styles.disabled)}
-                onClick={handleDownloadSvg}
-                disabled={!svgResult}
-              >
-                <Download size={18} /> SVG 파일 다운로드
-              </button>
-              
-              <button 
-                className={clsx(styles.btnSecondary, !svgResult && styles.disabled)}
-                onClick={handleCopySvgCode}
-                disabled={!svgResult}
-              >
-                <Copy size={16} /> SVG 코드 복사
-              </button>
+              {shouldBlockConversion ? (
+                <a 
+                  href="/contact/" 
+                  className={styles.btnPrimary}
+                  style={{ background: 'linear-gradient(135deg, #ef4444 0%, #b91c1c 100%)', textDecoration: 'none' }}
+                >
+                  한도 초과: 관리자 도입 문의
+                </a>
+              ) : (
+                <>
+                  <button 
+                    className={clsx(styles.btnPrimary, !svgResult && styles.disabled)}
+                    onClick={handleDownloadSvg}
+                    disabled={!svgResult}
+                  >
+                    <Download size={18} /> SVG 파일 다운로드
+                  </button>
+                  
+                  <button 
+                    className={clsx(styles.btnSecondary, !svgResult && styles.disabled)}
+                    onClick={handleCopySvgCode}
+                    disabled={!svgResult}
+                  >
+                    <Copy size={16} /> SVG 코드 복사
+                  </button>
+                </>
+              )}
             </div>
           </div>
         </aside>
