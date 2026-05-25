@@ -76,6 +76,8 @@ export default function ThreeDViewerPage() {
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const [isScriptsLoaded, setIsScriptsLoaded] = useState<boolean>(false);
   const [isLoadingMesh, setIsLoadingMesh] = useState<boolean>(false);
+  const [loadingProgress, setLoadingProgress] = useState<number>(0);
+  const [loadingStage, setLoadingStage] = useState<'idle' | 'reading' | 'parsing'>('idle');
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   
   // 3D 렌더링 옵션 상태
@@ -262,14 +264,14 @@ export default function ThreeDViewerPage() {
     }
   }, [options, isScriptsLoaded]);
 
-  // --- 4. STL 도면 파싱 및 WebGL 씬 마운트 핵심 함수 ---
-  // 대용량 파일 파싱 및 연산 시 브라우저 블로킹(렉)을 제거하기 위해 
-  // '즉각 3D 시각화(Instant Rendering) 및 백그라운드 스펙 산출(Lazy Metadata)' 모델로 고도화하였습니다.
+  // --- 4. STL 도면 파싱 및 WebGL 씬 마운트 핵심 함수 (동적 인라인 Web Worker 비동기 파싱 고도화) ---
   useEffect(() => {
     if (!uploadedFile || !sceneRef.current || !isScriptsLoaded) return;
 
     const THREE = (window as any).THREE;
     setIsLoadingMesh(true);
+    setLoadingStage('parsing');
+    setLoadingProgress(0);
     
     // 분석 보드 상태 초기화 ("계산 중..." 노출)
     if (fileMeta) {
@@ -280,104 +282,294 @@ export default function ThreeDViewerPage() {
       } : null);
     }
 
-    // 마이크로태스크 기동으로 200ms 고정 대기 딜레이 원천 제거 및 고속 파싱 시작
-    Promise.resolve().then(() => {
-      try {
-        const loader = new THREE.STLLoader();
-        // 1단계: STL 구조 고속 파싱 (동기 구간 최소화)
-        const geometry = loader.parse(uploadedFile);
-        currentGeometryRef.current = geometry;
-
-        // 기존 씬에 존재하던 메쉬 메모리 회수 및 청소 (가비지 컬렉터 강제 지원)
-        if (modelMeshRef.current) {
-          sceneRef.current.remove(modelMeshRef.current);
-          if (modelMeshRef.current.geometry) modelMeshRef.current.geometry.dispose();
-          if (modelMeshRef.current.material) modelMeshRef.current.material.dispose();
-          modelMeshRef.current = null;
-        }
-
-        // 2단계: 메쉬 즉시 생성 및 씬 가동 (시각화 우선순위 최상위 처리)
-        let mesh: any;
-        if (options.renderMode === 'solid' || options.renderMode === 'wireframe') {
-          const material = new THREE.MeshStandardMaterial({
-            color: new THREE.Color(options.modelColor),
-            roughness: 0.4,
-            metalness: 0.1,
-            wireframe: options.renderMode === 'wireframe',
-            flatShading: true
-          });
-          mesh = new THREE.Mesh(geometry, material);
-        } else {
-          const material = new THREE.PointsMaterial({
-            color: new THREE.Color(options.modelColor),
-            size: 1.2,
-            sizeAttenuation: true
-          });
-          mesh = new THREE.Points(geometry, material);
-        }
-
-        sceneRef.current.add(mesh);
-        modelMeshRef.current = mesh;
-
-        // 3단계: 초고속 BoundingSphere 연산만 가동하여 카메라 피팅 씬 즉각 활성화
-        geometry.computeBoundingSphere();
-        const sphere = geometry.boundingSphere;
-        const center = sphere.center;
-        const radius = sphere.radius;
-
-        controlsRef.current.target.copy(center);
-        cameraRef.current.position.set(
-          center.x,
-          center.y + radius * 1.8,
-          center.z + radius * 2.3
-        );
-        cameraRef.current.lookAt(center);
-        controlsRef.current.update();
-
-        // 4단계: 시각화 로딩 바 즉시 종료 (체감 파싱 시간 단축)
-        setIsLoadingMesh(false);
-        showToast('3D 도면 시각화가 완료되었습니다.');
-
-        // 5단계: 대용량 정점 순회가 소요되는 무거운 실측 mm 및 폴리곤 개수 계산은
-        // 메인 프레임 페인트(Paint)에 지장을 주지 않도록 백그라운드로 50ms 비동기 지연 실행 (Lazy Execution)
-        setTimeout(() => {
-          if (!currentGeometryRef.current) return;
+    // --- 동적 인라인 Web Worker 소스코드 문자열 선언 ---
+    // 메인 JS 스레드를 막지 않고, 백그라운드 스레드에서 무거운 STL 바이너리/아스키 루프 연산을 수행합니다.
+    const workerCode = `
+      self.onmessage = function(e) {
+        const buffer = e.data.buffer;
+        
+        // STL 포맷이 바이너리(Binary)인지 검증하는 고속 헬퍼
+        function isBinary(binData) {
+          if (binData.byteLength < 84) return false;
+          const reader = new DataView(binData);
+          const faceCount = reader.getUint32(80, true);
+          const expectedSize = 80 + 4 + faceCount * 50;
+          
+          if (expectedSize === binData.byteLength) return true;
           
           try {
-            const activeGeo = currentGeometryRef.current;
-            
-            // 정점 순회 및 삼각형 개수 집계
-            const polyCount = activeGeo.index 
-              ? activeGeo.index.count / 3 
-              : activeGeo.attributes.position.count / 3;
+            const utf8 = new TextDecoder('utf-8');
+            const prefix = utf8.decode(new Uint8Array(binData, 0, 5));
+            if (prefix !== 'solid') return true;
+          } catch(err) {}
+          
+          return false;
+        }
 
-            // 정점 전체 스캔을 통한 바운딩 박스 실측 크기 계산 (가장 무거운 연산 구간)
-            activeGeo.computeBoundingBox();
-            const bbox = activeGeo.boundingBox;
-            const size = new THREE.Vector3();
-            bbox.getSize(size);
-
-            setFileMeta(prev => prev ? {
-              ...prev,
-              polygons: `${Math.round(polyCount).toLocaleString()} 개`,
-              dimensions: {
-                x: parseFloat(size.x.toFixed(1)),
-                y: parseFloat(size.y.toFixed(1)),
-                z: parseFloat(size.z.toFixed(1))
-              }
-            } : null);
-          } catch (calcErr) {
-            console.error('메타데이터 비동기 계산 오류:', calcErr);
+        try {
+          const bin = isBinary(buffer);
+          if (bin) {
+            parseBinary(buffer);
+          } else {
+            parseASCII(buffer);
           }
-        }, 50);
+        } catch(err) {
+          self.postMessage({ type: 'error', message: err.message || 'STL 파일 해석에 실패했습니다.' });
+        }
 
-      } catch (err) {
-        console.error(err);
-        showToast('3D 파일 파싱 오류: 올바른 STL 파일 형식이 아닙니다.');
+        // 바이너리 STL 고속 비동기 파서
+        function parseBinary(data) {
+          const reader = new DataView(data);
+          const faceCount = reader.getUint32(80, true);
+          
+          // 삼각형 1개당 3개 정점, 정점당 3개 축(Float32) -> faceCount * 9 크기 공간 할당
+          const positions = new Float32Array(faceCount * 9);
+          const normals = new Float32Array(faceCount * 9);
+          
+          let offset = 84;
+          // UI 렉이 전혀 걸리지 않도록 50단계로 나누어 진척도를 띄워줍니다.
+          const reportInterval = Math.max(1, Math.floor(faceCount / 50));
+          
+          for (let face = 0; face < faceCount; face++) {
+            if (offset + 50 > data.byteLength) break;
+            
+            if (face % reportInterval === 0 || face === faceCount - 1) {
+              const progress = Math.min(100, Math.round((face / faceCount) * 100));
+              self.postMessage({ type: 'progress', progress: progress });
+            }
+            
+            // 법선 벡터 (Normals)
+            const nx = reader.getFloat32(offset, true);
+            const ny = reader.getFloat32(offset + 4, true);
+            const nz = reader.getFloat32(offset + 8, true);
+            
+            // 정점 1 (Vertex 1)
+            const v1x = reader.getFloat32(offset + 12, true);
+            const v1y = reader.getFloat32(offset + 16, true);
+            const v1z = reader.getFloat32(offset + 20, true);
+            
+            // 정점 2 (Vertex 2)
+            const v2x = reader.getFloat32(offset + 24, true);
+            const v2y = reader.getFloat32(offset + 28, true);
+            const v2z = reader.getFloat32(offset + 32, true);
+            
+            // 정점 3 (Vertex 3)
+            const v3x = reader.getFloat32(offset + 36, true);
+            const v3y = reader.getFloat32(offset + 40, true);
+            const v3z = reader.getFloat32(offset + 44, true);
+            
+            const base = face * 9;
+            
+            positions[base] = v1x;
+            positions[base + 1] = v1y;
+            positions[base + 2] = v1z;
+            
+            positions[base + 3] = v2x;
+            positions[base + 4] = v2y;
+            positions[base + 5] = v2z;
+            
+            positions[base + 6] = v3x;
+            positions[base + 7] = v3y;
+            positions[base + 8] = v3z;
+            
+            // 면의 법선 벡터를 세 정점에 똑같이 분배
+            for (let i = 0; i < 3; i++) {
+              normals[base + i * 3] = nx;
+              normals[base + i * 3 + 1] = ny;
+              normals[base + i * 3 + 2] = nz;
+            }
+            
+            offset += 50;
+          }
+          
+          self.postMessage({
+            type: 'done',
+            positions: positions,
+            normals: normals
+          }, [positions.buffer, normals.buffer]); // Transferable 설정으로 0ms 버퍼 소유권 고속 이동
+        }
+
+        // 아스키 STL 고속 비동기 파서
+        function parseASCII(data) {
+          const utf8 = new TextDecoder('utf-8');
+          const text = utf8.decode(data);
+          const lines = text.split('\\n');
+          const lineCount = lines.length;
+          
+          const positions = [];
+          const normals = [];
+          
+          let tempNormal = [0, 0, 0];
+          let vertices = [];
+          const reportInterval = Math.max(1, Math.floor(lineCount / 50));
+          
+          for (let i = 0; i < lineCount; i++) {
+            if (i % reportInterval === 0 || i === lineCount - 1) {
+              const progress = Math.min(100, Math.round((i / lineCount) * 100));
+              self.postMessage({ type: 'progress', progress: progress });
+            }
+            
+            const line = lines[i].trim();
+            if (line.startsWith('facet normal')) {
+              const parts = line.split(/\\s+/);
+              tempNormal = [
+                parseFloat(parts[2]) || 0,
+                parseFloat(parts[3]) || 0,
+                parseFloat(parts[4]) || 0
+              ];
+            } else if (line.startsWith('vertex')) {
+              const parts = line.split(/\\s+/);
+              vertices.push(
+                parseFloat(parts[1]) || 0,
+                parseFloat(parts[2]) || 0,
+                parseFloat(parts[3]) || 0
+              );
+            } else if (line.startsWith('endfacet')) {
+              if (vertices.length === 9) {
+                positions.push(...vertices);
+                for (let j = 0; j < 3; j++) {
+                  normals.push(...tempNormal);
+                }
+              }
+              vertices = [];
+            }
+          }
+          
+          const posArray = new Float32Array(positions);
+          const normArray = new Float32Array(normals);
+          
+          self.postMessage({
+            type: 'done',
+            positions: posArray,
+            normals: normArray
+          }, [posArray.buffer, normArray.buffer]);
+        }
+      };
+    `;
+
+    // 블롭 경로 생성을 통한 비동기 워커 구동
+    const blob = new Blob([workerCode], { type: 'application/javascript' });
+    const workerUrl = URL.createObjectURL(blob);
+    const worker = new Worker(workerUrl);
+
+    // 워커 메모리 복사 최소화를 위해 uploadedFile의 ArrayBuffer 소유권을 넘겨 전송 (Transferable)
+    worker.postMessage({ buffer: uploadedFile }, [uploadedFile]);
+
+    worker.onmessage = (e) => {
+      const data = e.data;
+      if (data.type === 'progress') {
+        setLoadingProgress(data.progress);
+      } else if (data.type === 'done') {
+        try {
+          // 1단계: 워커에서 반환한 순수 Float32Array 버퍼로부터 기하(BufferGeometry) 빌드
+          const geometry = new THREE.BufferGeometry();
+          geometry.setAttribute('position', new THREE.BufferAttribute(data.positions, 3));
+          geometry.setAttribute('normal', new THREE.BufferAttribute(data.normals, 3));
+          currentGeometryRef.current = geometry;
+
+          // 기존에 구동 중이던 메쉬 자원 정리 및 청소
+          if (modelMeshRef.current) {
+            sceneRef.current.remove(modelMeshRef.current);
+            if (modelMeshRef.current.geometry) modelMeshRef.current.geometry.dispose();
+            if (modelMeshRef.current.material) modelMeshRef.current.material.dispose();
+            modelMeshRef.current = null;
+          }
+
+          // 2단계: 최적화 메쉬 즉각 마운트 및 씬 추가 (Instant visualization)
+          let mesh: any;
+          if (options.renderMode === 'solid' || options.renderMode === 'wireframe') {
+            const material = new THREE.MeshStandardMaterial({
+              color: new THREE.Color(options.modelColor),
+              roughness: 0.4,
+              metalness: 0.1,
+              wireframe: options.renderMode === 'wireframe',
+              flatShading: true
+            });
+            mesh = new THREE.Mesh(geometry, material);
+          } else {
+            const material = new THREE.PointsMaterial({
+              color: new THREE.Color(options.modelColor),
+              size: 1.2,
+              sizeAttenuation: true
+            });
+            mesh = new THREE.Points(geometry, material);
+          }
+
+          sceneRef.current.add(mesh);
+          modelMeshRef.current = mesh;
+
+          // 3단계: 초고속 뷰 피팅 대상 탐지
+          geometry.computeBoundingSphere();
+          const sphere = geometry.boundingSphere;
+          const center = sphere.center;
+          const radius = sphere.radius;
+
+          controlsRef.current.target.copy(center);
+          cameraRef.current.position.set(
+            center.x,
+            center.y + radius * 1.8,
+            center.z + radius * 2.3
+          );
+          cameraRef.current.lookAt(center);
+          controlsRef.current.update();
+
+          // 4단계: 로더 종료 처리
+          setIsLoadingMesh(false);
+          setLoadingStage('idle');
+          setLoadingProgress(0);
+          showToast('3D 도면 시각화가 완료되었습니다.');
+
+          // 5단계: 정밀 외곽 mm 크기 실측 스캔은 메인 렌더 프레임 Paint가 다 끝난 후 백그라운드 지연 실행 (50ms)
+          setTimeout(() => {
+            if (!currentGeometryRef.current) return;
+            try {
+              const activeGeo = currentGeometryRef.current;
+              const polyCount = activeGeo.attributes.position.count / 3;
+
+              activeGeo.computeBoundingBox();
+              const bbox = activeGeo.boundingBox;
+              const size = new THREE.Vector3();
+              bbox.getSize(size);
+
+              setFileMeta(prev => prev ? {
+                ...prev,
+                polygons: `${Math.round(polyCount).toLocaleString()} 개`,
+                dimensions: {
+                  x: parseFloat(size.x.toFixed(1)),
+                  y: parseFloat(size.y.toFixed(1)),
+                  z: parseFloat(size.z.toFixed(1))
+                }
+              } : null);
+            } catch (calcErr) {
+              console.error('메타데이터 지연 계산 실패:', calcErr);
+            }
+          }, 50);
+
+        } catch (parseErr: any) {
+          console.error(parseErr);
+          showToast('3D 지오메트리 빌드 도중 예외가 발생했습니다.');
+          handleReset();
+          setIsLoadingMesh(false);
+          setLoadingStage('idle');
+        } finally {
+          // 사용이 완료된 워커 및 임시 URL 즉시 해제
+          worker.terminate();
+          URL.revokeObjectURL(workerUrl);
+        }
+      } else if (data.type === 'error') {
+        showToast(`3D 파싱 실패: ${data.message || '올바른 형식의 STL 도면이 아닙니다.'}`);
         handleReset();
         setIsLoadingMesh(false);
+        setLoadingStage('idle');
+        worker.terminate();
+        URL.revokeObjectURL(workerUrl);
       }
-    });
+    };
+
+    return () => {
+      worker.terminate();
+      URL.revokeObjectURL(workerUrl);
+    };
   }, [uploadedFile, isScriptsLoaded]);
 
   // --- 파일 업로드 처리 로직 ---
@@ -389,6 +581,16 @@ export default function ThreeDViewerPage() {
 
     const reader = new FileReader();
     setIsLoadingMesh(true);
+    setLoadingStage('reading');
+    setLoadingProgress(0);
+
+    // FileReader의 바이너리 데이터 읽기 진척도 실시간 모니터링
+    reader.onprogress = (e) => {
+      if (e.lengthComputable) {
+        const percent = Math.round((e.loaded / e.total) * 100);
+        setLoadingProgress(percent);
+      }
+    };
     
     reader.onload = (e) => {
       const buffer = e.target?.result as ArrayBuffer;
@@ -405,6 +607,14 @@ export default function ThreeDViewerPage() {
         dimensions: null
       });
     };
+
+    reader.onerror = () => {
+      showToast('파일을 읽는 도중 오류가 발생했습니다.');
+      setIsLoadingMesh(false);
+      setLoadingStage('idle');
+      setLoadingProgress(0);
+    };
+
     reader.readAsArrayBuffer(file);
   };
 
@@ -580,7 +790,17 @@ export default function ThreeDViewerPage() {
                 {isLoadingMesh && (
                   <div className={styles.overlay}>
                     <div className={styles.spinner} />
-                    <span className={styles.overlayText}>3D 기하 버퍼 데이터 파싱 및 로딩 중...</span>
+                    <span className={styles.overlayText}>
+                      {loadingStage === 'reading' && `파일 데이터 읽는 중... (${loadingProgress}%)`}
+                      {loadingStage === 'parsing' && `3D 도면 지오메트리 파싱 및 빌드 중... (${loadingProgress}%)`}
+                    </span>
+                    {/* 실시간 진행도 게이지 바 */}
+                    <div className={styles.progressBarBg}>
+                      <div 
+                        className={styles.progressBarFill} 
+                        style={{ width: `${loadingProgress}%` }}
+                      />
+                    </div>
                   </div>
                 )}
                 

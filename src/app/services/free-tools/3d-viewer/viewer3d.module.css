@@ -565,3 +565,22 @@
     transform: translateY(0);
   }
 }
+
+/* 실시간 파싱 게이지 바 */
+.progressBarBg {
+  width: 240px;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 9999px;
+  overflow: hidden;
+  margin-top: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.progressBarFill {
+  height: 100%;
+  background: linear-gradient(90deg, #3b82f6 0%, #60a5fa 100%);
+  width: 0%;
+  transition: width 0.1s linear;
+  border-radius: 9999px;
+}
