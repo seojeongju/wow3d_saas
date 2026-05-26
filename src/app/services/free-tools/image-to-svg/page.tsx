@@ -364,11 +364,24 @@ export default function FreeToolsPage() {
 
         const geometry = new THREE.ExtrudeGeometry(shapes, extrudeSettings);
 
-        // 원본 SVG의 다채로운 색상을 조명 셰이딩에 그대로 투영 (단색 파란 덩어리 현상 해결)
+        // SVG 색상을 3D 메쉬로 투영하되, 어두운 계열(검은색 등)은 셰이딩 입체감이 극대화되는 밝은 스카이블루(#60a5fa)로 안전 보정
+        let meshColor = item.fill;
+        try {
+          const tempColor = new THREE.Color(item.fill);
+          const hsl = { h: 0, s: 0, l: 0 };
+          tempColor.getHSL(hsl);
+          // HSL 밝기가 0.15 이하이거나 검은색 계열인 경우 시그니처 스카이블루(#60a5fa)로 자동 변환하여 명암 가시성 확보
+          if (hsl.l < 0.15 || item.fill.toLowerCase() === '#000000' || item.fill.toLowerCase() === 'black') {
+            meshColor = '#60a5fa';
+          }
+        } catch (e) {
+          meshColor = '#60a5fa';
+        }
+
         const material = new THREE.MeshStandardMaterial({
-          color: new THREE.Color(item.fill),
+          color: new THREE.Color(meshColor),
           roughness: 0.4,
-          metalness: 0.1,
+          metalness: 0.15, // 메탈릭 느낌을 살려 외곽 셰이딩 입체감을 향상
           flatShading: true,
           side: THREE.DoubleSide
         });
