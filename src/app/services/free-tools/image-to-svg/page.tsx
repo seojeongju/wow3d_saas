@@ -23,6 +23,15 @@ interface FileMetadata {
   dimensions: string;
 }
 
+// 개별 가공 가능한 SVG 영역(패스) 데이터 인터페이스
+interface SvgPathItem {
+  id: string;
+  d: string;
+  fill: string;
+  selected: boolean;
+  height: number;
+}
+
 // CDN을 통한 Three.js 및 SVG 3D 관련 라이브러리 비동기 주입 로드 헬퍼 함수
 const loadThreeAndSvgTools = (): Promise<void> => {
   return new Promise((resolve, reject) => {
@@ -110,6 +119,12 @@ export default function FreeToolsPage() {
   const mesh3dRef = useRef<any>(null);
   const gridHelper3dRef = useRef<any>(null);
 
+  // --- 인터랙티브 다중 영역(패스) 및 가공 상태 관리 추가 ---
+  const [pathItems, setPathItems] = useState<SvgPathItem[]>([]);
+  const [viewBox, setViewBox] = useState<string>('0 0 500 500');
+  const [is3DNeedsUpdate, setIs3DNeedsUpdate] = useState<boolean>(false);
+  const [globalExtrudeHeight, setGlobalExtrudeHeight] = useState<number>(10); // 일괄 두께 제어값 (기본 10mm)
+
   // 로컬 스토리지에 저장된 기존 변환 파일 목록 마운트 시 확인
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -136,7 +151,52 @@ export default function FreeToolsPage() {
     }, 2500);
   };
 
-  // --- 1. 3D 미리보기 탭 활성화 시 Three.js CDN 동적 주입 로드 ---
+  // --- 1. SVG 변환 결과 갱신 시 DOMParser로 개별 패스(영역) 분해 추출 및 초기화 ---
+  useEffect(() => {
+    if (!svgResult) {
+      setPathItems([]);
+      setDimensions(null);
+      setIs3DNeedsUpdate(false);
+      return;
+    }
+
+    try {
+      const parser = new DOMParser();
+      const svgDoc = parser.parseFromString(svgResult, 'image/svg+xml');
+      const paths = svgDoc.querySelectorAll('path');
+      
+      const width = svgDoc.documentElement.getAttribute('width') || '500';
+      const height = svgDoc.documentElement.getAttribute('height') || '500';
+      const vb = svgDoc.documentElement.getAttribute('viewBox') || `0 0 ${width} ${height}`;
+      setViewBox(vb);
+
+      const items: SvgPathItem[] = [];
+      paths.forEach((p, index) => {
+        const d = p.getAttribute('d') || '';
+        if (!d) return;
+        
+        let fill = p.getAttribute('fill') || '#60a5fa';
+        if (fill === 'none' || fill === '') {
+          fill = '#60a5fa';
+        }
+
+        items.push({
+          id: `path-${index}-${Math.random().toString(36).substr(2, 9)}`,
+          d,
+          fill,
+          selected: true, // 디폴트: 전체 영역 가공 On
+          height: globalExtrudeHeight // 디폴트: 일괄 두께 10mm 적용
+        });
+      });
+
+      setPathItems(items);
+      setIs3DNeedsUpdate(true); // 새 형상 로드되었으므로 3D 갱신 필요 상태 활성화
+    } catch (err) {
+      console.error('SVG 가공 영역 파싱 에러:', err);
+    }
+  }, [svgResult]);
+
+  // --- 2. 3D 미리보기 탭 활성화 시 Three.js CDN 동적 주입 로드 ---
   useEffect(() => {
     if (activeTab === '3d' && !threeScriptsLoaded) {
       setIs3DLoading(true);
@@ -155,7 +215,7 @@ export default function FreeToolsPage() {
     }
   }, [activeTab, threeScriptsLoaded]);
 
-  // --- 2. Three.js WebGL 씬(Scene) 생성 및 기본 세팅 (3D 탭 활성화 시) ---
+  // --- 3. Three.js WebGL 씬(Scene) 생성 및 기본 세팅 (3D 탭 활성화 시) ---
   useEffect(() => {
     if (activeTab !== '3d' || !threeScriptsLoaded || !canvasRef3d.current || !containerRef3d.current) return;
 
@@ -240,137 +300,227 @@ export default function FreeToolsPage() {
     };
   }, [activeTab, threeScriptsLoaded]);
 
-  // --- 3. SVG 변환 결과 바탕 실시간 3D Extrude 모델 렌더링 및 갱신 ---
-  useEffect(() => {
-    if (activeTab !== '3d' || !threeScriptsLoaded || !scene3dRef.current || !svgResult) return;
+  // --- 4. 지정한 영역 및 개별 조건을 3D WebGL에 실제로 렌더링 반영 (컴파일) ---
+  const apply3DExtrusion = () => {
+    if (!threeScriptsLoaded || !scene3dRef.current || pathItems.length === 0) {
+      showToast('3D 가속 그래픽 엔진이 준비되지 않았습니다.');
+      return;
+    }
 
     const THREE = (window as any).THREE;
     const scene = scene3dRef.current;
 
-    // 기존 씬 안의 메쉬 제거 및 메모리 클리어
+    // 기존 씬 내부 메쉬 및 자원 소거 (메모리 누수 방지)
     if (mesh3dRef.current) {
       scene.remove(mesh3dRef.current);
-      if (mesh3dRef.current.geometry) mesh3dRef.current.geometry.dispose();
-      if (mesh3dRef.current.material) mesh3dRef.current.material.dispose();
+      mesh3dRef.current.traverse((child: any) => {
+        if (child.isMesh) {
+          if (child.geometry) child.geometry.dispose();
+          if (child.material) {
+            if (Array.isArray(child.material)) {
+              child.material.forEach((m: any) => m.dispose());
+            } else {
+              child.material.dispose();
+            }
+          }
+        }
+      });
       mesh3dRef.current = null;
     }
 
     try {
-      // SVGLoader로 SVG 경로 해석
+      const group = new THREE.Group();
       const loader = new THREE.SVGLoader();
-      const svgData = loader.parse(svgResult);
-      const paths = svgData.paths;
-      const shapes: any[] = [];
+      let activeMeshCount = 0;
 
-      for (let i = 0; i < paths.length; i++) {
-        const path = paths[i];
-        // SVGLoader를 이용하여 구멍(Holes) 정보가 통합된 2D 도형 완성
-        const shapesForPath = THREE.SVGLoader.createShapes(path);
-        shapes.push(...shapesForPath);
-      }
+      pathItems.forEach((item) => {
+        if (!item.selected) return; // 미선택 영역 돌출 제외
 
-      if (shapes.length === 0) return;
+        // 개별 path에 대응하는 SVG sub-string 생성하여 SVGLoader 파싱 (삼각화 겹침 충돌 방지 및 구멍 정밀 가공 해결)
+        const parsedData = loader.parse(`<svg viewBox="${viewBox}"><path d="${item.d}" fill="${item.fill}" /></svg>`);
+        const path = parsedData.paths[0];
+        if (!path) return;
 
-      // 돌출(Extrude) 파라미터 빌드
-      const extrudeSettings = {
-        depth: extrudeHeight,
-        bevelEnabled: false,
-        steps: 1
-      };
+        // 구멍(Holes) 정보가 통합된 2D 도형 완성
+        const shapes = THREE.SVGLoader.createShapes(path);
+        if (shapes.length === 0) return;
 
-      const geometry = new THREE.ExtrudeGeometry(shapes, extrudeSettings);
+        // 개별 지정된 돌출 높이 적용
+        const extrudeSettings = {
+          depth: item.height,
+          bevelEnabled: false,
+          steps: 1
+        };
 
-      // 좌표 가공: 원점 회전 및 3D 중심 정렬
-      geometry.center();
-      geometry.rotateX(Math.PI); // SVG Y축 반전 보정
+        const geometry = new THREE.ExtrudeGeometry(shapes, extrudeSettings);
 
-      // 셰이딩 재질 적용
-      const material = new THREE.MeshStandardMaterial({
-        color: 0x60a5fa, // 스카이블루 기본 컬러 적용
-        roughness: 0.4,
-        metalness: 0.1,
-        flatShading: true, // 로우폴리 레트로 감성의 geometric 셰이더 적용
-        side: THREE.DoubleSide
+        // 원본 SVG의 다채로운 색상을 조명 셰이딩에 그대로 투영 (단색 파란 덩어리 현상 해결)
+        const material = new THREE.MeshStandardMaterial({
+          color: new THREE.Color(item.fill),
+          roughness: 0.4,
+          metalness: 0.1,
+          flatShading: true,
+          side: THREE.DoubleSide
+        });
+
+        const mesh = new THREE.Mesh(geometry, material);
+        group.add(mesh);
+        activeMeshCount++;
       });
 
-      const mesh = new THREE.Mesh(geometry, material);
-      scene.add(mesh);
-      mesh3dRef.current = mesh;
+      if (activeMeshCount === 0) {
+        showToast('돌출을 실행할 선택된 가공 영역이 없습니다.');
+        return;
+      }
 
-      // 카메라 오빗 피팅 정렬
-      geometry.computeBoundingSphere();
-      const sphere = geometry.boundingSphere;
-      if (sphere && controls3dRef.current && camera3dRef.current) {
-        const center = sphere.center;
-        const radius = sphere.radius;
-        controls3dRef.current.target.copy(center);
+      // Group 내부 메쉬들의 종합 Bounding Box를 계산하여 중심 정렬
+      const box = new THREE.Box3().setFromObject(group);
+      const center = new THREE.Vector3();
+      box.getCenter(center);
+
+      // 자식 객체들의 위치를 그룹 중심 반대 오프셋만큼 보정해 원점 정렬
+      group.children.forEach((child: any) => {
+        child.position.sub(center);
+      });
+
+      // SVG Y축 하향 좌표계 상하 회전 보정
+      group.rotation.x = Math.PI;
+
+      scene.add(group);
+      mesh3dRef.current = group;
+
+      // 카메라 조망 오버레이 피팅 정렬
+      const boundingSphere = new THREE.Sphere();
+      box.getBoundingSphere(boundingSphere);
+      const radius = boundingSphere.radius;
+
+      if (controls3dRef.current && camera3dRef.current) {
+        controls3dRef.current.target.set(0, 0, 0); // 타겟을 정중앙 원점으로
         camera3dRef.current.position.set(
-          center.x,
-          center.y + radius * 1.5,
-          center.z + radius * 2.0
+          0,
+          radius * 1.5,
+          radius * 2.0
         );
         controls3dRef.current.update();
       }
 
-      // mm 기반 예상 실측 크기 산출 (화소 단위 4px당 1mm 비례 축소 적용)
-      geometry.computeBoundingBox();
-      const bbox = geometry.boundingBox;
-      const size = new THREE.Vector3();
-      bbox.getSize(size);
+      // mm 기준 예상 종합 실측 크기 산출 (4px = 1mm 척도 정밀 보정)
+      const groupSize = new THREE.Vector3();
+      box.getSize(groupSize);
 
-      const scaleRatio = 0.25; // 4px = 1mm 스케일링 비율 적용
+      const scaleRatio = 0.25;
       setDimensions({
-        x: parseFloat((size.x * scaleRatio).toFixed(1)),
-        y: parseFloat((size.y * scaleRatio).toFixed(1)),
-        z: extrudeHeight
+        x: parseFloat((groupSize.x * scaleRatio).toFixed(1)),
+        y: parseFloat((groupSize.y * scaleRatio).toFixed(1)),
+        z: parseFloat(groupSize.z.toFixed(1))
       });
 
-    } catch (err) {
-      console.error('SVG 3D 실시간 돌출 렌더링 에러:', err);
-    }
-  }, [activeTab, threeScriptsLoaded, svgResult, extrudeHeight]);
+      setIs3DNeedsUpdate(false); // 가공 변환 적용 상태 완료 처리
+      showToast('3D 가공 변환이 완벽하게 실행되었습니다.');
 
-  // --- 4. 3D 입체 STL 내보내기 및 다운로드 액션 핸들러 ---
+    } catch (err) {
+      console.error('3D 입체 변환 가공 에러:', err);
+      showToast('3D 변환 과정에서 오류가 발생했습니다.');
+    }
+  };
+
+  // --- 5. 3D 탭 진입 시 업데이트가 필요하다면 즉시 자동 적용 ---
+  useEffect(() => {
+    if (activeTab === '3d' && threeScriptsLoaded && scene3dRef.current && is3DNeedsUpdate && pathItems.length > 0) {
+      apply3DExtrusion();
+    }
+  }, [activeTab, threeScriptsLoaded, is3DNeedsUpdate, pathItems.length]);
+
+  // --- 6. 인터랙티브 영역(패스) 가공을 위한 개별 조작 핸들러 함수들 ---
+  const togglePathSelection = (id: string) => {
+    setPathItems(prev => prev.map(item => {
+      if (item.id === id) {
+        return { ...item, selected: !item.selected };
+      }
+      return item;
+    }));
+    setIs3DNeedsUpdate(true);
+  };
+
+  const updatePathHeight = (id: string, h: number) => {
+    setPathItems(prev => prev.map(item => {
+      if (item.id === id) {
+        return { ...item, height: h };
+      }
+      return item;
+    }));
+    setIs3DNeedsUpdate(true);
+  };
+
+  const toggleAllPaths = (select: boolean) => {
+    setPathItems(prev => prev.map(item => ({ ...item, selected: select })));
+    setIs3DNeedsUpdate(true);
+  };
+
+  const handleBatchHeightChange = (h: number) => {
+    setGlobalExtrudeHeight(h);
+    setPathItems(prev => prev.map(item => ({ ...item, height: h })));
+    setIs3DNeedsUpdate(true);
+  };
+
+  // --- 7. 3D 입체 STL 다중 메쉬 Group 결합 다운로드 액션 핸들러 ---
   const handleDownloadStl = () => {
-    if (!svgResult || !fileInfo) return;
+    if (!svgResult || !fileInfo || pathItems.length === 0) return;
 
     const runStlExport = () => {
       const THREE = (window as any).THREE;
       try {
+        const group = new THREE.Group();
         const loader = new THREE.SVGLoader();
-        const svgData = loader.parse(svgResult);
-        const paths = svgData.paths;
-        const shapes = [];
+        let activeCount = 0;
 
-        for (let i = 0; i < paths.length; i++) {
-          const path = paths[i];
-          const shapesForPath = THREE.SVGLoader.createShapes(path);
-          shapes.push(...shapesForPath);
-        }
+        pathItems.forEach((item) => {
+          if (!item.selected) return;
 
-        if (shapes.length === 0) {
-          showToast('STL로 변환할 수 있는 모양이 존재하지 않습니다.');
+          const parsedData = loader.parse(`<svg viewBox="${viewBox}"><path d="${item.d}" fill="${item.fill}" /></svg>`);
+          const path = parsedData.paths[0];
+          if (!path) return;
+
+          const shapes = THREE.SVGLoader.createShapes(path);
+          if (shapes.length === 0) return;
+
+          const geometry = new THREE.ExtrudeGeometry(shapes, {
+            depth: item.height,
+            bevelEnabled: false,
+            steps: 1
+          });
+
+          // 3D 프린터 스케일 (1px = 0.25mm) 가공
+          geometry.scale(0.25, 0.25, 1.0);
+
+          const material = new THREE.MeshBasicMaterial();
+          const mesh = new THREE.Mesh(geometry, material);
+          group.add(mesh);
+          activeCount++;
+        });
+
+        if (activeCount === 0) {
+          showToast('STL 파일로 다운로드할 선택된 가공 영역이 존재하지 않습니다.');
           return;
         }
 
-        const geometry = new THREE.ExtrudeGeometry(shapes, {
-          depth: extrudeHeight,
-          bevelEnabled: false,
-          steps: 1
+        // Bounding Box 정렬하여 원점 맞춤
+        const box = new THREE.Box3().setFromObject(group);
+        const center = new THREE.Vector3();
+        box.getCenter(center);
+
+        group.children.forEach((child: any) => {
+          child.position.sub(center);
         });
 
-        // 3D 프린터 베드에 올라갈 수 있는 규격으로 스케일 가공 및 정렬
-        geometry.center();
-        geometry.rotateX(Math.PI);
-        geometry.scale(0.25, 0.25, 1.0); // 1px = 0.25mm 척도 정밀 보정
-
-        const material = new THREE.MeshBasicMaterial();
-        const mesh = new THREE.Mesh(geometry, material);
+        // 3D 프린터 베드에 올바르게 눕히기 위한 X축 회전
+        group.rotation.x = Math.PI;
 
         const exporter = new THREE.STLExporter();
-        const result = exporter.parse(mesh, { binary: true });
+        // Group을 전달하여 모든 가공 패스들이 단일 파일로 완전 융합된 고품질 STL로 내보내기 처리
+        const result = exporter.parse(group, { binary: true });
 
-        // 바이너리 데이터 다운로드 가동
+        // 다운로드 실행
         const blob = new Blob([result], { type: 'application/octet-stream' });
         const url = URL.createObjectURL(blob);
 
@@ -753,10 +903,34 @@ export default function FreeToolsPage() {
                             </div>
                           )}
                           {svgResult ? (
-                            <div 
-                              style={{ width: '90%', height: '90%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-                              dangerouslySetInnerHTML={{ __html: svgResult }} 
-                            />
+                            pathItems.length > 0 ? (
+                              <svg 
+                                viewBox={viewBox} 
+                                style={{ width: '90%', height: '90%', maxHeight: '420px' }}
+                              >
+                                {pathItems.map((item) => (
+                                  <path
+                                    key={item.id}
+                                    d={item.d}
+                                    fill={item.fill}
+                                    stroke={item.selected ? '#3b82f6' : 'none'}
+                                    strokeWidth={item.selected ? '2' : '0'}
+                                    strokeLinejoin="round"
+                                    opacity={item.selected ? 1.0 : 0.25}
+                                    className={styles.interactivePath}
+                                    style={{ 
+                                      cursor: 'pointer'
+                                    }}
+                                    onClick={() => togglePathSelection(item.id)}
+                                  />
+                                ))}
+                              </svg>
+                            ) : (
+                              <div 
+                                style={{ width: '90%', height: '90%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                                dangerouslySetInnerHTML={{ __html: svgResult }} 
+                              />
+                            )
                           ) : (
                             <div className={styles.loadingOverlay}>
                               <span className={styles.loadingText}>대기 중...</span>
@@ -928,25 +1102,97 @@ export default function FreeToolsPage() {
                     </div>
                   )}
 
-                  <div className={styles.controlGroup}>
-                    <div>
-                      <div className={styles.labelWrapper}>
-                        <label className={styles.label}>돌출 두께 (Extrude Height)</label>
-                        <span className={styles.valueIndicator}>{extrudeHeight} mm</span>
-                      </div>
-                      <input 
-                        type="range" 
-                        min="1" 
-                        max="50" 
-                        value={extrudeHeight} 
-                        onChange={(e) => setExtrudeHeight(parseInt(e.target.value))}
-                        className={styles.slider}
-                      />
-                      <p className={styles.uploadSubtext} style={{ marginTop: '4px' }}>
-                        3D 프린팅 출력물의 입체 두께 규격을 1mm부터 50mm까지 실시간 조절합니다.
-                      </p>
+                  {/* 마스터(일괄) 두께 조절 슬라이더 */}
+                  <div className={styles.batchControl}>
+                    <div className={styles.batchHeader}>
+                      <label className={styles.label} style={{ color: '#1d4ed8' }}>전체 두께 일괄 적용</label>
+                      <span className={styles.valueIndicator}>{globalExtrudeHeight} mm</span>
                     </div>
+                    <input 
+                      type="range" 
+                      min="1" 
+                      max="50" 
+                      value={globalExtrudeHeight} 
+                      onChange={(e) => handleBatchHeightChange(parseInt(e.target.value))}
+                      className={styles.slider}
+                    />
                   </div>
+
+                  {/* 영역별 가공 상세 선택 목록 (Layers) */}
+                  {pathItems.length > 0 && (
+                    <div style={{ marginTop: '12px' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                        <span className={styles.label}>영역별 조건 개별 설정 ({pathItems.length})</span>
+                        <div style={{ display: 'flex', gap: '8px' }}>
+                          <button 
+                            onClick={() => toggleAllPaths(true)}
+                            style={{ background: 'none', border: 'none', color: '#3b82f6', fontSize: '0.75rem', fontWeight: 700, cursor: 'pointer' }}
+                          >
+                            전체선택
+                          </button>
+                          <button 
+                            onClick={() => toggleAllPaths(false)}
+                            style={{ background: 'none', border: 'none', color: '#64748b', fontSize: '0.75rem', fontWeight: 700, cursor: 'pointer' }}
+                          >
+                            전체해제
+                          </button>
+                        </div>
+                      </div>
+                      
+                      <div className={styles.layerList}>
+                        {pathItems.map((item, idx) => (
+                          <div key={item.id} className={styles.layerItem}>
+                            <div className={styles.layerHeader}>
+                              <div className={styles.layerInfo}>
+                                <input 
+                                  type="checkbox" 
+                                  checked={item.selected} 
+                                  onChange={() => togglePathSelection(item.id)}
+                                  className={styles.checkbox}
+                                  style={{ margin: 0 }}
+                                />
+                                <span 
+                                  className={styles.layerColorChip} 
+                                  style={{ backgroundColor: item.fill }}
+                                />
+                                <span className={styles.layerTitle}>영역 #{idx + 1}</span>
+                              </div>
+                              <span className={styles.layerVal}>{item.height} mm</span>
+                            </div>
+                            
+                            {item.selected && (
+                              <div className={styles.layerControls}>
+                                <input 
+                                  type="range" 
+                                  min="1" 
+                                  max="50" 
+                                  value={item.height} 
+                                  onChange={(e) => updatePathHeight(item.id, parseInt(e.target.value))}
+                                  className={styles.layerSlider}
+                                />
+                              </div>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* 3D 변환 갱신 경고 배너 및 변환 적용 버튼 */}
+                  {is3DNeedsUpdate && (
+                    <div className={styles.needsUpdateBanner}>
+                      <span style={{ color: '#d97706', display: 'flex' }}><Box size={14} /></span>
+                      <p className={styles.needsUpdateText}>가공 설정 조건 변경됨: 3D 모델에 적용이 필요합니다.</p>
+                    </div>
+                  )}
+
+                  <button 
+                    className={clsx(styles.btnApply3D, is3DNeedsUpdate && styles.btnApply3DPulsing)}
+                    onClick={apply3DExtrusion}
+                    style={{ width: '100%' }}
+                  >
+                    <Sparkles size={16} /> 3D 입체 변환 적용 (Apply)
+                  </button>
 
                   {/* 3D 실측 예측 크기 칩 리스트 */}
                   {dimensions && (
