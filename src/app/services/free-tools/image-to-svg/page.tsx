@@ -10,7 +10,9 @@ import {
   Check, 
   Image as ImageIcon,
   HelpCircle,
-  Box
+  Box,
+  AlertCircle,
+  Info
 } from 'lucide-react';
 import clsx from 'clsx';
 import { convertImageToSvg, TracingOptions } from '@/utils/imageToSvg';
@@ -86,6 +88,7 @@ export default function FreeToolsPage() {
   const [isConverting, setIsConverting] = useState<boolean>(false);
   const [svgResult, setSvgResult] = useState<string | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [toastType, setToastType] = useState<'success' | 'info' | 'error'>('success');
   
   // 무료 제한용 변환한 파일 목록 및 한도 달성 상태 관리
   const [convertedFiles, setConvertedFiles] = useState<string[]>([]);
@@ -144,7 +147,8 @@ export default function FreeToolsPage() {
   }, []);
 
   // --- 토스트 알림 기능 ---
-  const showToast = (message: string) => {
+  const showToast = (message: string, type: 'success' | 'info' | 'error' = 'success') => {
+    setToastType(type);
     setToastMessage(message);
     setTimeout(() => {
       setToastMessage(null);
@@ -302,8 +306,14 @@ export default function FreeToolsPage() {
 
   // --- 4. 지정한 영역 및 개별 조건을 3D WebGL에 실제로 렌더링 반영 (컴파일) ---
   const apply3DExtrusion = () => {
+    // 2D 탭 등 3D 뷰어가 열려있지 않은 상태라면 자동으로 3D 탭으로 천이 처리 (성공적인 UX 연동)
+    if (activeTab !== '3d') {
+      setActiveTab('3d');
+      return;
+    }
+
     if (!threeScriptsLoaded || !scene3dRef.current || pathItems.length === 0) {
-      showToast('3D 가속 그래픽 엔진이 준비되지 않았습니다.');
+      showToast('3D 가속 그래픽 엔진이 아직 준비되지 않았습니다.', 'info');
       return;
     }
 
@@ -1299,9 +1309,18 @@ export default function FreeToolsPage() {
       </section>
 
       {/* 4. 플래시 토스트 팝업 */}
-      <div className={clsx(styles.toast, toastMessage && styles.toastShow)}>
+      <div 
+        className={clsx(styles.toast, toastMessage && styles.toastShow)}
+        style={{
+          borderColor: toastType === 'error' ? '#ef4444' : toastType === 'info' ? '#3b82f6' : '#10b981',
+          color: toastType === 'error' ? '#f87171' : toastType === 'info' ? '#60a5fa' : '#10b981'
+        }}
+      >
         <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-          <Check size={18} /> {toastMessage}
+          {toastType === 'error' && <AlertCircle size={18} />}
+          {toastType === 'info' && <Info size={18} />}
+          {toastType === 'success' && <Check size={18} />}
+          {toastMessage}
         </span>
       </div>
     </div>
