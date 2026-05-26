@@ -9,7 +9,8 @@ import {
   Sparkles, 
   Check, 
   Image as ImageIcon,
-  HelpCircle
+  HelpCircle,
+  Box
 } from 'lucide-react';
 import clsx from 'clsx';
 import { convertImageToSvg, TracingOptions } from '@/utils/imageToSvg';
@@ -21,6 +22,52 @@ interface FileMetadata {
   size: string;
   dimensions: string;
 }
+
+// CDN을 통한 Three.js 및 SVG 3D 관련 라이브러리 비동기 주입 로드 헬퍼 함수
+const loadThreeAndSvgTools = (): Promise<void> => {
+  return new Promise((resolve, reject) => {
+    // 이미 window에 필요한 모듈들이 세팅되어 있다면 즉시 완료
+    if (
+      (window as any).THREE && 
+      (window as any).THREE.SVGLoader && 
+      (window as any).THREE.STLExporter &&
+      (window as any).THREE.OrbitControls
+    ) {
+      resolve();
+      return;
+    }
+
+    // 1. Three.js 핵심 렌더러 라이브러리 주입
+    const scriptThree = document.createElement('script');
+    scriptThree.src = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js';
+    scriptThree.onload = () => {
+      // 2. SVGLoader 플러그인 주입
+      const scriptLoader = document.createElement('script');
+      scriptLoader.src = 'https://cdn.jsdelivr.net/gh/mrdoob/three.js@r128/examples/js/loaders/SVGLoader.js';
+      scriptLoader.onload = () => {
+        // 3. STLExporter 플러그인 주입
+        const scriptExporter = document.createElement('script');
+        scriptExporter.src = 'https://cdn.jsdelivr.net/gh/mrdoob/three.js@r128/examples/js/exporters/STLExporter.js';
+        scriptExporter.onload = () => {
+          // 4. OrbitControls 조작 플러그인 주입
+          const scriptControls = document.createElement('script');
+          scriptControls.src = 'https://cdn.jsdelivr.net/gh/mrdoob/three.js@r128/examples/js/controls/OrbitControls.js';
+          scriptControls.onload = () => {
+            resolve();
+          };
+          scriptControls.onerror = () => reject(new Error('OrbitControls 스크립트 로드에 실패하였습니다.'));
+          document.head.appendChild(scriptControls);
+        };
+        scriptExporter.onerror = () => reject(new Error('STLExporter 스크립트 로드에 실패하였습니다.'));
+        document.head.appendChild(scriptExporter);
+      };
+      scriptLoader.onerror = () => reject(new Error('SVGLoader 스크립트 로드에 실패하였습니다.'));
+      document.head.appendChild(scriptLoader);
+    };
+    scriptThree.onerror = () => reject(new Error('Three.js 엔진 스크립트 로드에 실패하였습니다.'));
+    document.head.appendChild(scriptThree);
+  });
+};
 
 export default function FreeToolsPage() {
   // --- 상태 관리 ---
@@ -47,6 +94,22 @@ export default function FreeToolsPage() {
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  // --- 3D 뷰어 상태 및 Ref 관리 ---
+  const [activeTab, setActiveTab] = useState<'2d' | '3d'>('2d');
+  const [extrudeHeight, setExtrudeHeight] = useState<number>(10); // 기본 돌출 높이: 10mm
+  const [is3DLoading, setIs3DLoading] = useState<boolean>(false);
+  const [threeScriptsLoaded, setThreeScriptsLoaded] = useState<boolean>(false);
+  const [dimensions, setDimensions] = useState<{ x: number; y: number; z: number } | null>(null);
+
+  const canvasRef3d = useRef<HTMLCanvasElement>(null);
+  const containerRef3d = useRef<HTMLDivElement>(null);
+  const scene3dRef = useRef<any>(null);
+  const camera3dRef = useRef<any>(null);
+  const renderer3dRef = useRef<any>(null);
+  const controls3dRef = useRef<any>(null);
+  const mesh3dRef = useRef<any>(null);
+  const gridHelper3dRef = useRef<any>(null);
+
   // 로컬 스토리지에 저장된 기존 변환 파일 목록 마운트 시 확인
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -71,6 +134,280 @@ export default function FreeToolsPage() {
     setTimeout(() => {
       setToastMessage(null);
     }, 2500);
+  };
+
+  // --- 1. 3D 미리보기 탭 활성화 시 Three.js CDN 동적 주입 로드 ---
+  useEffect(() => {
+    if (activeTab === '3d' && !threeScriptsLoaded) {
+      setIs3DLoading(true);
+      loadThreeAndSvgTools()
+        .then(() => {
+          setThreeScriptsLoaded(true);
+          setIs3DLoading(false);
+          showToast('3D 가속 그래픽 엔진 가동 완료');
+        })
+        .catch((err) => {
+          console.error(err);
+          showToast(err.message || '3D 그래픽 엔진 로드 실패');
+          setActiveTab('2d');
+          setIs3DLoading(false);
+        });
+    }
+  }, [activeTab, threeScriptsLoaded]);
+
+  // --- 2. Three.js WebGL 씬(Scene) 생성 및 기본 세팅 (3D 탭 활성화 시) ---
+  useEffect(() => {
+    if (activeTab !== '3d' || !threeScriptsLoaded || !canvasRef3d.current || !containerRef3d.current) return;
+
+    const THREE = (window as any).THREE;
+    const width = containerRef3d.current.clientWidth || 500;
+    const height = 400; // 3D 미리보기 영역 높이 고정
+
+    // 씬 생성
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x0f172a); // 3D 뷰어와 조화를 이루는 다크 네이비 톤
+    scene3dRef.current = scene;
+
+    // 카메라 설정
+    const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
+    camera.position.set(0, 100, 150);
+    camera3dRef.current = camera;
+
+    // 안티앨리어싱 지원 렌더러
+    const renderer = new THREE.WebGLRenderer({
+      canvas: canvasRef3d.current,
+      antialias: true,
+      alpha: false
+    });
+    renderer.setSize(width, height);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer3dRef.current = renderer;
+
+    // OrbitControls 조작 모듈
+    const controls = new THREE.OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.05;
+    controls.maxPolarAngle = Math.PI / 2 + 0.1; // 바닥 하단 각도 제한
+    controls3dRef.current = controls;
+
+    // 다중 광원 배치 (3D 입체 음영 연출)
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+    scene.add(ambientLight);
+
+    const dirLight1 = new THREE.DirectionalLight(0xffffff, 0.6);
+    dirLight1.position.set(1, 2, 3);
+    scene.add(dirLight1);
+
+    const dirLight2 = new THREE.DirectionalLight(0xffffff, 0.4);
+    dirLight2.position.set(-1, 1, -3);
+    scene.add(dirLight2);
+
+    // 프린터 베드 느낌 격자 추가
+    const gridHelper = new THREE.GridHelper(120, 40, 0x3b82f6, 0x334155);
+    gridHelper.position.y = -0.01;
+    scene.add(gridHelper);
+    gridHelper3dRef.current = gridHelper;
+
+    // 렌더 프레임 루프
+    let animationFrameId: number;
+    const animate = () => {
+      animationFrameId = requestAnimationFrame(animate);
+      controls.update();
+      renderer.render(scene, camera);
+    };
+    animate();
+
+    // 반응형 리사이즈 대응
+    const handleResize = () => {
+      if (!containerRef3d.current || !renderer3dRef.current || !camera3dRef.current) return;
+      const newWidth = containerRef3d.current.clientWidth;
+      camera3dRef.current.aspect = newWidth / height;
+      camera3dRef.current.updateProjectionMatrix();
+      renderer3dRef.current.setSize(newWidth, height);
+    };
+    window.addEventListener('resize', handleResize);
+
+    // 언마운트 자원 초기화
+    return () => {
+      cancelAnimationFrame(animationFrameId);
+      window.removeEventListener('resize', handleResize);
+      if (renderer3dRef.current) renderer3dRef.current.dispose();
+      scene3dRef.current = null;
+      camera3dRef.current = null;
+      renderer3dRef.current = null;
+      controls3dRef.current = null;
+      mesh3dRef.current = null;
+    };
+  }, [activeTab, threeScriptsLoaded]);
+
+  // --- 3. SVG 변환 결과 바탕 실시간 3D Extrude 모델 렌더링 및 갱신 ---
+  useEffect(() => {
+    if (activeTab !== '3d' || !threeScriptsLoaded || !scene3dRef.current || !svgResult) return;
+
+    const THREE = (window as any).THREE;
+    const scene = scene3dRef.current;
+
+    // 기존 씬 안의 메쉬 제거 및 메모리 클리어
+    if (mesh3dRef.current) {
+      scene.remove(mesh3dRef.current);
+      if (mesh3dRef.current.geometry) mesh3dRef.current.geometry.dispose();
+      if (mesh3dRef.current.material) mesh3dRef.current.material.dispose();
+      mesh3dRef.current = null;
+    }
+
+    try {
+      // SVGLoader로 SVG 경로 해석
+      const loader = new THREE.SVGLoader();
+      const svgData = loader.parse(svgResult);
+      const paths = svgData.paths;
+      const shapes: any[] = [];
+
+      for (let i = 0; i < paths.length; i++) {
+        const path = paths[i];
+        // SVGLoader를 이용하여 구멍(Holes) 정보가 통합된 2D 도형 완성
+        const shapesForPath = THREE.SVGLoader.createShapes(path);
+        shapes.push(...shapesForPath);
+      }
+
+      if (shapes.length === 0) return;
+
+      // 돌출(Extrude) 파라미터 빌드
+      const extrudeSettings = {
+        depth: extrudeHeight,
+        bevelEnabled: false,
+        steps: 1
+      };
+
+      const geometry = new THREE.ExtrudeGeometry(shapes, extrudeSettings);
+
+      // 좌표 가공: 원점 회전 및 3D 중심 정렬
+      geometry.center();
+      geometry.rotateX(Math.PI); // SVG Y축 반전 보정
+
+      // 셰이딩 재질 적용
+      const material = new THREE.MeshStandardMaterial({
+        color: 0x60a5fa, // 스카이블루 기본 컬러 적용
+        roughness: 0.4,
+        metalness: 0.1,
+        flatShading: true, // 로우폴리 레트로 감성의 geometric 셰이더 적용
+        side: THREE.DoubleSide
+      });
+
+      const mesh = new THREE.Mesh(geometry, material);
+      scene.add(mesh);
+      mesh3dRef.current = mesh;
+
+      // 카메라 오빗 피팅 정렬
+      geometry.computeBoundingSphere();
+      const sphere = geometry.boundingSphere;
+      if (sphere && controls3dRef.current && camera3dRef.current) {
+        const center = sphere.center;
+        const radius = sphere.radius;
+        controls3dRef.current.target.copy(center);
+        camera3dRef.current.position.set(
+          center.x,
+          center.y + radius * 1.5,
+          center.z + radius * 2.0
+        );
+        controls3dRef.current.update();
+      }
+
+      // mm 기반 예상 실측 크기 산출 (화소 단위 4px당 1mm 비례 축소 적용)
+      geometry.computeBoundingBox();
+      const bbox = geometry.boundingBox;
+      const size = new THREE.Vector3();
+      bbox.getSize(size);
+
+      const scaleRatio = 0.25; // 4px = 1mm 스케일링 비율 적용
+      setDimensions({
+        x: parseFloat((size.x * scaleRatio).toFixed(1)),
+        y: parseFloat((size.y * scaleRatio).toFixed(1)),
+        z: extrudeHeight
+      });
+
+    } catch (err) {
+      console.error('SVG 3D 실시간 돌출 렌더링 에러:', err);
+    }
+  }, [activeTab, threeScriptsLoaded, svgResult, extrudeHeight]);
+
+  // --- 4. 3D 입체 STL 내보내기 및 다운로드 액션 핸들러 ---
+  const handleDownloadStl = () => {
+    if (!svgResult || !fileInfo) return;
+
+    const runStlExport = () => {
+      const THREE = (window as any).THREE;
+      try {
+        const loader = new THREE.SVGLoader();
+        const svgData = loader.parse(svgResult);
+        const paths = svgData.paths;
+        const shapes = [];
+
+        for (let i = 0; i < paths.length; i++) {
+          const path = paths[i];
+          const shapesForPath = THREE.SVGLoader.createShapes(path);
+          shapes.push(...shapesForPath);
+        }
+
+        if (shapes.length === 0) {
+          showToast('STL로 변환할 수 있는 모양이 존재하지 않습니다.');
+          return;
+        }
+
+        const geometry = new THREE.ExtrudeGeometry(shapes, {
+          depth: extrudeHeight,
+          bevelEnabled: false,
+          steps: 1
+        });
+
+        // 3D 프린터 베드에 올라갈 수 있는 규격으로 스케일 가공 및 정렬
+        geometry.center();
+        geometry.rotateX(Math.PI);
+        geometry.scale(0.25, 0.25, 1.0); // 1px = 0.25mm 척도 정밀 보정
+
+        const material = new THREE.MeshBasicMaterial();
+        const mesh = new THREE.Mesh(geometry, material);
+
+        const exporter = new THREE.STLExporter();
+        const result = exporter.parse(mesh, { binary: true });
+
+        // 바이너리 데이터 다운로드 가동
+        const blob = new Blob([result], { type: 'application/octet-stream' });
+        const url = URL.createObjectURL(blob);
+
+        const link = document.createElement('a');
+        const originalBaseName = fileInfo.name.substring(0, fileInfo.name.lastIndexOf('.')) || fileInfo.name;
+        link.href = url;
+        link.download = `${originalBaseName}_wow3d.stl`;
+
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+
+        showToast('STL 3D 도면 파일이 성공적으로 다운로드되었습니다.');
+      } catch (err) {
+        console.error('STL 다운로드 모듈 에러:', err);
+        showToast('STL 파일 생성 중 오류가 발생하였습니다.');
+      }
+    };
+
+    // 스크립트가 아직 로딩되지 않았다면 비동기로 스크립트 먼저 준비 후 가동
+    if (!threeScriptsLoaded) {
+      setIs3DLoading(true);
+      loadThreeAndSvgTools()
+        .then(() => {
+          setThreeScriptsLoaded(true);
+          setIs3DLoading(false);
+          runStlExport();
+        })
+        .catch((err) => {
+          console.error(err);
+          setIs3DLoading(false);
+          showToast('3D 로더 모듈 해석에 실패했습니다.');
+        });
+    } else {
+      runStlExport();
+    }
   };
 
   // --- 실시간 자동 변환 디바운싱 처리 (300ms) ---
@@ -190,11 +527,27 @@ export default function FreeToolsPage() {
     }));
   };
 
-  // --- 이미지 초기화 ---
+  // --- 이미지 및 3D 관련 상태 초기화 ---
   const handleReset = () => {
     setUploadedImage(null);
     setFileInfo(null);
     setSvgResult(null);
+    
+    // 3D 상태 및 리소스 리셋
+    setActiveTab('2d');
+    setExtrudeHeight(10);
+    setDimensions(null);
+    if (mesh3dRef.current && scene3dRef.current) {
+      try {
+        scene3dRef.current.remove(mesh3dRef.current);
+        if (mesh3dRef.current.geometry) mesh3dRef.current.geometry.dispose();
+        if (mesh3dRef.current.material) mesh3dRef.current.material.dispose();
+      } catch (err) {
+        console.error('WebGL 리소스 초기화 에러:', err);
+      }
+      mesh3dRef.current = null;
+    }
+
     if (fileInputRef.current) fileInputRef.current.value = '';
     showToast('작업 영역이 초기화되었습니다.');
   };
@@ -350,47 +703,85 @@ export default function FreeToolsPage() {
                   </div>
                 </div>
 
-                {/* SVG 변환 결과 뷰어 */}
+                {/* SVG 변환 결과 및 3D 돌출 입체 미리보기 복합 뷰어 */}
                 <div className={styles.viewCard}>
-                  <h3 className={styles.viewTitle}>
-                    <Sparkles size={16} color="#60a5fa" /> 변환된 SVG 벡터 그래픽
-                  </h3>
-                  <div className={styles.displayArea}>
-                    {shouldBlockConversion ? (
-                      <div className={styles.loadingOverlay} style={{ background: 'rgba(15, 23, 42, 0.92)' }}>
-                        <span style={{ fontSize: '1.25rem', color: '#f87171', fontWeight: 800 }}>무료 변환 한도 초과</span>
-                        <p style={{ fontSize: '0.875rem', color: '#94a3b8', padding: '0 24px', textAlign: 'center', lineHeight: 1.5 }}>
-                          이미 10개의 고유 파일 변환 혜택이 모두 소진되었습니다. 무제한 변환 라이선스 획득 및 스마트상점 맞춤 도입은 구축문의를 주시면 신속하게 안내해 드립니다.
-                        </p>
-                        <a 
-                          href="/contact/" 
-                          className={styles.btnContact}
-                          style={{ marginTop: '10px' }}
-                        >
-                          도입 문의 바로가기
-                        </a>
-                      </div>
-                    ) : (
-                      <>
-                        {isConverting && (
-                          <div className={styles.loadingOverlay}>
-                            <div className={styles.spinner} />
-                            <span className={styles.loadingText}>실시간 벡터화 처리 중...</span>
-                          </div>
-                        )}
-                        {svgResult ? (
-                          <div 
-                            style={{ width: '90%', height: '90%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-                            dangerouslySetInnerHTML={{ __html: svgResult }} 
-                          />
-                        ) : (
-                          <div className={styles.loadingOverlay}>
-                            <span className={styles.loadingText}>대기 중...</span>
-                          </div>
-                        )}
-                      </>
-                    )}
+                  <div className={styles.viewTabs}>
+                    <button 
+                      className={clsx(styles.viewTab, activeTab === '2d' && styles.viewTabActive)}
+                      onClick={() => setActiveTab('2d')}
+                    >
+                      <Sparkles size={14} /> 2D 벡터 (SVG)
+                    </button>
+                    <button 
+                      className={clsx(styles.viewTab, activeTab === '3d' && styles.viewTabActive)}
+                      onClick={() => {
+                        if (svgResult) {
+                          setActiveTab('3d');
+                        } else {
+                          showToast('이미지 변환 완료 후 3D 돌출을 시작할 수 있습니다.');
+                        }
+                      }}
+                      disabled={!svgResult}
+                      style={{ opacity: !svgResult ? 0.5 : 1 }}
+                    >
+                      <Box size={14} /> 3D 돌출 (STL)
+                    </button>
                   </div>
+
+                  {activeTab === '2d' ? (
+                    <div className={styles.displayArea}>
+                      {shouldBlockConversion ? (
+                        <div className={styles.loadingOverlay} style={{ background: 'rgba(15, 23, 42, 0.92)' }}>
+                          <span style={{ fontSize: '1.25rem', color: '#f87171', fontWeight: 800 }}>무료 변환 한도 초과</span>
+                          <p style={{ fontSize: '0.875rem', color: '#94a3b8', padding: '0 24px', textAlign: 'center', lineHeight: 1.5 }}>
+                            이미 10개의 고유 파일 변환 혜택이 모두 소진되었습니다. 무제한 변환 라이선스 획득 및 스마트상점 맞춤 도입은 구축문의를 주시면 신속하게 안내해 드립니다.
+                          </p>
+                          <a 
+                            href="/contact/" 
+                            className={styles.btnContact}
+                            style={{ marginTop: '10px' }}
+                          >
+                            도입 문의 바로가기
+                          </a>
+                        </div>
+                      ) : (
+                        <>
+                          {isConverting && (
+                            <div className={styles.loadingOverlay}>
+                              <div className={styles.spinner} />
+                              <span className={styles.loadingText}>실시간 벡터화 처리 중...</span>
+                            </div>
+                          )}
+                          {svgResult ? (
+                            <div 
+                              style={{ width: '90%', height: '90%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                              dangerouslySetInnerHTML={{ __html: svgResult }} 
+                            />
+                          ) : (
+                            <div className={styles.loadingOverlay}>
+                              <span className={styles.loadingText}>대기 중...</span>
+                            </div>
+                          )}
+                        </>
+                      )}
+                    </div>
+                  ) : (
+                    // 3D 돌출 미리보기 뷰어 영역
+                    <div className={styles.threeCanvasContainer} ref={containerRef3d}>
+                      {is3DLoading && (
+                        <div className={styles.threeLoadingOverlay}>
+                          <div className={styles.threeSpinner} />
+                          <span className={styles.threeLoadingText}>3D 하드웨어 가속 기하 연산 중...</span>
+                        </div>
+                      )}
+                      <canvas ref={canvasRef3d} className={styles.threeCanvas} />
+                      <div className={styles.threeHelperOverlay}>
+                        <div className={styles.threeHelperItem}>좌클릭 드래그: 회전</div>
+                        <div className={styles.threeHelperItem}>휠 스크롤: 줌</div>
+                        <div className={styles.threeHelperItem}>우클릭 드래그: 이동</div>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -518,6 +909,67 @@ export default function FreeToolsPage() {
                   </label>
                 )}
               </div>
+
+              {/* 3D 돌출 입체 실시간 튜닝 설정 영역 (SVG 변환 결과가 있을 때 활성화) */}
+              {svgResult && (
+                <div className={styles.metadataBoard}>
+                  <h3 className={styles.metadataTitle}>
+                    <Box size={16} color="#3b82f6" /> 3D 돌출 모델 가공 설정
+                  </h3>
+                  
+                  {activeTab === '3d' && (
+                    <div className={styles.threeInfoBanner}>
+                      <span style={{ display: 'flex', color: '#2563eb', marginTop: '2px' }}>
+                        <Box size={14} />
+                      </span>
+                      <p className={styles.threeInfoText}>
+                        마우스로 3D 공간 상의 모델을 회전하거나 줌하여 돌출 두께와 형태를 다각도에서 검사할 수 있습니다.
+                      </p>
+                    </div>
+                  )}
+
+                  <div className={styles.controlGroup}>
+                    <div>
+                      <div className={styles.labelWrapper}>
+                        <label className={styles.label}>돌출 두께 (Extrude Height)</label>
+                        <span className={styles.valueIndicator}>{extrudeHeight} mm</span>
+                      </div>
+                      <input 
+                        type="range" 
+                        min="1" 
+                        max="50" 
+                        value={extrudeHeight} 
+                        onChange={(e) => setExtrudeHeight(parseInt(e.target.value))}
+                        className={styles.slider}
+                      />
+                      <p className={styles.uploadSubtext} style={{ marginTop: '4px' }}>
+                        3D 프린팅 출력물의 입체 두께 규격을 1mm부터 50mm까지 실시간 조절합니다.
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* 3D 실측 예측 크기 칩 리스트 */}
+                  {dimensions && (
+                    <div style={{ marginTop: '16px' }}>
+                      <span className={styles.label} style={{ display: 'block', marginBottom: '8px' }}>예상 3D 실측 크기 (mm)</span>
+                      <div className={styles.dimensionsGrid}>
+                        <div className={styles.dimensionChip}>
+                          <span className={styles.dimLabel}>가로 (X)</span>
+                          <span className={styles.dimValue}>{dimensions.x} mm</span>
+                        </div>
+                        <div className={styles.dimensionChip}>
+                          <span className={styles.dimLabel}>세로 (Y)</span>
+                          <span className={styles.dimValue}>{dimensions.y} mm</span>
+                        </div>
+                        <div className={styles.dimensionChip}>
+                          <span className={styles.dimLabel}>높이 (Z)</span>
+                          <span className={styles.dimValue}>{dimensions.z} mm</span>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
 
             {/* 다운로드 및 복사 버튼 액션 */}
@@ -538,6 +990,19 @@ export default function FreeToolsPage() {
                     disabled={!svgResult}
                   >
                     <Download size={18} /> SVG 파일 다운로드
+                  </button>
+
+                  {/* 초록색 프리미엄 그라데이션이 들어간 3D STL 다운로드 버튼 */}
+                  <button 
+                    className={clsx(styles.btnPrimary, !svgResult && styles.disabled)}
+                    style={{
+                      background: svgResult ? 'linear-gradient(135deg, #10b981 0%, #059669 100%)' : undefined,
+                      boxShadow: svgResult ? '0 4px 15px rgba(16, 185, 129, 0.2)' : undefined
+                    }}
+                    onClick={handleDownloadStl}
+                    disabled={!svgResult}
+                  >
+                    <Box size={18} /> 3D 입체 STL 다운로드
                   </button>
                   
                   <button 
