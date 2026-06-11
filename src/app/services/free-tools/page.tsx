@@ -7,6 +7,7 @@ import {
   Box, 
   QrCode, 
   Calculator,
+  CalendarDays,
   Lock
 } from 'lucide-react';
 import clsx from 'clsx';
@@ -62,6 +63,16 @@ export default function FreeToolsHubPage() {
       badgeText: '견적 서비스 연동',
       isActive: true,
       href: 'https://wow3dp.co.kr',
+      isExternal: true
+    },
+    {
+      id: 'team-canvas',
+      title: '팀 일정관리 (TeamCanvas)',
+      description: '팀원 간 일정을 한눈에 공유·관리하는 협업 캘린더 도구입니다. 개인 일정과 팀 프로젝트 일정을 색상별로 구분하고, 실시간으로 팀원의 스케줄을 확인할 수 있습니다. 설치 없이 웹에서 바로 사용 가능합니다.',
+      icon: <CalendarDays size={28} />,
+      badgeText: '서비스 제공 중',
+      isActive: true,
+      href: 'https://teamcanvas.pages.dev/',
       isExternal: true
     }
   ];
