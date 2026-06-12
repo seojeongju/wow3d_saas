@@ -37,7 +37,7 @@ export default function HologramContent() {
             <nav className={styles.breadcrumb}>
                 <Link href="/">홈</Link>
                 <ChevronRight size={13} />
-                <Link href="/hardware/">하드웨어 소개</Link>
+                <Link href="/hardware">하드웨어 소개</Link>
                 <ChevronRight size={13} />
                 <span>3D 홀로그램 디스플레이</span>
             </nav>
@@ -221,7 +221,7 @@ export default function HologramContent() {
                     <p className={styles.ctaDesc}>
                         전문 컨설턴트가 비즈니스 모델에 맞는 최적의 홀로그램 솔루션을 제안해 드립니다.
                     </p>
-                    <Link href="/contact/" className={styles.ctaBtn}>
+                    <Link href="/contact" className={styles.ctaBtn}>
                         무료 상담 신청하기 <ArrowRight size={20} />
                     </Link>
                 </div>

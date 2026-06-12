@@ -216,7 +216,7 @@ export default function PrinterContent() {
       <nav className={styles.breadcrumb}>
         <Link href="/">홈</Link>
         <ChevronRight size={13} />
-        <Link href="/hardware/">하드웨어 소개</Link>
+        <Link href="/hardware">하드웨어 소개</Link>
         <ChevronRight size={13} />
         <span>P-Pro Series 3D 프린터</span>
       </nav>
@@ -314,7 +314,7 @@ export default function PrinterContent() {
                 </div>
               ))}
             </div>
-            <Link href="/contact/" className={styles.modelCta} style={{ background: model.accentColor }}>
+            <Link href="/contact" className={styles.modelCta} style={{ background: model.accentColor }}>
               도입 문의하기 <ArrowRight size={16} />
             </Link>
           </div>
@@ -487,7 +487,7 @@ export default function PrinterContent() {
             용도에 맞는 P-Pro 모델과 레진을 1:1 맞춤 추천해 드립니다.<br />
             WOW3DHD · (주)와우쓰리디에 문의하세요.
           </p>
-          <Link href="/contact/" className={styles.ctaBtn}>
+          <Link href="/contact" className={styles.ctaBtn}>
             무료 상담 신청 <ArrowRight size={16} />
           </Link>
         </div>

@@ -5,12 +5,12 @@ export const metadata: Metadata = {
   title: "개인정보처리방침",
   description: "(주)와우쓰리디 개인정보처리방침을 확인할 수 있습니다.",
   alternates: {
-    canonical: "https://wow3dsw.co.kr/privacy/",
+    canonical: "https://wow3dsw.co.kr/privacy",
   },
   openGraph: {
     title: "개인정보처리방침",
     description: "(주)와우쓰리디 개인정보처리방침을 확인할 수 있습니다.",
-    url: "https://wow3dsw.co.kr/privacy/",
+    url: "https://wow3dsw.co.kr/privacy",
   },
 };
 

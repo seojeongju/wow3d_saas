@@ -809,7 +809,7 @@ export default function FreeToolsPage() {
             <strong>무료 이용 제한 안내:</strong> 이미 변환했던 파일 10개의 무료 변환 혜택이 모두 마감되었습니다. 
             추가로 새로운 파일을 고품질 벡터 그래픽으로 대량 변환하고 싶으시면, (주)와우쓰리디 기술 솔루션 도입 문의를 남겨주세요.
           </div>
-          <a href="/contact/" className={styles.btnContact}>
+          <a href="/contact" className={styles.btnContact}>
             도입 및 구축 문의하기 <Sparkles size={14} />
           </a>
         </div>
@@ -910,7 +910,7 @@ export default function FreeToolsPage() {
                             이미 10개의 고유 파일 변환 혜택이 모두 소진되었습니다. 무제한 변환 라이선스 획득 및 스마트상점 맞춤 도입은 구축문의를 주시면 신속하게 안내해 드립니다.
                           </p>
                           <a 
-                            href="/contact/" 
+                            href="/contact" 
                             className={styles.btnContact}
                             style={{ marginTop: '10px' }}
                           >
@@ -1245,7 +1245,7 @@ export default function FreeToolsPage() {
             <div className={styles.actionGroup}>
               {shouldBlockConversion ? (
                 <a 
-                  href="/contact/" 
+                  href="/contact" 
                   className={styles.btnPrimary}
                   style={{ background: 'linear-gradient(135deg, #ef4444 0%, #b91c1c 100%)', textDecoration: 'none' }}
                 >

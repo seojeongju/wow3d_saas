@@ -334,7 +334,7 @@ export default function QrBuilderPage() {
                   id="urlInput"
                   type="url"
                   className={styles.input}
-                  placeholder="예: https://wow3dsw.co.kr/contact/"
+                  placeholder="예: https://wow3dsw.co.kr/contact"
                   value={urlValue}
                   onChange={(e) => setUrlValue(e.target.value)}
                 />
