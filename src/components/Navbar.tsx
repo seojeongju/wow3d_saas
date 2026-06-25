@@ -124,6 +124,21 @@ export default function Navbar() {
     return () => document.removeEventListener('click', handleClickOutside);
   }, [isOpen]);
 
+  // 메뉴 열림 시 배경 스크롤 잠금
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = originalOverflow;
+    };
+  }, [isOpen]);
+
+  const toggleDropdown = (href: string) => {
+    setDropdownOpen((prev) => (prev === href ? null : href));
+  };
+
   return (
     <>
       <nav className={clsx(styles.navbar, isNavOpaque && styles.scrolled, isOpen && styles.menuOpen)}>
@@ -205,64 +220,84 @@ export default function Navbar() {
         data-mobile-menu
         aria-hidden={!isOpen}
       >
-        <div className={styles.mobileMenuContainer}>
-          {navLinks.map((link) => (
-            <div key={link.href} className={styles.mobileNavGroup}>
-              <div className={styles.mobileLinkWrapper}>
-                <Link
-                  href={link.children ? '#' : link.href}
-                  className={clsx(styles.mobileLink, pathname === link.href && styles.active)}
-                  onClick={(e) => {
-                    if (link.children) {
-                      e.preventDefault();
-                      setDropdownOpen(dropdownOpen === link.href ? null : link.href);
-                    } else {
-                      handleLinkClick();
-                    }
-                  }}
-                >
-                  {link.label}
-                </Link>
-                {link.children && (
-                  <button
-                    onClick={() => setDropdownOpen(dropdownOpen === link.href ? null : link.href)}
-                    className={styles.mobileDropdownTrigger}
+        <div className={styles.mobileMenuScroll}>
+          <div className={styles.mobileMenuContainer}>
+            {navLinks.map((link) => {
+              const isExpanded = dropdownOpen === link.href;
+              return (
+                <div key={link.href} className={styles.mobileNavGroup}>
+                  <div
+                    className={clsx(
+                      styles.mobileLinkWrapper,
+                      link.children && styles.hasChildren,
+                      isExpanded && styles.expanded
+                    )}
                   >
-                    <ChevronDown size={20} className={clsx('transition-transform', dropdownOpen === link.href && 'rotate-180')} />
-                  </button>
-                )}
-              </div>
+                    {link.children ? (
+                      <button
+                        type="button"
+                        className={clsx(
+                          styles.mobileLink,
+                          styles.mobileLinkButton,
+                          pathname.startsWith(link.href) && link.href !== '/' && styles.active
+                        )}
+                        onClick={() => toggleDropdown(link.href)}
+                        aria-expanded={isExpanded}
+                      >
+                        <span>{link.label}</span>
+                        <ChevronDown
+                          size={18}
+                          className={clsx(styles.mobileChevron, isExpanded && styles.rotated)}
+                          aria-hidden
+                        />
+                      </button>
+                    ) : (
+                      <Link
+                        href={link.href}
+                        className={clsx(styles.mobileLink, pathname === link.href && styles.active)}
+                        onClick={handleLinkClick}
+                      >
+                        <span>{link.label}</span>
+                      </Link>
+                    )}
+                  </div>
 
-              {/* Mobile Submenu */}
-              {link.children && (
-                <div className={clsx(styles.mobileSubmenu, dropdownOpen === link.href && styles.open)}>
-                  {link.children.map((child) => (
-                    <Link
-                      key={child.href}
-                      href={child.href}
-                      className={styles.mobileSublink}
-                      onClick={handleLinkClick}
-                    >
-                      <div className={styles.mobileSublinkContent}>
-                        <span className={styles.mobileSublinkLabel}>{child.label}</span>
-                        {child.description && <span className={styles.mobileSublinkDesc}>{child.description}</span>}
+                  {link.children && (
+                    <div className={clsx(styles.mobileSubmenu, isExpanded && styles.open)}>
+                      <div className={styles.mobileSubmenuInner}>
+                        {link.children.map((child) => (
+                          <Link
+                            key={child.href}
+                            href={child.href}
+                            className={styles.mobileSublink}
+                            onClick={handleLinkClick}
+                          >
+                            <div className={styles.mobileSublinkContent}>
+                              <span className={styles.mobileSublinkLabel}>{child.label}</span>
+                              {child.description && (
+                                <span className={styles.mobileSublinkDesc}>{child.description}</span>
+                              )}
+                            </div>
+                          </Link>
+                        ))}
                       </div>
-                    </Link>
-                  ))}
+                    </div>
+                  )}
                 </div>
-              )}
-            </div>
-          ))}
-          <div className={styles.mobilectaContainer}>
-            <Link href="/contact" onClick={handleLinkClick} className={styles.btnMobileCta}>
-              무료 상담 신청하기
-            </Link>
+              );
+            })}
           </div>
+        </div>
+
+        <div className={styles.mobileMenuFooter}>
+          <Link href="/contact" onClick={handleLinkClick} className={styles.btnMobileCta}>
+            무료 상담 신청하기
+          </Link>
         </div>
       </div>
       
       {/* Mobile Bottom Navigation Bar */}
-      <div className={clsx(styles.bottomNav, !showBottomNav && styles.hide)}>
+      <div className={clsx(styles.bottomNav, !showBottomNav && styles.hide, isOpen && styles.menuOpenHide)}>
         <Link href="/" className={clsx(styles.bottomNavItem, pathname === '/' && styles.active)}>
           <Home size={22} />
           <span>홈</span>
