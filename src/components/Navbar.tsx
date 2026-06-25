@@ -297,8 +297,8 @@ export default function Navbar() {
       </div>
       
       {/* Mobile Bottom Navigation Bar */}
-      <div className={clsx(styles.bottomNav, !showBottomNav && styles.hide, isOpen && styles.menuOpenHide)}>
-        <Link href="/" className={clsx(styles.bottomNavItem, pathname === '/' && styles.active)}>
+      <div className={clsx(styles.bottomNav, !showBottomNav && styles.hide)}>
+        <Link href="/" className={clsx(styles.bottomNavItem, pathname === '/' && styles.active)} onClick={handleLinkClick}>
           <Home size={22} />
           <span>홈</span>
         </Link>
