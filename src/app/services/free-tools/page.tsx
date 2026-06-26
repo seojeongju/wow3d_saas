@@ -8,6 +8,7 @@ import {
   Calculator,
   CalendarDays,
   Lock,
+  ShieldCheck,
 } from 'lucide-react';
 import clsx from 'clsx';
 import styles from './hub.module.css';
@@ -73,6 +74,14 @@ const jsonLdItemList = {
         '팀원 간 일정을 한눈에 공유·관리하는 협업 캘린더. 개인·팀 일정을 색상별 구분, 실시간 스케줄 확인. 설치 없이 무료 사용.',
       url: 'https://teamcanvas.pages.dev/',
     },
+    {
+      '@type': 'ListItem',
+      position: 6,
+      name: '규제인증 AI 진단 (Certi-Mate)',
+      description:
+        'KC 인증, 식약처 허가, 해외 규제 등 제품 정보를 입력하면 AI가 필요한 법적 절차와 비용, 기간을 분석해 주는 무료 진단 서비스.',
+      url: 'https://compliance-saas-5jq.pages.dev/',
+    },
   ],
 };
 
@@ -100,6 +109,18 @@ const jsonLdSoftwareApps = [
     description:
       '팀원 간 일정을 공유·관리하는 협업 캘린더 웹 앱. 무료, 설치 불필요.',
     url: 'https://teamcanvas.pages.dev/',
+    provider: { '@type': 'Organization', name: '(주)와우쓰리디' },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'SoftwareApplication',
+    name: '규제인증 AI 진단 (Certi-Mate)',
+    applicationCategory: 'BusinessApplication',
+    operatingSystem: 'Web',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
+    description:
+      'KC 인증, 식약처 허가, 해외 규제 등 제품 정보를 입력하면 AI가 필요한 법적 절차와 비용, 기간을 분석해 주는 무료 진단 서비스.',
+    url: 'https://compliance-saas-5jq.pages.dev/',
     provider: { '@type': 'Organization', name: '(주)와우쓰리디' },
   },
 ];
@@ -147,6 +168,14 @@ const jsonLdFAQ = {
       acceptedAnswer: {
         '@type': 'Answer',
         text: '와우쓰리디 스마트 QR 생성기(https://wow3dsw.co.kr/services/free-tools/qr-builder/)에서 무료로 QR코드를 만들 수 있습니다. 와이파이 연동, 예약 페이지 연결, 테이블 오더 등 소상공인에 특화된 기능을 제공합니다.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: '제품 규제인증을 무료로 진단해주는 프로그램이 있나요?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: '네, 규제인증 AI 진단 프로그램인 Certi-Mate(https://compliance-saas-5jq.pages.dev/)를 통해 제품 정보 입력만으로 AI가 KC인증, 식약처 허가 등 필요한 규제 절차와 비용을 무료로 즉각 진단해 드립니다.',
       },
     },
   ],
@@ -205,6 +234,17 @@ export default function FreeToolsHubPage() {
       badgeText: '서비스 제공 중',
       isActive: true,
       href: 'https://teamcanvas.pages.dev/',
+      isExternal: true,
+    },
+    {
+      id: 'certi-mate',
+      title: '규제인증 AI 진단 (Certi-Mate)',
+      description:
+        '제품 사양을 입력하면 AI가 KC 인증, 식약처 허가, 해외 규제 등 필수 규제 항목을 즉시 분석하여 비용, 기간, 필요한 행정 서류 준비 절차를 무료로 설계합니다.',
+      icon: <ShieldCheck size={28} />,
+      badgeText: '서비스 제공 중',
+      isActive: true,
+      href: 'https://compliance-saas-5jq.pages.dev/',
       isExternal: true,
     },
   ];
