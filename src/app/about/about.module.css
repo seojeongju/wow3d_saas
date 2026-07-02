@@ -14,7 +14,7 @@
 .heroSection {
   background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
   color: white;
-  padding: 8rem 0 6rem;
+  padding: 8rem 0 5rem;
   position: relative;
   overflow: hidden;
 }
@@ -26,7 +26,7 @@
   right: 0;
   width: 50%;
   height: 100%;
-  background: radial-gradient(circle at center, rgba(37, 99, 235, 0.1) 0%, transparent 70%);
+  background: radial-gradient(circle at center, rgba(37, 99, 235, 0.12) 0%, transparent 70%);
   pointer-events: none;
 }
 
@@ -54,9 +54,9 @@
 }
 
 .heroTitle {
-  font-size: 3.5rem;
+  font-size: clamp(2rem, 5vw, 3.25rem);
   font-weight: 800;
-  line-height: 1.2;
+  line-height: 1.25;
   margin-bottom: 1.5rem;
   letter-spacing: -0.02em;
 }
@@ -69,11 +69,71 @@
 }
 
 .heroDesc {
-  font-size: 1.25rem;
+  font-size: 1.125rem;
   color: rgba(226, 232, 240, 0.9);
   line-height: 1.8;
-  max-width: 800px;
+  max-width: 760px;
+  margin: 0 auto 2.5rem;
+}
+
+.heroStats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  max-width: 640px;
   margin: 0 auto;
+}
+
+.statItem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 1rem 0.75rem;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.75rem;
+}
+
+.statItem strong {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #93c5fd;
+}
+
+.statItem span {
+  font-size: 0.75rem;
+  color: rgba(226, 232, 240, 0.75);
+}
+
+/* ============================================
+   Section Common
+   ============================================ */
+
+.sectionHeader {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.sectionTitle {
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-weight: 800;
+  color: #0f172a;
+  margin-bottom: 0.75rem;
+  letter-spacing: -0.02em;
+}
+
+.sectionSubtitle {
+  font-size: 1.0625rem;
+  color: #64748b;
+  line-height: 1.6;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.sectionAction {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
 }
 
 /* ============================================
@@ -81,7 +141,7 @@
    ============================================ */
 
 .overviewSection {
-  padding: 4rem 0;
+  padding: 5rem 0;
   background: white;
   border-bottom: 1px solid #e2e8f0;
 }
@@ -89,31 +149,31 @@
 .overviewGrid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 2rem;
-  max-width: 1000px;
+  gap: 1.25rem;
+  max-width: 1100px;
   margin: 0 auto;
 }
 
 .overviewCard {
   display: flex;
-  align-items: center;
-  gap: 1.5rem;
-  padding: 2rem;
+  align-items: flex-start;
+  gap: 1.25rem;
+  padding: 1.5rem;
   background: #f8fafc;
   border-radius: 1rem;
   border: 1px solid #e2e8f0;
-  transition: all 0.3s ease;
+  transition: all 0.25s ease;
 }
 
 .overviewCard:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px -6px rgba(0, 0, 0, 0.08);
   border-color: #2563eb;
 }
 
 .cardIcon {
-  width: 56px;
-  height: 56px;
+  width: 48px;
+  height: 48px;
   border-radius: 12px;
   background: linear-gradient(135deg, #2563eb, #1d4ed8);
   display: flex;
@@ -124,264 +184,702 @@
 }
 
 .cardContent h3 {
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
   font-weight: 600;
   color: #64748b;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.375rem;
 }
 
 .cardValue {
-  font-size: 1.25rem;
+  font-size: 1rem;
   font-weight: 700;
   color: #0f172a;
   margin: 0;
+  line-height: 1.5;
+}
+
+.cardNote {
+  font-size: 0.8125rem;
+  color: #94a3b8;
+  margin: 0.25rem 0 0;
 }
 
 /* ============================================
-   Mission Section
+   Business Areas
    ============================================ */
 
-.missionSection {
-  padding: 6rem 0;
+.businessSection {
+  padding: 5rem 0;
   background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
 }
 
-.missionGrid {
+.businessGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 3rem;
-  max-width: 1000px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  max-width: 1100px;
   margin: 0 auto;
 }
 
-.missionCard {
-  text-align: center;
-  padding: 3rem 2rem;
+.businessCard {
+  padding: 2rem;
   background: white;
-  border-radius: 1.5rem;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-  border: 1px solid #e2e8f0;
-  transition: all 0.3s ease;
-}
-
-.missionCard:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-}
-
-.missionIcon {
-  width: 80px;
-  height: 80px;
-  border-radius: 20px;
-  background: linear-gradient(135deg, #2563eb, #1d4ed8);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  margin: 0 auto 1.5rem;
-}
-
-.missionCard h2 {
-  font-size: 2rem;
-  font-weight: 800;
-  color: #0f172a;
-  margin-bottom: 1rem;
-  letter-spacing: -0.02em;
-}
-
-.missionCard p {
-  font-size: 1.125rem;
-  color: #475569;
-  line-height: 1.8;
-  margin: 0;
-}
-
-/* ============================================
-   Values Section
-   ============================================ */
-
-.valuesSection {
-  padding: 6rem 0;
-  background: white;
-}
-
-.sectionHeader {
-  text-align: center;
-  margin-bottom: 4rem;
-}
-
-.sectionTitle {
-  font-size: 2.5rem;
-  font-weight: 800;
-  color: #0f172a;
-  margin-bottom: 1rem;
-  letter-spacing: -0.02em;
-}
-
-.sectionSubtitle {
-  font-size: 1.25rem;
-  color: #64748b;
-  line-height: 1.6;
-}
-
-.valuesGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 2rem;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.valueCard {
-  text-align: center;
-  padding: 2.5rem 2rem;
-  background: #f8fafc;
   border-radius: 1.25rem;
   border: 1px solid #e2e8f0;
-  transition: all 0.3s ease;
+  transition: all 0.25s ease;
 }
 
-.valueCard:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
-  background: white;
+.businessCard:hover {
   border-color: #2563eb;
+  box-shadow: 0 10px 25px -8px rgba(37, 99, 235, 0.15);
 }
 
-.valueIcon {
-  width: 64px;
-  height: 64px;
-  border-radius: 16px;
-  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+.businessIcon {
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #eff6ff, #dbeafe);
+  color: #2563eb;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
-  margin: 0 auto 1.5rem;
+  margin-bottom: 1.25rem;
 }
 
-.valueCard h3 {
-  font-size: 1.5rem;
+.businessCard h3 {
+  font-size: 1.25rem;
   font-weight: 700;
   color: #0f172a;
   margin-bottom: 1rem;
 }
 
-.valueCard p {
-  font-size: 1rem;
+.businessCard ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
+.businessCard li {
+  font-size: 0.9375rem;
+  color: #475569;
+  line-height: 1.55;
+  padding-left: 1rem;
+  position: relative;
+}
+
+.businessCard li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.55em;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #2563eb;
+}
+
+/* ============================================
+   Timeline
+   ============================================ */
+
+.timelineSection {
+  padding: 5rem 0;
+  background: white;
+}
+
+.timeline {
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.timelineItem {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.timelineMarker {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+  width: 20px;
+  padding-top: 0.375rem;
+}
+
+.timelineDot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #2563eb;
+  border: 3px solid #dbeafe;
+  flex-shrink: 0;
+}
+
+.timelineLine {
+  flex: 1;
+  width: 2px;
+  min-height: 2rem;
+  background: linear-gradient(180deg, #2563eb, #e2e8f0);
+  margin: 0.5rem 0;
+}
+
+.timelineContent {
+  padding-bottom: 2rem;
+}
+
+.timelineYear {
+  display: inline-block;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: #2563eb;
+  background: #eff6ff;
+  padding: 0.25rem 0.625rem;
+  border-radius: 0.375rem;
+  margin-bottom: 0.5rem;
+}
+
+.timelineContent h3 {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 0.5rem;
+}
+
+.timelineContent p {
+  font-size: 0.9375rem;
   color: #64748b;
-  line-height: 1.7;
+  line-height: 1.65;
   margin: 0;
 }
 
 /* ============================================
-   Services Section
+   Products
    ============================================ */
 
-.servicesSection {
-  padding: 6rem 0;
+.productsSection {
+  padding: 5rem 0;
   background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
 }
 
-.servicesGrid {
+.productsGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
-  max-width: 1200px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.25rem;
+  max-width: 1100px;
   margin: 0 auto;
 }
 
-.serviceCard {
-  display: block;
-  padding: 2.5rem 2rem;
+.productCard {
+  display: flex;
+  flex-direction: column;
+  padding: 1.75rem;
   background: white;
   border-radius: 1.25rem;
   border: 1px solid #e2e8f0;
   text-decoration: none;
-  transition: all 0.3s ease;
+  transition: all 0.25s ease;
 }
 
-.serviceCard:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+.productCard:hover {
+  transform: translateY(-3px);
   border-color: #2563eb;
+  box-shadow: 0 12px 24px -8px rgba(37, 99, 235, 0.18);
 }
 
-.serviceContent h3 {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #0f172a;
-  margin-bottom: 0.75rem;
-}
-
-.serviceContent p {
-  font-size: 1rem;
-  color: #64748b;
-  margin-bottom: 1.5rem;
-  line-height: 1.6;
-}
-
-.serviceLink {
-  color: #2563eb;
-  font-weight: 600;
-  font-size: 0.9375rem;
-  transition: all 0.2s ease;
-}
-
-.serviceCard:hover .serviceLink {
-  color: #1d4ed8;
-  padding-left: 0.5rem;
-}
-
-/* ============================================
-   Centers Section
-   ============================================ */
-
-.centersSection {
-  padding: 6rem 0;
-  background: white;
-}
-
-.centersGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 2rem;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.centerCard {
-  padding: 2rem;
-  background: #f8fafc;
-  border-radius: 1.25rem;
-  border: 1px solid #e2e8f0;
-  transition: all 0.3s ease;
-}
-
-.centerCard:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
-  background: white;
-  border-color: #2563eb;
-}
-
-.centerIcon {
-  color: #2563eb;
+.productIcon {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   margin-bottom: 1rem;
 }
 
-.centerCard h3 {
-  font-size: 1.25rem;
+.productCard h3 {
+  font-size: 1.125rem;
   font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 0.5rem;
+}
+
+.productCard p {
+  font-size: 0.875rem;
+  color: #64748b;
+  line-height: 1.6;
+  flex: 1;
+  margin-bottom: 1rem;
+}
+
+.productLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: #2563eb;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+/* ============================================
+   Tabs
+   ============================================ */
+
+.tabBar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.tab,
+.tabActive {
+  padding: 0.5rem 1rem;
+  border-radius: 2rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid #e2e8f0;
+  background: white;
+  color: #64748b;
+  transition: all 0.2s ease;
+}
+
+.tab:hover {
+  border-color: #2563eb;
+  color: #2563eb;
+}
+
+.tabActive {
+  background: #2563eb;
+  border-color: #2563eb;
+  color: white;
+}
+
+.outlineBtn {
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.625rem;
+  border: 1px solid #2563eb;
+  background: white;
+  color: #2563eb;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.outlineBtn:hover {
+  background: #eff6ff;
+}
+
+/* ============================================
+   IP Section
+   ============================================ */
+
+.ipSection {
+  padding: 5rem 0;
+  background: white;
+}
+
+.ipGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.ipCard {
+  padding: 1.25rem;
+  background: #f8fafc;
+  border-radius: 1rem;
+  border: 1px solid #e2e8f0;
+  transition: border-color 0.2s ease;
+}
+
+.ipCard:hover {
+  border-color: #93c5fd;
+}
+
+.ipCardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+
+.ipType {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #2563eb;
+  background: #eff6ff;
+  padding: 0.2rem 0.5rem;
+  border-radius: 0.25rem;
+}
+
+.ipRegistered,
+.ipPending {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  padding: 0.2rem 0.5rem;
+  border-radius: 0.25rem;
+}
+
+.ipRegistered {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.ipPending {
+  background: #fef3c7;
+  color: #b45309;
+}
+
+.ipCard h3 {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: #0f172a;
+  line-height: 1.45;
+  margin-bottom: 0.5rem;
+}
+
+.ipNumber {
+  font-size: 0.8125rem;
+  color: #94a3b8;
+  font-family: ui-monospace, monospace;
+  margin: 0;
+}
+
+/* ============================================
+   Certifications
+   ============================================ */
+
+.certSection {
+  padding: 5rem 0;
+  background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+}
+
+.certGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.certCard {
+  padding: 1.25rem;
+  background: white;
+  border-radius: 1rem;
+  border: 1px solid #e2e8f0;
+  text-align: center;
+  transition: all 0.2s ease;
+}
+
+.certCard:hover {
+  border-color: #2563eb;
+  transform: translateY(-2px);
+}
+
+.certIcon {
+  color: #2563eb;
+  margin-bottom: 0.75rem;
+  display: flex;
+  justify-content: center;
+}
+
+.certCard h3 {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 0.375rem;
+  line-height: 1.4;
+}
+
+.certDate {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #2563eb;
+  margin-bottom: 0.25rem;
+}
+
+.certOrg {
+  font-size: 0.75rem;
+  color: #94a3b8;
+  margin: 0;
+}
+
+/* ============================================
+   Equipment
+   ============================================ */
+
+.equipmentSection {
+  padding: 5rem 0;
+  background: white;
+}
+
+.equipmentGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.25rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.equipmentCard {
+  padding: 1.75rem;
+  background: #0f172a;
+  color: white;
+  border-radius: 1.25rem;
+}
+
+.equipmentCard h3 {
+  font-size: 1.0625rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: #93c5fd;
+}
+
+.equipmentCard ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.equipmentCard li {
+  font-size: 0.9375rem;
+  color: rgba(226, 232, 240, 0.9);
+  padding-left: 1rem;
+  position: relative;
+}
+
+.equipmentCard li::before {
+  content: '·';
+  position: absolute;
+  left: 0;
+  color: #60a5fa;
+}
+
+/* ============================================
+   Achievements
+   ============================================ */
+
+.achievementSection {
+  padding: 5rem 0;
+  background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+}
+
+.achievementList {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.achievementCard {
+  padding: 1.25rem 1.5rem;
+  background: white;
+  border-radius: 1rem;
+  border: 1px solid #e2e8f0;
+  transition: all 0.2s ease;
+}
+
+.achievementCard:hover {
+  border-color: #2563eb;
+  box-shadow: 0 6px 16px -6px rgba(0, 0, 0, 0.08);
+}
+
+.achievementMeta {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.625rem;
+}
+
+.achievementYear,
+.achievementField {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  padding: 0.2rem 0.5rem;
+  border-radius: 0.25rem;
+}
+
+.achievementYear {
+  background: #eff6ff;
+  color: #2563eb;
+}
+
+.achievementField {
+  background: #f1f5f9;
+  color: #64748b;
+}
+
+.achievementCard h3 {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: #0f172a;
+  line-height: 1.45;
+  margin-bottom: 0.375rem;
+}
+
+.achievementProject {
+  font-size: 0.875rem;
+  color: #475569;
+  margin-bottom: 0.75rem;
+  line-height: 1.5;
+}
+
+.achievementFooter {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  color: #94a3b8;
+  border-top: 1px solid #f1f5f9;
+  padding-top: 0.625rem;
+}
+
+/* ============================================
+   Vision
+   ============================================ */
+
+.visionSection {
+  padding: 5rem 0;
+  background: white;
+}
+
+.visionGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.visionCard {
+  text-align: center;
+  padding: 2.5rem 1.75rem;
+  background: #f8fafc;
+  border-radius: 1.25rem;
+  border: 1px solid #e2e8f0;
+  transition: all 0.25s ease;
+}
+
+.visionCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.1);
+  background: white;
+}
+
+.visionIcon {
+  width: 72px;
+  height: 72px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  margin: 0 auto 1.25rem;
+}
+
+.visionCard h2 {
+  font-size: 1.375rem;
+  font-weight: 800;
   color: #0f172a;
   margin-bottom: 0.75rem;
 }
 
-.centerCard p {
+.visionCard p {
   font-size: 0.9375rem;
   color: #64748b;
   line-height: 1.7;
   margin: 0;
+}
+
+/* ============================================
+   Centers
+   ============================================ */
+
+.centersSection {
+  padding: 5rem 0;
+  background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+}
+
+.centersGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.25rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.centerCard {
+  padding: 1.75rem;
+  background: white;
+  border-radius: 1.25rem;
+  border: 1px solid #e2e8f0;
+  transition: all 0.25s ease;
+}
+
+.centerCard:hover {
+  transform: translateY(-3px);
+  border-color: #2563eb;
+  box-shadow: 0 10px 25px -8px rgba(37, 99, 235, 0.12);
+}
+
+.centerIcon {
+  color: #2563eb;
+  margin-bottom: 0.75rem;
+}
+
+.centerCard h3 {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 0.25rem;
+}
+
+.centerSubtitle {
+  font-size: 0.8125rem;
+  color: #2563eb;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+
+.centerAddress {
+  font-size: 0.875rem;
+  color: #64748b;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.centerContact {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.centerContact a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: 0.8125rem;
+  color: #475569;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.centerContact a:hover {
+  color: #2563eb;
 }
 
 /* ============================================
@@ -389,16 +887,16 @@
    ============================================ */
 
 .contactSection {
-  padding: 6rem 0;
+  padding: 5rem 0;
   background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
   color: white;
 }
 
 .contactCard {
-  max-width: 600px;
+  max-width: 640px;
   margin: 0 auto;
   text-align: center;
-  padding: 3rem;
+  padding: 3rem 2rem;
   background: rgba(255, 255, 255, 0.05);
   border-radius: 1.5rem;
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -406,23 +904,23 @@
 }
 
 .contactCard h2 {
-  font-size: 2.5rem;
+  font-size: clamp(1.75rem, 4vw, 2.25rem);
   font-weight: 800;
-  margin-bottom: 1rem;
+  margin-bottom: 0.75rem;
   letter-spacing: -0.02em;
 }
 
 .contactCard > p {
-  font-size: 1.125rem;
+  font-size: 1rem;
   color: rgba(226, 232, 240, 0.9);
-  margin-bottom: 2rem;
+  margin-bottom: 1.75rem;
   line-height: 1.6;
 }
 
 .contactInfo {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 0.75rem;
   margin-bottom: 2rem;
 }
 
@@ -430,7 +928,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.75rem;
+  gap: 0.5rem;
+  flex-wrap: wrap;
 }
 
 .contactIcon {
@@ -439,7 +938,7 @@
 
 .contactItem a {
   color: white;
-  font-size: 1.125rem;
+  font-size: 1rem;
   font-weight: 600;
   text-decoration: none;
   transition: color 0.2s ease;
@@ -449,63 +948,105 @@
   color: #93c5fd;
 }
 
+.contactDivider {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.contactActions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
 .ctaButton {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 1rem 2.5rem;
+  padding: 0.875rem 2rem;
   background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
   color: white;
-  border: none;
   border-radius: 0.75rem;
-  font-size: 1.125rem;
+  font-size: 1rem;
   font-weight: 600;
   text-decoration: none;
-  transition: all 0.3s ease;
+  transition: all 0.25s ease;
   box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
 }
 
 .ctaButton:hover {
   background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.4);
+}
+
+.ctaButtonSecondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.875rem 2rem;
+  background: transparent;
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 0.75rem;
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.25s ease;
+}
+
+.ctaButtonSecondary:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.6);
 }
 
 /* ============================================
-   Responsive Design
+   Responsive
    ============================================ */
 
 @media (max-width: 768px) {
-  .heroTitle {
-    font-size: 2.5rem;
+  .heroSection {
+    padding: 6rem 0 4rem;
   }
 
-  .heroDesc {
-    font-size: 1.125rem;
+  .heroStats {
+    grid-template-columns: repeat(2, 1fr);
   }
 
-  .overviewGrid {
-    grid-template-columns: 1fr;
-  }
-
-  .missionGrid {
-    grid-template-columns: 1fr;
-  }
-
-  .valuesGrid {
-    grid-template-columns: 1fr;
-  }
-
-  .servicesGrid {
-    grid-template-columns: 1fr;
-  }
-
+  .overviewGrid,
+  .businessGrid,
+  .productsGrid,
+  .ipGrid,
+  .certGrid,
+  .achievementList,
+  .visionGrid,
   .centersGrid {
     grid-template-columns: 1fr;
   }
 
-  .sectionTitle {
-    font-size: 2rem;
+  .tabBar {
+    justify-content: flex-start;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    padding-bottom: 0.25rem;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .tab,
+  .tabActive {
+    flex-shrink: 0;
+  }
+
+  .achievementFooter {
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .contactActions {
+    flex-direction: column;
+  }
+
+  .ctaButton,
+  .ctaButtonSecondary {
+    width: 100%;
   }
 }
-

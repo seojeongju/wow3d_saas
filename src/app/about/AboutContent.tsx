@@ -1,237 +1,443 @@
 "use client";
+
 import Link from "next/link";
-import { Building2, Target, Users, Award, MapPin, Phone, Mail, TrendingUp, Shield, Zap, Heart } from "lucide-react";
+import { useMemo, useState } from "react";
+import {
+  Award,
+  Building2,
+  Calendar,
+  ChevronRight,
+  Cpu,
+  Factory,
+  Globe,
+  GraduationCap,
+  Lightbulb,
+  Mail,
+  MapPin,
+  Phone,
+  Shield,
+  Sparkles,
+  Target,
+  Users,
+  Wrench,
+} from "lucide-react";
 import styles from "./about.module.css";
-
-const coreValues = [
-  {
-    icon: <Target size={32} />,
-    title: "혁신",
-    description: "최신 기술을 활용한 차별화된 솔루션으로 고객의 비즈니스 성장을 지원합니다."
-  },
-  {
-    icon: <Shield size={32} />,
-    title: "신뢰",
-    description: "안정적이고 보안성 높은 시스템으로 고객 데이터를 안전하게 보호합니다."
-  },
-  {
-    icon: <Zap size={32} />,
-    title: "효율",
-    description: "복잡한 업무 프로세스를 자동화하여 시간과 비용을 절감합니다."
-  },
-  {
-    icon: <Heart size={32} />,
-    title: "고객 중심",
-    description: "고객의 니즈를 정확히 파악하고 맞춤형 솔루션을 제공합니다."
-  }
-];
-
-const services = [
-  {
-    name: "WOW-Smart Manager",
-    description: "스마트 재고/매출 관리 팩",
-    link: "/services/retail/"
-  },
-  {
-    name: "NCS On-Track (온트랙)",
-    description: "스마트 아카데미 매니지먼트",
-    link: "/services/academy/"
-  },
-  {
-    name: "WOW-CBT (와우CBT)",
-    description: "실전 모의고사 & 문제은행 시스템",
-    link: "/services/cbt/"
-  }
-];
-
-const centers = [
-  {
-    name: "홍대센터",
-    address: "서울시 마포구 독막로 93 상수빌딩 4층",
-    icon: <MapPin size={20} />
-  },
-  {
-    name: "구미센터",
-    address: "경북 구미시 산호대로 253 구미첨단의료기술타워 606호",
-    icon: <MapPin size={20} />
-  },
-  {
-    name: "전주센터",
-    address: "전북특별자치도 전주시 덕진구 반룡로 109 테크노빌A동 207호",
-    icon: <MapPin size={20} />
-  }
-];
+import {
+  achievementYears,
+  businessAreas,
+  centers,
+  certifications,
+  companyProfile,
+  developmentAchievements,
+  equipmentHighlights,
+  growthMilestones,
+  intellectualProperties,
+  ipFilterOptions,
+  products,
+} from "./about.data";
 
 export default function AboutContent() {
+  const [ipFilter, setIpFilter] = useState<(typeof ipFilterOptions)[number]>("전체");
+  const [yearFilter, setYearFilter] = useState<(typeof achievementYears)[number]>("전체");
+  const [showAllIp, setShowAllIp] = useState(false);
+
+  const filteredIp = useMemo(() => {
+    if (ipFilter === "전체") return intellectualProperties;
+    return intellectualProperties.filter((item) => item.type === ipFilter);
+  }, [ipFilter]);
+
+  const visibleIp = showAllIp ? filteredIp : filteredIp.slice(0, 6);
+
+  const filteredAchievements = useMemo(() => {
+    if (yearFilter === "전체") return developmentAchievements;
+    return developmentAchievements.filter((item) => item.year === yearFilter);
+  }, [yearFilter]);
+
+  const registeredIpCount = intellectualProperties.filter((i) => i.status === "registered").length;
+
   return (
     <div className={styles.aboutPage}>
-      {/* Hero Section */}
+      {/* Hero */}
       <section className={styles.heroSection}>
         <div className="container">
           <div className={styles.heroContent}>
             <div className={styles.badge}>
               <Building2 size={20} />
-              <span>회사 소개</span>
+              <span>Company Profile 2026</span>
             </div>
             <h1 className={styles.heroTitle}>
-              데이터 기반 스마트 경영 솔루션<br />
-              <span className={styles.highlight}>(주)와우쓰리디</span>
+              3D프린팅을 넘어<br />
+              <span className={styles.highlight}>글로벌 융합 기술</span>의 중심으로
             </h1>
-            <p className={styles.heroDesc}>
-              소상공인부터 기업까지, 비즈니스의 성장을 돕는 혁신적인 SaaS 플랫폼을 제공합니다.<br />
-              우리는 고객의 경영 효율화와 디지털 전환을 위한 최고의 파트너가 되겠습니다.
-            </p>
+            <p className={styles.heroDesc}>{companyProfile.vision}</p>
+            <div className={styles.heroStats}>
+              <div className={styles.statItem}>
+                <strong>2016</strong>
+                <span>사업 시작</span>
+              </div>
+              <div className={styles.statItem}>
+                <strong>3</strong>
+                <span>전국 센터</span>
+              </div>
+              <div className={styles.statItem}>
+                <strong>{registeredIpCount}+</strong>
+                <span>등록 지재권</span>
+              </div>
+              <div className={styles.statItem}>
+                <strong>10+</strong>
+                <span>인증·지정</span>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Company Overview Section */}
+      {/* Company Overview */}
       <section className={styles.overviewSection}>
         <div className="container">
+          <div className={styles.sectionHeader}>
+            <h2 className={styles.sectionTitle}>기업 개요</h2>
+            <p className={styles.sectionSubtitle}>2026년 회사소개서 기준</p>
+          </div>
           <div className={styles.overviewGrid}>
             <div className={styles.overviewCard}>
-              <div className={styles.cardIcon}>
-                <Building2 size={24} />
-              </div>
+              <div className={styles.cardIcon}><Building2 size={24} /></div>
               <div className={styles.cardContent}>
-                <h3>상호명</h3>
-                <p className={styles.cardValue}>(주)와우쓰리디</p>
+                <h3>기업명</h3>
+                <p className={styles.cardValue}>{companyProfile.name}</p>
               </div>
             </div>
             <div className={styles.overviewCard}>
-              <div className={styles.cardIcon}>
-                <Users size={24} />
-              </div>
+              <div className={styles.cardIcon}><Users size={24} /></div>
               <div className={styles.cardContent}>
-                <h3>대표자</h3>
-                <p className={styles.cardValue}>김순희</p>
+                <h3>대표이사</h3>
+                <p className={styles.cardValue}>{companyProfile.ceo}</p>
               </div>
             </div>
             <div className={styles.overviewCard}>
-              <div className={styles.cardIcon}>
-                <Award size={24} />
+              <div className={styles.cardIcon}><Calendar size={24} /></div>
+              <div className={styles.cardContent}>
+                <h3>설립일</h3>
+                <p className={styles.cardValue}>{companyProfile.founded}</p>
+                <p className={styles.cardNote}>{companyProfile.foundedNote}</p>
               </div>
+            </div>
+            <div className={styles.overviewCard}>
+              <div className={styles.cardIcon}><Award size={24} /></div>
               <div className={styles.cardContent}>
                 <h3>사업자등록번호</h3>
-                <p className={styles.cardValue}>849-88-01659</p>
+                <p className={styles.cardValue}>{companyProfile.businessNumber}</p>
+              </div>
+            </div>
+            <div className={styles.overviewCard}>
+              <div className={styles.cardIcon}><Factory size={24} /></div>
+              <div className={styles.cardContent}>
+                <h3>업태</h3>
+                <p className={styles.cardValue}>{companyProfile.businessType}</p>
+              </div>
+            </div>
+            <div className={styles.overviewCard}>
+              <div className={styles.cardIcon}><Users size={24} /></div>
+              <div className={styles.cardContent}>
+                <h3>인력 현황</h3>
+                <p className={styles.cardValue}>
+                  구미 {companyProfile.employees.gumi}명 · 홍대 {companyProfile.employees.seoul}명
+                </p>
+                <p className={styles.cardNote}>외부자문 {companyProfile.employees.advisors}명</p>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Mission & Vision Section */}
-      <section className={styles.missionSection}>
-        <div className="container">
-          <div className={styles.missionGrid}>
-            <div className={styles.missionCard}>
-              <div className={styles.missionIcon}>
-                <Target size={40} />
-              </div>
-              <h2>미션</h2>
-              <p>
-                최신 기술과 데이터 분석을 통해<br />
-                고객의 비즈니스 성장과 경영 효율화를 실현합니다.
-              </p>
-            </div>
-            <div className={styles.missionCard}>
-              <div className={styles.missionIcon}>
-                <TrendingUp size={40} />
-              </div>
-              <h2>비전</h2>
-              <p>
-                대한민국 모든 기업이 쉽게 접근할 수 있는<br />
-                스마트 경영 솔루션의 선도 기업이 되겠습니다.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Core Values Section */}
-      <section className={styles.valuesSection}>
+      {/* Business Areas */}
+      <section className={styles.businessSection}>
         <div className="container">
           <div className={styles.sectionHeader}>
-            <h2 className={styles.sectionTitle}>핵심 가치</h2>
-            <p className={styles.sectionSubtitle}>
-              와우쓰리디가 추구하는 가치와 원칙입니다
-            </p>
+            <h2 className={styles.sectionTitle}>사업 영역</h2>
+            <p className={styles.sectionSubtitle}>{companyProfile.mainBusiness}</p>
           </div>
-          <div className={styles.valuesGrid}>
-            {coreValues.map((value, index) => (
-              <div key={index} className={styles.valueCard}>
-                <div className={styles.valueIcon}>{value.icon}</div>
-                <h3>{value.title}</h3>
-                <p>{value.description}</p>
+          <div className={styles.businessGrid}>
+            {businessAreas.map((area) => (
+              <div key={area.title} className={styles.businessCard}>
+                <div className={styles.businessIcon}>
+                  {area.title === "개발" && <Cpu size={28} />}
+                  {area.title === "FAB/LAB" && <Wrench size={28} />}
+                  {area.title === "교육" && <GraduationCap size={28} />}
+                </div>
+                <h3>{area.title}</h3>
+                <ul>
+                  {area.items.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Services Section */}
-      <section className={styles.servicesSection}>
+      {/* Growth Timeline */}
+      <section className={styles.timelineSection}>
         <div className="container">
           <div className={styles.sectionHeader}>
-            <h2 className={styles.sectionTitle}>제공 서비스</h2>
+            <h2 className={styles.sectionTitle}>성장 연혁</h2>
             <p className={styles.sectionSubtitle}>
-              업종별 특화된 스마트 경영 솔루션을 제공합니다
+              3D프린팅 교육에서 AI·홀로그램·스마트제조 융합 기업으로 성장
             </p>
           </div>
-          <div className={styles.servicesGrid}>
-            {services.map((service, index) => (
-              <Link key={index} href={service.link} className={styles.serviceCard}>
-                <div className={styles.serviceContent}>
-                  <h3>{service.name}</h3>
-                  <p>{service.description}</p>
-                  <span className={styles.serviceLink}>자세히 보기 →</span>
+          <div className={styles.timeline}>
+            {growthMilestones.map((item, index) => (
+              <div key={item.year + item.title} className={styles.timelineItem}>
+                <div className={styles.timelineMarker}>
+                  <span className={styles.timelineDot} />
+                  {index < growthMilestones.length - 1 && <span className={styles.timelineLine} />}
                 </div>
+                <div className={styles.timelineContent}>
+                  <span className={styles.timelineYear}>{item.year}</span>
+                  <h3>{item.title}</h3>
+                  <p>{item.description}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Products */}
+      <section className={styles.productsSection}>
+        <div className="container">
+          <div className={styles.sectionHeader}>
+            <h2 className={styles.sectionTitle}>제품 및 기술</h2>
+            <p className={styles.sectionSubtitle}>하드웨어·소프트웨어·교육을 아우르는 통합 솔루션</p>
+          </div>
+          <div className={styles.productsGrid}>
+            {products.map((product) => (
+              <Link key={product.title} href={product.link} className={styles.productCard}>
+                <div className={styles.productIcon}><Sparkles size={24} /></div>
+                <h3>{product.title}</h3>
+                <p>{product.description}</p>
+                <span className={styles.productLink}>자세히 보기 <ChevronRight size={16} /></span>
               </Link>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Centers Section */}
-      <section className={styles.centersSection}>
+      {/* IP & Technology */}
+      <section className={styles.ipSection} id="ip">
         <div className="container">
           <div className={styles.sectionHeader}>
-            <h2 className={styles.sectionTitle}>센터 안내</h2>
+            <h2 className={styles.sectionTitle}>보유 기술 · 지식재산권</h2>
             <p className={styles.sectionSubtitle}>
-              전국 3개 센터에서 서비스를 제공하고 있습니다
+              홀로그램·3D프린팅·NFC·AI 융합 핵심 특허 및 디자인권 보유
             </p>
           </div>
-          <div className={styles.centersGrid}>
-            {centers.map((center, index) => (
-              <div key={index} className={styles.centerCard}>
-                <div className={styles.centerIcon}>{center.icon}</div>
-                <h3>{center.name}</h3>
-                <p>{center.address}</p>
+          <div className={styles.tabBar} role="tablist" aria-label="지식재산권 필터">
+            {ipFilterOptions.map((option) => (
+              <button
+                key={option}
+                type="button"
+                role="tab"
+                aria-selected={ipFilter === option}
+                className={ipFilter === option ? styles.tabActive : styles.tab}
+                onClick={() => {
+                  setIpFilter(option);
+                  setShowAllIp(false);
+                }}
+              >
+                {option}
+              </button>
+            ))}
+          </div>
+          <div className={styles.ipGrid}>
+            {visibleIp.map((item) => (
+              <div key={item.number} className={styles.ipCard}>
+                <div className={styles.ipCardHeader}>
+                  <span className={styles.ipType}>{item.type}</span>
+                  <span className={item.status === "registered" ? styles.ipRegistered : styles.ipPending}>
+                    {item.status === "registered" ? "등록" : "출원"}
+                  </span>
+                </div>
+                <h3>{item.title}</h3>
+                <p className={styles.ipNumber}>{item.number}</p>
+              </div>
+            ))}
+          </div>
+          {filteredIp.length > 6 && (
+            <div className={styles.sectionAction}>
+              <button type="button" className={styles.outlineBtn} onClick={() => setShowAllIp((v) => !v)}>
+                {showAllIp ? "접기" : `전체 ${filteredIp.length}건 보기`}
+              </button>
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* Certifications */}
+      <section className={styles.certSection}>
+        <div className="container">
+          <div className={styles.sectionHeader}>
+            <h2 className={styles.sectionTitle}>인증 · 지정 현황</h2>
+            <p className={styles.sectionSubtitle}>벤처·여성기업, ISO 9001, HRD·데이터사업자 등 공신력 확보</p>
+          </div>
+          <div className={styles.certGrid}>
+            {certifications.map((cert) => (
+              <div key={cert.name} className={styles.certCard}>
+                <div className={styles.certIcon}><Shield size={22} /></div>
+                <h3>{cert.name}</h3>
+                <p className={styles.certDate}>{cert.date}</p>
+                <p className={styles.certOrg}>{cert.org}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Contact Section */}
+      {/* Equipment */}
+      <section className={styles.equipmentSection}>
+        <div className="container">
+          <div className={styles.sectionHeader}>
+            <h2 className={styles.sectionTitle}>보유 장비</h2>
+            <p className={styles.sectionSubtitle}>MSLA-DLP·FDM 3D프린터, CNC·레이저 등 제작 인프라</p>
+          </div>
+          <div className={styles.equipmentGrid}>
+            {equipmentHighlights.map((group) => (
+              <div key={group.category} className={styles.equipmentCard}>
+                <h3>{group.category}</h3>
+                <ul>
+                  {group.items.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Development Achievements */}
+      <section className={styles.achievementSection} id="achievements">
+        <div className="container">
+          <div className={styles.sectionHeader}>
+            <h2 className={styles.sectionTitle}>개발 · 사업 실적</h2>
+            <p className={styles.sectionSubtitle}>정부지원사업·산학협력·R&D 주요 수행 이력</p>
+          </div>
+          <div className={styles.tabBar} role="tablist" aria-label="사업연도 필터">
+            {achievementYears.map((year) => (
+              <button
+                key={year}
+                type="button"
+                role="tab"
+                aria-selected={yearFilter === year}
+                className={yearFilter === year ? styles.tabActive : styles.tab}
+                onClick={() => setYearFilter(year)}
+              >
+                {year}
+              </button>
+            ))}
+          </div>
+          <div className={styles.achievementList}>
+            {filteredAchievements.map((item) => (
+              <article key={`${item.year}-${item.name}-${item.project}`} className={styles.achievementCard}>
+                <div className={styles.achievementMeta}>
+                  <span className={styles.achievementYear}>{item.year}</span>
+                  <span className={styles.achievementField}>{item.field}</span>
+                </div>
+                <h3>{item.name}</h3>
+                <p className={styles.achievementProject}>{item.project}</p>
+                <div className={styles.achievementFooter}>
+                  <span>{item.org}</span>
+                  <span>{item.period}</span>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Global & Vision */}
+      <section className={styles.visionSection}>
+        <div className="container">
+          <div className={styles.visionGrid}>
+            <div className={styles.visionCard}>
+              <div className={styles.visionIcon}><Target size={36} /></div>
+              <h2>미션</h2>
+              <p>
+                3D프린팅·홀로그램·AI 기술을 융합하여 제조·서비스·교육 분야의
+                디지털 전환을 실현하고, 중소기업·소상공인의 경쟁력을 높입니다.
+              </p>
+            </div>
+            <div className={styles.visionCard}>
+              <div className={styles.visionIcon}><Globe size={36} /></div>
+              <h2>글로벌 확장</h2>
+              <p>
+                베트남·르완다 MOU 체결 등 해외 네트워크를 확대하며,
+                스마트제조·홀로그램 콘텐츠의 글로벌 시장 진출을 추진합니다.
+              </p>
+            </div>
+            <div className={styles.visionCard}>
+              <div className={styles.visionIcon}><Lightbulb size={36} /></div>
+              <h2>핵심 역량</h2>
+              <p>
+                NFC·GPS 위치기반 서비스, AI 데이터 가공, 제품디자인·시제품 제작,
+                정부 스마트제조·서비스 공급까지 One-Stop 솔루션을 제공합니다.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Centers */}
+      <section className={styles.centersSection}>
+        <div className="container">
+          <div className={styles.sectionHeader}>
+            <h2 className={styles.sectionTitle}>전국 센터 안내</h2>
+            <p className={styles.sectionSubtitle}>서울·구미·전주 3개 거점에서 연구·교육·제작 서비스 제공</p>
+          </div>
+          <div className={styles.centersGrid}>
+            {centers.map((center) => (
+              <div key={center.name} className={styles.centerCard}>
+                <div className={styles.centerIcon}><MapPin size={22} /></div>
+                <h3>{center.name}</h3>
+                <p className={styles.centerSubtitle}>{center.subtitle}</p>
+                <p className={styles.centerAddress}>{center.address}</p>
+                <div className={styles.centerContact}>
+                  <a href={`tel:${center.tel.replace(/-/g, "")}`}>
+                    <Phone size={16} /> {center.tel}
+                  </a>
+                  <a href={center.url} target="_blank" rel="noreferrer">
+                    <Globe size={16} /> {center.url.replace(/^https?:\/\//, "")}
+                  </a>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Contact CTA */}
       <section className={styles.contactSection}>
         <div className="container">
           <div className={styles.contactCard}>
-            <h2>문의하기</h2>
-            <p>궁금한 점이 있으신가요? 언제든지 문의해 주세요.</p>
+            <h2>와우쓰리디와 함께하세요</h2>
+            <p>솔루션 도입, 제품 개발, 교육·시제품 제작 등 무엇이든 문의해 주세요.</p>
             <div className={styles.contactInfo}>
               <div className={styles.contactItem}>
                 <Phone size={20} className={styles.contactIcon} />
-                <a href="tel:02-3144-3137">02-3144-3137</a>
+                <a href="tel:0231443137">02-3144-3137</a>
+                <span className={styles.contactDivider}>·</span>
+                <a href="tel:0544643137">054-464-3137</a>
               </div>
               <div className={styles.contactItem}>
                 <Mail size={20} className={styles.contactIcon} />
                 <a href="mailto:3dcookidhd@naver.com">3dcookidhd@naver.com</a>
               </div>
             </div>
-            <Link href="/contact/" className={styles.ctaButton}>
-              문의하기
-            </Link>
+            <div className={styles.contactActions}>
+              <Link href="/contact" className={styles.ctaButton}>문의하기</Link>
+              <Link href="/gov-support" className={styles.ctaButtonSecondary}>정부지원 안내</Link>
+            </div>
           </div>
         </div>
       </section>
