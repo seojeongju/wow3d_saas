@@ -44,44 +44,61 @@ export const businessAreas = [
   },
 ];
 
-export const growthMilestones = [
+export type GrowthMilestone = {
+  year: string;
+  title: string;
+  description: string;
+  tag: string;
+};
+
+export const growthMilestones: GrowthMilestone[] = [
   {
     year: '2016',
     title: '3D프린팅 교육 및 인프라 확보',
     description: '개인사업자로 출발, 3D프린팅 교육과 장비 개발 기반을 마련했습니다.',
+    tag: '교육·인프라',
   },
   {
     year: '2020',
     title: '법인 설립 및 기술 개발 본격화',
     description: '㈜와우쓰리디 법인 설립, 멀티비전 3D홀로그램·AI 스마트 LED 등 핵심 R&D 착수.',
+    tag: '법인·R&D',
   },
   {
     year: '2021',
     title: '기업부설연구소 인증',
     description: '연구개발 역량을 공식 인증받고 산학협력 기반 시제품·장비 개발을 확대했습니다.',
+    tag: '연구소',
   },
   {
     year: '2022',
     title: '벤처·여성기업 인증 및 홀로그램 특허',
     description: '벤처기업·여성기업 인증, 홀로그램 디스플레이 관련 핵심 특허 등록 및 사업 다각화.',
+    tag: '인증·특허',
   },
   {
     year: '2023',
     title: 'ISO 9001·데이터사업자 인증',
     description: '품질경영시스템 ISO 9001 취득, 데이터사업자 신고로 AI·데이터 사업 기반 강화.',
+    tag: '품질·데이터',
   },
   {
     year: '2024',
     title: '스마트제조·데이터바우처 공급기업',
     description: '중소벤처기업부 스마트서비스·데이터바우처 공급기업 지정, 디자인제조혁신 전문회사 등록.',
+    tag: '스마트제조',
   },
   {
     year: '2025–2026',
     title: 'AI 스마트 솔루션·글로벌 확장',
     description:
       '스마트제조·서비스·상점 ERP/MES/LMS 공급, AI 3D프린팅 견적시스템 구축, 베트남·르완다 MOU 등 글로벌 네트워크 확대.',
+    tag: 'AI·글로벌',
   },
 ];
+
+/** 최신 연도 우선 (역순) */
+export const growthMilestonesDesc = [...growthMilestones].reverse();
 
 export type IpStatus = 'registered' | 'pending';
 
@@ -213,3 +230,36 @@ export const centers = [
 export const achievementYears = ['전체', '2026', '2025', '2024', '2023', '2022', '2021', '2020'] as const;
 
 export const ipFilterOptions = ['전체', '특허', '디자인', '상표'] as const;
+
+export const aboutNavItems = [
+  {
+    href: '/about',
+    label: '기업 개요',
+    description: '회사 소개 및 사업 영역',
+  },
+  {
+    href: '/about/history',
+    label: '성장 연혁',
+    description: '2016년부터 현재까지의 성장 여정',
+  },
+  {
+    href: '/about/technology',
+    label: '제품·기술',
+    description: '제품, 지재권, 보유 장비',
+  },
+  {
+    href: '/about/certifications',
+    label: '인증·지정',
+    description: '벤처·ISO·HRD 등 인증 현황',
+  },
+  {
+    href: '/about/achievements',
+    label: '사업 실적',
+    description: '정부지원·R&D 수행 이력',
+  },
+  {
+    href: '/about/locations',
+    label: '센터 안내',
+    description: '서울·구미·전주 거점',
+  },
+] as const;

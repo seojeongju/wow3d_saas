@@ -101,7 +101,18 @@ export default function Navbar() {
         { href: '/contact', label: '1:1 문의/기술지원', description: '전문 엔지니어의 빠른 기술 지원 및 상담' },
       ]
     },
-    { href: '/about', label: '회사 소개' },
+    {
+      href: '/about',
+      label: '회사 소개',
+      children: [
+        { href: '/about', label: '기업 개요', description: '회사 소개 및 사업 영역' },
+        { href: '/about/history', label: '성장 연혁', description: '2016년부터 현재까지의 성장 여정' },
+        { href: '/about/technology', label: '제품·기술', description: '제품, 지재권, 보유 장비' },
+        { href: '/about/certifications', label: '인증·지정', description: '벤처·ISO·HRD 등 인증 현황' },
+        { href: '/about/achievements', label: '사업 실적', description: '정부지원·R&D 수행 이력' },
+        { href: '/about/locations', label: '센터 안내', description: '서울·구미·전주 거점' },
+      ],
+    },
   ];
 
   const handleLinkClick = () => {
@@ -317,7 +328,7 @@ export default function Navbar() {
           <MessageCircle size={22} />
           <span>문의</span>
         </Link>
-        <Link href="/about" className={clsx(styles.bottomNavItem, pathname === '/about' && styles.active)}>
+        <Link href="/about" className={clsx(styles.bottomNavItem, pathname.startsWith('/about') && styles.active)} onClick={handleLinkClick}>
           <Info size={22} />
           <span>회사소개</span>
         </Link>

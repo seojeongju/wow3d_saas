@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import AboutContent from './AboutContent';
+import AboutOverviewContent from './AboutOverviewContent';
 
 export const metadata: Metadata = {
   title: '회사 소개 | (주)와우쓰리디 - 3D·홀로그램·AI 융합 기술 기업',
@@ -17,5 +17,5 @@ export const metadata: Metadata = {
 };
 
 export default function AboutPage() {
-  return <AboutContent />;
+  return <AboutOverviewContent />;
 }

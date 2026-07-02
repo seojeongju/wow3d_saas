@@ -40,6 +40,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
         // ── 고객지원 / 회사 ──
         { url: '/contact', priority: 0.75, changeFrequency: 'monthly' },
         { url: '/about', priority: 0.7, changeFrequency: 'monthly' },
+        { url: '/about/history', priority: 0.65, changeFrequency: 'monthly' },
+        { url: '/about/technology', priority: 0.65, changeFrequency: 'monthly' },
+        { url: '/about/certifications', priority: 0.6, changeFrequency: 'monthly' },
+        { url: '/about/achievements', priority: 0.6, changeFrequency: 'monthly' },
+        { url: '/about/locations', priority: 0.65, changeFrequency: 'monthly' },
         { url: '/archive', priority: 0.65, changeFrequency: 'weekly' },
 
         // ── 법적 문서 ──
