@@ -34,7 +34,8 @@ export const onRequestGet = async (context: { request: Request; env: Env }) => {
         const headers = new Headers();
         object.writeHttpMetadata(headers);
         headers.set('etag', object.httpEtag);
-        headers.set('Content-Disposition', `attachment; filename="${encodeURIComponent(fileData.filename)}"`);
+        const encodedName = encodeURIComponent(fileData.filename);
+        headers.set('Content-Disposition', `attachment; filename="${encodedName}"; filename*=UTF-8''${encodedName}`);
         headers.set('Content-Type', fileData.content_type || 'application/octet-stream');
 
         return new Response(object.body as ReadableStream, { headers });

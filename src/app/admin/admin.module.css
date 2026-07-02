@@ -73,6 +73,18 @@
     background: #1d4ed8;
 }
 
+.loginForm button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.loginError {
+    color: #ef4444;
+    font-size: 0.875rem;
+    text-align: left;
+    margin: 0;
+}
+
 /* Admin Page Layout */
 .adminPage {
     min-height: 100vh;
@@ -220,10 +232,155 @@
     cursor: pointer;
     font-weight: 600;
     font-size: 0.9rem;
+    border: none;
 }
 
-.uploadBtn input {
+.uploadBtn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.hiddenInput {
     display: none;
+}
+
+.dropZone {
+    border: 2px dashed #cbd5e1;
+    border-radius: 0.75rem;
+    background: white;
+    padding: 2rem;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: #64748b;
+}
+
+.dropZone:hover:not(.dropZoneDisabled) {
+    border-color: #2563eb;
+    background: #f8fafc;
+    color: #2563eb;
+}
+
+.dropZoneActive {
+    border-color: #2563eb;
+    background: #eff6ff;
+    color: #2563eb;
+}
+
+.dropZoneDisabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.dropTitle {
+    margin: 0.75rem 0 0.25rem;
+    font-weight: 600;
+    color: #1e293b;
+}
+
+.dropHint {
+    margin: 0;
+    font-size: 0.85rem;
+    color: #94a3b8;
+}
+
+.uploadQueue {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+}
+
+.uploadItem {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.5rem;
+    padding: 0.75rem 1rem;
+}
+
+.uploadItemHeader {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.5rem;
+}
+
+.uploadFileName {
+    flex: 1;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #1e293b;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.uploadFileSize {
+    font-size: 0.8rem;
+    color: #94a3b8;
+}
+
+.progressBar {
+    height: 6px;
+    background: #e2e8f0;
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.progressFill {
+    height: 100%;
+    background: linear-gradient(90deg, #2563eb, #60a5fa);
+    border-radius: 999px;
+    transition: width 0.2s ease;
+}
+
+.uploadDoneIcon {
+    color: #10b981;
+}
+
+.uploadErrorIcon {
+    color: #ef4444;
+}
+
+.uploadErrorText {
+    margin: 0.375rem 0 0;
+    font-size: 0.8rem;
+    color: #ef4444;
+}
+
+.emptyState {
+    padding: 3rem 1.5rem;
+    text-align: center;
+    color: #94a3b8;
+}
+
+.emptyState p {
+    margin: 1rem 0 0.25rem;
+    font-weight: 600;
+    color: #64748b;
+}
+
+.emptyState span {
+    font-size: 0.875rem;
+}
+
+.loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 3rem;
+    color: #64748b;
+}
+
+.stats {
+    font-size: 0.9rem;
+    color: #64748b;
+    background: white;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid #e2e8f0;
 }
 
 /* Table */
