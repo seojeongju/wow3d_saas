@@ -14,7 +14,7 @@
   text-align: center;
   margin: -120px -20px 50px;
   padding: calc(120px + 2rem) 1.5rem 2.5rem;
-  background-image: linear-gradient(135deg, rgba(15, 23, 42, 0.92) 0%, rgba(30, 58, 138, 0.85) 100%), url('/images/ai-quote-system-hero.png');
+  background-image: linear-gradient(135deg, rgba(15, 23, 42, 0.62) 0%, rgba(30, 58, 138, 0.52) 100%), url('/images/ai-quote-system-hero.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

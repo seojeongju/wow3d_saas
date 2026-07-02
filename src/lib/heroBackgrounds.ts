@@ -33,65 +33,66 @@ const heroBgBase = {
   backgroundRepeat: 'no-repeat' as const,
 };
 
+/** 다크 히어로 — 배경 이미지가 은은하게 보이도록 낮은 불투명도 */
 export function darkHeroBg(image: string) {
   return {
-    backgroundImage: `linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(30, 41, 59, 0.84) 55%, rgba(15, 23, 42, 0.88) 100%), url('${image}')`,
+    backgroundImage: `linear-gradient(135deg, rgba(15, 23, 42, 0.58) 0%, rgba(30, 41, 59, 0.48) 55%, rgba(15, 23, 42, 0.62) 100%), url('${image}')`,
     ...heroBgBase,
   };
 }
 
 export function purpleHeroBg(image: string) {
   return {
-    backgroundImage: `linear-gradient(135deg, rgba(107, 33, 168, 0.88) 0%, rgba(124, 58, 237, 0.84) 100%), url('${image}')`,
+    backgroundImage: `linear-gradient(135deg, rgba(107, 33, 168, 0.62) 0%, rgba(124, 58, 237, 0.55) 100%), url('${image}')`,
     ...heroBgBase,
   };
 }
 
 export function indigoHeroBg(image: string) {
   return {
-    backgroundImage: `linear-gradient(135deg, rgba(49, 46, 129, 0.9) 0%, rgba(67, 56, 202, 0.86) 100%), url('${image}')`,
+    backgroundImage: `linear-gradient(135deg, rgba(49, 46, 129, 0.62) 0%, rgba(67, 56, 202, 0.52) 100%), url('${image}')`,
     ...heroBgBase,
   };
 }
 
 export function navyHeroBg(image: string) {
   return {
-    backgroundImage: `linear-gradient(135deg, rgba(30, 41, 59, 0.9) 0%, rgba(15, 23, 42, 0.88) 100%), url('${image}')`,
+    backgroundImage: `linear-gradient(135deg, rgba(30, 41, 59, 0.58) 0%, rgba(15, 23, 42, 0.55) 100%), url('${image}')`,
     ...heroBgBase,
   };
 }
 
 export function hardwareHeroBg(image: string) {
   return {
-    backgroundImage: `linear-gradient(135deg, rgba(15, 23, 42, 0.88) 0%, rgba(30, 58, 95, 0.85) 45%, rgba(30, 27, 75, 0.88) 100%), url('${image}')`,
+    backgroundImage: `linear-gradient(135deg, rgba(15, 23, 42, 0.58) 0%, rgba(30, 58, 95, 0.50) 45%, rgba(30, 27, 75, 0.58) 100%), url('${image}')`,
     ...heroBgBase,
   };
 }
 
 export function lightHeroBg(image: string) {
   return {
-    backgroundImage: `linear-gradient(180deg, rgba(248, 250, 252, 0.94) 0%, rgba(255, 255, 255, 0.9) 65%), url('${image}')`,
+    backgroundImage: `linear-gradient(180deg, rgba(248, 250, 252, 0.82) 0%, rgba(255, 255, 255, 0.75) 65%), url('${image}')`,
     ...heroBgBase,
   };
 }
 
 export function lightSubHeroBg(image: string) {
   return {
-    backgroundImage: `linear-gradient(180deg, rgba(248, 250, 252, 0.96) 0%, rgba(255, 255, 255, 0.92) 100%), url('${image}')`,
+    backgroundImage: `linear-gradient(180deg, rgba(248, 250, 252, 0.84) 0%, rgba(255, 255, 255, 0.78) 100%), url('${image}')`,
     ...heroBgBase,
   };
 }
 
 export function darkSubHeroBg(image: string) {
   return {
-    backgroundImage: `linear-gradient(135deg, rgba(15, 23, 42, 0.92) 0%, rgba(30, 41, 59, 0.88) 100%), url('${image}')`,
+    backgroundImage: `linear-gradient(135deg, rgba(15, 23, 42, 0.58) 0%, rgba(30, 41, 59, 0.48) 55%, rgba(15, 23, 42, 0.62) 100%), url('${image}')`,
     ...heroBgBase,
   };
 }
 
 export function legalHeaderBg(image: string) {
   return {
-    backgroundImage: `linear-gradient(180deg, rgba(248, 250, 252, 0.97) 0%, rgba(241, 245, 249, 0.95) 100%), url('${image}')`,
+    backgroundImage: `linear-gradient(180deg, rgba(248, 250, 252, 0.86) 0%, rgba(241, 245, 249, 0.82) 100%), url('${image}')`,
     ...heroBgBase,
   };
 }

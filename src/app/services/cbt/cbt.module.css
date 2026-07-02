@@ -12,7 +12,7 @@
    ============================================ */
 
 .heroSection {
-  background-image: linear-gradient(135deg, rgba(107, 33, 168, 0.88) 0%, rgba(124, 58, 237, 0.84) 100%), url('/images/wow-cbt-hero.png');
+  background-image: linear-gradient(135deg, rgba(107, 33, 168, 0.62) 0%, rgba(124, 58, 237, 0.55) 100%), url('/images/wow-cbt-hero.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
