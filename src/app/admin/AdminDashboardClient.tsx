@@ -180,10 +180,15 @@ export default function AdminDashboardClient() {
             });
 
             if (!res.ok) {
+                localStorage.removeItem(AUTH_KEY);
+                if (res.status === 503) {
+                    throw new Error("서버 관리자 비밀번호가 설정되지 않았습니다. Cloudflare Pages 시크릿(ADMIN_PASSWORD)을 확인해주세요.");
+                }
                 throw new Error(await parseApiError(res, "로그인에 실패했습니다."));
             }
 
-            localStorage.setItem(AUTH_KEY, password.trim());
+            const normalizedPassword = password.trim();
+            localStorage.setItem(AUTH_KEY, normalizedPassword);
             setIsLoggedIn(true);
             addNotification("success", "관리자 로그인 성공");
         } catch (error: unknown) {

@@ -13,6 +13,7 @@ import {
     extractAdminToken,
     guessContentType,
     jsonResponse,
+    normalizeAdminSecret,
     sanitizeFilename,
     validateUploadFile,
 } from '../lib/archive-helpers';
@@ -49,7 +50,7 @@ export const onRequest = async (context: { request: Request; env: Env }) => {
         }
 
         if (method === 'POST') {
-            if (!env.ADMIN_PASSWORD) {
+            if (!normalizeAdminSecret(env.ADMIN_PASSWORD)) {
                 return jsonResponse(
                     { error: 'ADMIN_PASSWORD 시크릿이 설정되지 않았습니다.' },
                     503

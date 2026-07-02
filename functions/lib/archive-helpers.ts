@@ -53,6 +53,19 @@ export function jsonResponse(data: unknown, status = 200) {
     return Response.json(data, { status, headers: corsHeaders });
 }
 
+/** wrangler secret 입력 시 줄바꿈·공백이 섞이는 경우를 정규화 */
+export function normalizeAdminSecret(value: string | undefined | null): string {
+    if (!value) return '';
+    return value.trim().replace(/\r/g, '');
+}
+
+export function matchesAdminSecret(input: string | undefined | null, secret: string | undefined | null): boolean {
+    const normalizedInput = normalizeAdminSecret(input);
+    const normalizedSecret = normalizeAdminSecret(secret);
+    if (!normalizedInput || !normalizedSecret) return false;
+    return normalizedInput === normalizedSecret;
+}
+
 export function extractAdminToken(request: Request, formData?: FormData): string | null {
     const authHeader = request.headers.get('Authorization');
     if (authHeader?.startsWith('Bearer ')) {
@@ -75,10 +88,10 @@ export function extractAdminToken(request: Request, formData?: FormData): string
 }
 
 export function checkAdminAuth(request: Request, adminPassword?: string, formData?: FormData): boolean {
-    if (!adminPassword) return false;
+    if (!normalizeAdminSecret(adminPassword)) return false;
     const token = extractAdminToken(request, formData);
     if (!token) return false;
-    return token === adminPassword;
+    return matchesAdminSecret(token, adminPassword);
 }
 
 export function getExtension(filename: string): string {
