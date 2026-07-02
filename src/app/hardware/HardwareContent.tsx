@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { getHeroBgStyle } from "@/lib/heroBackgrounds";
 import { Cpu, Monitor, ArrowRight } from "lucide-react";
 import styles from "./hardware.module.css";
 
@@ -29,7 +30,7 @@ export default function HardwareContent() {
     return (
         <div className={styles.page}>
             {/* Hero */}
-            <section className={styles.hero}>
+            <section className={styles.hero} style={getHeroBgStyle("hardware", "hardware")}>
                 <div className={styles.heroContent}>
                     <span className={styles.heroBadge}>Hardware Solutions</span>
                     <h1 className={styles.heroTitle}>

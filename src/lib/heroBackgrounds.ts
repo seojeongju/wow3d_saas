@@ -64,7 +64,7 @@ export function navyHeroBg(image: string) {
 
 export function hardwareHeroBg(image: string) {
   return {
-    backgroundImage: `linear-gradient(135deg, rgba(15, 23, 42, 0.58) 0%, rgba(30, 58, 95, 0.50) 45%, rgba(30, 27, 75, 0.58) 100%), url('${image}')`,
+    backgroundImage: `linear-gradient(135deg, rgba(15, 23, 42, 0.40) 0%, rgba(30, 58, 95, 0.30) 45%, rgba(30, 27, 75, 0.44) 100%), url('${image}')`,
     ...heroBgBase,
   };
 }
