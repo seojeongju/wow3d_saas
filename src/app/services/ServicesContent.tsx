@@ -1,5 +1,6 @@
 "use client";
 import PricingTable from '@/components/PricingTable';
+import { getHeroBgStyle } from '@/lib/heroBackgrounds';
 import { Box, Users, BarChart3, Cloud, ShieldCheck, Timer, BookOpen, LineChart, Layers } from 'lucide-react';
 import Link from 'next/link';
 import styles from './services.module.css';
@@ -8,7 +9,7 @@ export default function ServicesContent() {
   return (
     <div className={styles.servicesPage}>
       {/* Services Header */}
-      <section className={styles.heroSection}>
+      <section className={styles.heroSection} style={getHeroBgStyle('services', 'services')}>
         <div className="container">
           <div className={styles.heroContent}>
             <div className={styles.heroBadge}>

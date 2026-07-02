@@ -97,7 +97,15 @@ export function legalHeaderBg(image: string) {
   };
 }
 
-export function getHeroBgStyle(key: HeroBgKey, variant: 'dark' | 'light' | 'purple' | 'indigo' | 'navy' | 'hardware' | 'legal' = 'dark') {
+/** 서비스 소개 등 넓은 히어로 — 배경이 더 잘 보이도록 낮은 불투명도 */
+export function servicesHeroBg(image: string) {
+  return {
+    backgroundImage: `linear-gradient(135deg, rgba(15, 23, 42, 0.40) 0%, rgba(30, 58, 95, 0.28) 50%, rgba(15, 23, 42, 0.46) 100%), url('${image}')`,
+    ...heroBgBase,
+  };
+}
+
+export function getHeroBgStyle(key: HeroBgKey, variant: 'dark' | 'light' | 'purple' | 'indigo' | 'navy' | 'hardware' | 'legal' | 'services' = 'dark') {
   const image = heroBackgrounds[key];
   switch (variant) {
     case 'light':
@@ -112,6 +120,8 @@ export function getHeroBgStyle(key: HeroBgKey, variant: 'dark' | 'light' | 'purp
       return hardwareHeroBg(image);
     case 'legal':
       return legalHeaderBg(image);
+    case 'services':
+      return servicesHeroBg(image);
     default:
       return darkHeroBg(image);
   }
