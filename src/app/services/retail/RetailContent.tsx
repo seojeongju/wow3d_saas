@@ -33,7 +33,7 @@ export default function RetailContent() {
             </div>
             <div className={styles.heroImage}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/images/wow-smart-manager-hero.jpg" alt="WOW-Smart Manager Dashboard" className={styles.heroImg} />
+              <img src="/images/wow-smart-manager-dashboard.png" alt="WOW-Smart Manager Dashboard" className={styles.heroImg} />
             </div>
           </div>
         </div>
@@ -73,7 +73,7 @@ export default function RetailContent() {
         <div className="container">
           <div className={styles.dashboardWrapper}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/images/dashboard-hero.jpg" alt="WOW-Smart Manager Dashboard" className={styles.dashboardImg} />
+            <img src="/images/wow-smart-manager-dashboard.png" alt="WOW-Smart Manager Dashboard" className={styles.dashboardImg} />
           </div>
         </div>
       </section>

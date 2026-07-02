@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Mail, Phone } from "lucide-react";
+import { siteContact } from "@/lib/contact";
 import styles from "./about.module.css";
 
 export default function AboutContactCta() {
@@ -12,13 +13,18 @@ export default function AboutContactCta() {
           <div className={styles.contactInfo}>
             <div className={styles.contactItem}>
               <Phone size={20} className={styles.contactIcon} />
-              <a href="tel:0231443137">02-3144-3137</a>
+              <a href={`tel:${siteContact.phones.seoul.replace(/-/g, "")}`}>{siteContact.phones.seoul}</a>
               <span className={styles.contactDivider}>·</span>
-              <a href="tel:0544643137">054-464-3137</a>
+              <a href={`tel:${siteContact.phones.gumi.replace(/-/g, "")}`}>{siteContact.phones.gumi}</a>
             </div>
             <div className={styles.contactItem}>
               <Mail size={20} className={styles.contactIcon} />
-              <a href="mailto:3dcookidhd@naver.com">3dcookidhd@naver.com</a>
+              {siteContact.emails.map((email, index) => (
+                <span key={email}>
+                  {index > 0 && <span className={styles.contactDivider}>·</span>}
+                  <a href={`mailto:${email}`}>{email}</a>
+                </span>
+              ))}
             </div>
           </div>
           <div className={styles.contactActions}>

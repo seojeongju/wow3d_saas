@@ -10,6 +10,7 @@ export default function LocationsContent() {
       <AboutPageHeader
         title="전국 센터 안내"
         description="서울·구미·전주 3개 거점에서 연구·교육·제작 서비스를 제공합니다"
+        bg="locations"
       />
 
       <section className={styles.centersSection}>

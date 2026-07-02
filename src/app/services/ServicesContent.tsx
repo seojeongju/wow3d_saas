@@ -33,7 +33,7 @@ export default function ServicesContent() {
           {/* Hero Image */}
           <div className="hero-image-wrapper mb-20 shadow-2xl rounded-xl overflow-hidden border border-slate-200">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/images/dashboard-hero.jpg" alt="SaaS ERP Dashboard" className="w-full h-auto object-cover" />
+            <img src="/images/wow-smart-manager-dashboard.png" alt="SaaS ERP Dashboard" className="w-full h-auto object-cover" />
           </div>
 
           {/* Core Features Grid - Introduction */}

@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import { Mail, Phone, MapPin } from "lucide-react";
+import { siteContact } from "@/lib/contact";
 import styles from './Footer.module.css';
 
 export default function Footer() {
@@ -81,11 +82,15 @@ export default function Footer() {
             </div>
             <div className={styles.contactItem}>
               <Phone size={16} className={styles.contactIcon} />
-              <span>02-3144-3137</span>
+              <span>{siteContact.phones.seoul}</span>
             </div>
             <div className={styles.contactItem}>
               <Mail size={16} className={styles.contactIcon} />
-              <a href="mailto:3dcookidhd@naver.com">3dcookidhd@naver.com</a>
+              <div className={styles.emailGroup}>
+                {siteContact.emails.map((email) => (
+                  <a key={email} href={`mailto:${email}`}>{email}</a>
+                ))}
+              </div>
             </div>
           </div>
         </div>

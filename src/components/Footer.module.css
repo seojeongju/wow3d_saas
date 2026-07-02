@@ -153,6 +153,12 @@
   color: #fff;
 }
 
+.emailGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
 .addressGroup {
   display: flex;
   flex-direction: column;

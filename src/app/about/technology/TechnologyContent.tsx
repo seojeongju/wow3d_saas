@@ -29,6 +29,7 @@ export default function TechnologyContent() {
       <AboutPageHeader
         title="제품 · 기술"
         description="하드웨어·소프트웨어·제작 인프라와 지식재산권을 한곳에서 확인하세요"
+        bg="technology"
       />
 
       <section className={styles.productsSection}>

@@ -15,7 +15,7 @@ const services = [
     subtitle: '스마트 재고/매출 관리 팩',
     description: '도소매업, 요식업 사장님을 위한 재고/발주 및 매출 심층 분석 솔루션',
     color: '#2563EB',
-    image: '/images/dashboard-hero.jpg',
+    image: '/images/wow-smart-manager-dashboard.png',
     features: [
       {
         icon: <BarChart3 size={36} />,

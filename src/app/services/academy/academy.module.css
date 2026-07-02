@@ -12,7 +12,10 @@
    ============================================ */
 
 .heroSection {
-  background: linear-gradient(135deg, #312E81 0%, #4338CA 100%);
+  background-image: linear-gradient(135deg, rgba(49, 46, 129, 0.9) 0%, rgba(67, 56, 202, 0.86) 100%), url('/images/lms-dashboard-hero.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   color: white;
   padding: 8rem 0 6rem;
   position: relative;

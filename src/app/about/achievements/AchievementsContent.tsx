@@ -19,6 +19,7 @@ export default function AchievementsContent() {
       <AboutPageHeader
         title="개발 · 사업 실적"
         description="정부지원사업·산학협력·R&D 주요 수행 이력을 연도별로 확인하세요"
+        bg="achievements"
       />
 
       <section className={styles.achievementSection}>

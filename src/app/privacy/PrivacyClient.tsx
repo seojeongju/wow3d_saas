@@ -1,5 +1,6 @@
 "use client";
 
+import { formatEmailsForDisplay, siteContact } from "@/lib/contact";
 import styles from "./privacy.module.css";
 
 export default function PrivacyClient() {
@@ -84,7 +85,7 @@ export default function PrivacyClient() {
                         <ul className={styles.list}>
                             <li><strong>성명:</strong> 김순희</li>
                             <li><strong>직책:</strong> 대표이사</li>
-                            <li><strong>연락처:</strong> 02-3144-3137 / 3dcookidhd@naver.com</li>
+                            <li><strong>연락처:</strong> {siteContact.phones.seoul} / {formatEmailsForDisplay()}</li>
                         </ul>
                     </section>
 

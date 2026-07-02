@@ -10,6 +10,7 @@ export default function CertificationsContent() {
       <AboutPageHeader
         title="인증 · 지정 현황"
         description="벤처·여성기업, ISO 9001, HRD·데이터사업자 등 공신력 있는 인증을 보유하고 있습니다"
+        bg="certifications"
       />
 
       <section className={styles.certSection}>

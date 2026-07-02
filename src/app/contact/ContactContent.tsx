@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import emailjs from '@emailjs/browser';
 import { Mail, Phone, MapPin, Send, MessageCircle, Clock, CheckCircle2, AlertCircle } from "lucide-react";
+import { siteContact } from "@/lib/contact";
 import styles from "./contact.module.css";
 
 // EmailJS Configuration Keys
@@ -42,7 +43,7 @@ export default function ContactContent() {
       company: formData.company,
       service: formData.service,
       message: formData.message,
-      to_email: 'wow3d16@naver.com',
+      to_email: siteContact.inquiryEmail,
       site_name: 'wow3d-SaaS'
     };
 
@@ -238,14 +239,25 @@ export default function ContactContent() {
                     <Phone size={20} className={styles.contactIcon} />
                     <div>
                       <span className={styles.contactLabel}>전화</span>
-                      <a href="tel:02-3144-3137" className={styles.contactValue}>02-3144-3137 / 054-464-3144</a>
+                      <a
+                        href={`tel:${siteContact.phones.seoul.replace(/-/g, "")}`}
+                        className={styles.contactValue}
+                      >
+                        {siteContact.phones.seoul} / {siteContact.phones.gumi}
+                      </a>
                     </div>
                   </div>
                   <div className={styles.contactItem}>
                     <Mail size={20} className={styles.contactIcon} />
                     <div>
                       <span className={styles.contactLabel}>이메일</span>
-                      <a href="mailto:wow3d16@naver.com" className={styles.contactValue}>wow3d16@naver.com</a>
+                      <div className={styles.contactEmailList}>
+                        {siteContact.emails.map((email) => (
+                          <a key={email} href={`mailto:${email}`} className={styles.contactValue}>
+                            {email}
+                          </a>
+                        ))}
+                      </div>
                     </div>
                   </div>
                   <div className={styles.contactItem}>

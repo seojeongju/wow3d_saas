@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { siteContact } from "@/lib/contact";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -95,6 +96,7 @@ export default function RootLayout({
     "contactPoint": {
       "@type": "ContactPoint",
       "telephone": "+82-2-3144-3137",
+      "email": [...siteContact.emails],
       "contactType": "customer service",
       "areaServed": "KR",
       "availableLanguage": "Korean"
