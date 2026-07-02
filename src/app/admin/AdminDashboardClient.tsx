@@ -367,6 +367,17 @@ export default function AdminDashboardClient() {
             </div>
 
             <div className={styles.container}>
+                <div className={styles.mobileToolbar}>
+                    <div className={styles.mobileToolbarBrand}>
+                        <LayoutDashboard size={20} />
+                        <span>자료실 관리</span>
+                    </div>
+                    <button type="button" className={styles.mobileLogoutBtn} onClick={handleLogout}>
+                        <LogOut size={18} />
+                        로그아웃
+                    </button>
+                </div>
+
                 <aside className={styles.sidebar}>
                     <div className={styles.brand}>
                         <LayoutDashboard size={24} />
