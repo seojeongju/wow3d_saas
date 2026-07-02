@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { getHeroBgStyle } from "@/lib/heroBackgrounds";
 import { ChevronRight, ArrowRight, Cpu, Thermometer, Zap, Wifi } from "lucide-react";
 import styles from "./printer.module.css";
 import Image from "next/image";
@@ -221,7 +222,7 @@ export default function PrinterContent() {
         <span>P-Pro Series 3D 프린터</span>
       </nav>
 
-      <section className={styles.hero}>
+      <section className={styles.hero} style={getHeroBgStyle("printer", "printer")}>
         <div className={styles.heroInner}>
           <span className={styles.heroBadge}>Professional Grade 3D Printer</span>
           <h1 className={styles.heroTitle}>

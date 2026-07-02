@@ -105,7 +105,15 @@ export function servicesHeroBg(image: string) {
   };
 }
 
-export function getHeroBgStyle(key: HeroBgKey, variant: 'dark' | 'light' | 'purple' | 'indigo' | 'navy' | 'hardware' | 'legal' | 'services' = 'dark') {
+/** 3D 프린터 — 인디고 톤, 배경 노출 강화 */
+export function printerHeroBg(image: string) {
+  return {
+    backgroundImage: `linear-gradient(135deg, rgba(15, 23, 42, 0.40) 0%, rgba(30, 58, 95, 0.30) 45%, rgba(49, 46, 129, 0.44) 100%), url('${image}')`,
+    ...heroBgBase,
+  };
+}
+
+export function getHeroBgStyle(key: HeroBgKey, variant: 'dark' | 'light' | 'purple' | 'indigo' | 'navy' | 'hardware' | 'legal' | 'services' | 'printer' = 'dark') {
   const image = heroBackgrounds[key];
   switch (variant) {
     case 'light':
@@ -122,6 +130,8 @@ export function getHeroBgStyle(key: HeroBgKey, variant: 'dark' | 'light' | 'purp
       return legalHeaderBg(image);
     case 'services':
       return servicesHeroBg(image);
+    case 'printer':
+      return printerHeroBg(image);
     default:
       return darkHeroBg(image);
   }
