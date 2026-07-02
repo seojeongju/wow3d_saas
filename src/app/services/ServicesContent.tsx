@@ -1,6 +1,6 @@
 "use client";
 import PricingTable from '@/components/PricingTable';
-import { Box, Users, BarChart3, Cloud, ShieldCheck, Timer, BookOpen, LineChart } from 'lucide-react';
+import { Box, Users, BarChart3, Cloud, ShieldCheck, Timer, BookOpen, LineChart, Layers } from 'lucide-react';
 import Link from 'next/link';
 import styles from './services.module.css';
 
@@ -8,10 +8,20 @@ export default function ServicesContent() {
   return (
     <div className={styles.servicesPage}>
       {/* Services Header */}
-      <section className={styles.bgGradient}>
+      <section className={styles.heroSection}>
         <div className="container">
-          <h1 className="text-4xl font-bold mb-4">서비스 소개</h1>
-          <p className="text-xl opacity-90">소상공인부터 기업까지, 데이터 기반의 스마트한 경영 관리</p>
+          <div className={styles.heroContent}>
+            <div className={styles.heroBadge}>
+              <Layers size={20} />
+              <span>AI S/W Solutions</span>
+            </div>
+            <h1 className={styles.heroTitle}>
+              서비스 소개
+            </h1>
+            <p className={styles.heroDesc}>
+              소상공인부터 기업까지, 데이터 기반의 스마트한 경영 관리 솔루션을 한곳에서 만나보세요.
+            </p>
+          </div>
         </div>
       </section>
 
