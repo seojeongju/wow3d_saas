@@ -5,6 +5,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 import { Check, ArrowRight, HelpCircle, Shield, Clock, Users, TrendingUp, Award, Box, BarChart3, Cloud, Timer, BookOpen, LineChart, ShieldCheck } from 'lucide-react';
 import PricingTable from '@/components/PricingTable';
+import { getHeroBgStyle } from '@/lib/heroBackgrounds';
 import styles from './pricing.module.css';
 import clsx from 'clsx';
 
@@ -256,7 +257,7 @@ export default function PricingContent() {
   return (
     <div className={styles.pricingPage}>
       {/* Hero Section */}
-      <section className={styles.heroSection}>
+      <section className={styles.heroSection} style={getHeroBgStyle('pricing', 'services')}>
         <div className="container">
           <div className={styles.heroContent}>
             <div className={styles.badge}>
