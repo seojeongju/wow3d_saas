@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import {
     Upload, FileText, Download, Trash2, Search, Loader2, File, ImageIcon,
-    Video, Archive, X, Lock, LogOut, LayoutDashboard, Database, CloudUpload, CheckCircle2, AlertCircle
+    Video, Archive, X, Lock, LogOut, LayoutDashboard, Database, CheckCircle2, AlertCircle
 } from "lucide-react";
 import styles from "./admin.module.css";
 
@@ -23,16 +23,6 @@ interface Notification {
     message: string;
 }
 
-type UploadStatus = "pending" | "uploading" | "done" | "error";
-
-interface UploadItem {
-    id: string;
-    file: File;
-    progress: number;
-    status: UploadStatus;
-    error?: string;
-}
-
 const MAX_UPLOAD_BYTES = 100 * 1024 * 1024;
 const AUTH_KEY = "wow_admin_auth";
 
@@ -47,6 +37,7 @@ async function parseApiError(res: Response, fallback: string): Promise<string> {
 
 function uploadWithProgress(
     file: File,
+    displayName: string,
     auth: string,
     onProgress: (pct: number) => void
 ): Promise<void> {
@@ -54,9 +45,12 @@ function uploadWithProgress(
         const xhr = new XMLHttpRequest();
         const formData = new FormData();
         formData.append("file", file);
+        formData.append("display_name", displayName);
+        formData.append("admin_token", auth);
 
         xhr.open("POST", "/api/archive");
         xhr.setRequestHeader("Authorization", `Bearer ${auth}`);
+        xhr.setRequestHeader("X-Admin-Token", auth);
 
         xhr.upload.onprogress = (e) => {
             if (e.lengthComputable) {
@@ -86,25 +80,21 @@ function uploadWithProgress(
 
 export default function AdminDashboardClient() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [sessionChecking, setSessionChecking] = useState(true);
     const [password, setPassword] = useState("");
     const [loginLoading, setLoginLoading] = useState(false);
     const [loginError, setLoginError] = useState("");
     const [files, setFiles] = useState<ArchiveFile[]>([]);
     const [loading, setLoading] = useState(false);
-    const [uploadQueue, setUploadQueue] = useState<UploadItem[]>([]);
-    const [isDragging, setIsDragging] = useState(false);
+    const [displayName, setDisplayName] = useState("");
+    const [selectedFile, setSelectedFile] = useState<File | null>(null);
+    const [uploading, setUploading] = useState(false);
+    const [uploadProgress, setUploadProgress] = useState(0);
+    const [uploadError, setUploadError] = useState("");
     const [searchQuery, setSearchQuery] = useState("");
     const [notifications, setNotifications] = useState<Notification[]>([]);
     const [deletingId, setDeletingId] = useState<string | null>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
-    const isUploading = uploadQueue.some((item) => item.status === "uploading" || item.status === "pending");
-
-    useEffect(() => {
-        const savedAuth = localStorage.getItem(AUTH_KEY);
-        if (savedAuth) {
-            setIsLoggedIn(true);
-        }
-    }, []);
 
     const addNotification = useCallback((type: NotificationType, message: string) => {
         const id = crypto.randomUUID();
@@ -119,8 +109,37 @@ export default function AdminDashboardClient() {
         setIsLoggedIn(false);
         setPassword("");
         setFiles([]);
-        setUploadQueue([]);
+        setDisplayName("");
+        setSelectedFile(null);
+        setUploadError("");
     }, []);
+
+    const validateSession = useCallback(async (token: string): Promise<boolean> => {
+        const res = await fetch("/api/archive/auth", {
+            headers: {
+                Authorization: `Bearer ${token}`,
+                "X-Admin-Token": token,
+            },
+        });
+        return res.ok;
+    }, []);
+
+    useEffect(() => {
+        const savedAuth = localStorage.getItem(AUTH_KEY);
+        if (!savedAuth) {
+            setSessionChecking(false);
+            return;
+        }
+
+        void validateSession(savedAuth).then((valid) => {
+            if (valid) {
+                setIsLoggedIn(true);
+            } else {
+                localStorage.removeItem(AUTH_KEY);
+            }
+            setSessionChecking(false);
+        });
+    }, [validateSession]);
 
     const fetchFiles = useCallback(async () => {
         const auth = localStorage.getItem(AUTH_KEY);
@@ -128,13 +147,7 @@ export default function AdminDashboardClient() {
 
         try {
             setLoading(true);
-            const res = await fetch("/api/archive", {
-                headers: { Authorization: `Bearer ${auth}` },
-            });
-            if (res.status === 401) {
-                handleLogout();
-                throw new Error("세션이 만료되었습니다. 다시 로그인해주세요.");
-            }
+            const res = await fetch("/api/archive");
             if (!res.ok) {
                 throw new Error(await parseApiError(res, "파일 목록 조회 실패"));
             }
@@ -146,7 +159,7 @@ export default function AdminDashboardClient() {
         } finally {
             setLoading(false);
         }
-    }, [addNotification, handleLogout]);
+    }, [addNotification]);
 
     useEffect(() => {
         if (isLoggedIn) {
@@ -181,73 +194,76 @@ export default function AdminDashboardClient() {
         }
     };
 
-    const enqueueFiles = useCallback((fileList: FileList | File[]) => {
-        const incoming = Array.from(fileList);
-        if (incoming.length === 0) return;
+    const handleFileSelect = (fileList: FileList | null) => {
+        const file = fileList?.[0];
+        if (!file) return;
 
-        const auth = localStorage.getItem(AUTH_KEY);
-        if (!auth) return;
-
-        const valid: UploadItem[] = [];
-        for (const file of incoming) {
-            if (file.size > MAX_UPLOAD_BYTES) {
-                addNotification("error", `"${file.name}" — 100MB 이하 파일만 업로드할 수 있습니다.`);
-                continue;
-            }
-            if (file.size === 0) {
-                addNotification("error", `"${file.name}" — 빈 파일은 업로드할 수 없습니다.`);
-                continue;
-            }
-            valid.push({
-                id: crypto.randomUUID(),
-                file,
-                progress: 0,
-                status: "pending",
-            });
+        if (file.size > MAX_UPLOAD_BYTES) {
+            addNotification("error", "100MB 이하 파일만 업로드할 수 있습니다.");
+            return;
+        }
+        if (file.size === 0) {
+            addNotification("error", "빈 파일은 업로드할 수 없습니다.");
+            return;
         }
 
-        if (valid.length === 0) return;
+        setSelectedFile(file);
+        setUploadError("");
 
-        setUploadQueue((prev) => [...prev, ...valid]);
+        if (!displayName.trim()) {
+            const nameWithoutExt = file.name.replace(/\.[^.]+$/, "");
+            setDisplayName(nameWithoutExt);
+        }
+    };
 
-        void (async () => {
-            let successCount = 0;
+    const handleUpload = async () => {
+        const auth = localStorage.getItem(AUTH_KEY);
+        const title = displayName.trim();
 
-            for (const item of valid) {
-                setUploadQueue((prev) =>
-                    prev.map((q) => (q.id === item.id ? { ...q, status: "uploading", progress: 0 } : q))
-                );
+        if (!auth) {
+            handleLogout();
+            return;
+        }
+        if (!title) {
+            setUploadError("자료명을 입력해주세요.");
+            return;
+        }
+        if (!selectedFile) {
+            setUploadError("업로드할 파일을 선택해주세요.");
+            return;
+        }
 
-                try {
-                    await uploadWithProgress(item.file, auth, (pct) => {
-                        setUploadQueue((prev) =>
-                            prev.map((q) => (q.id === item.id ? { ...q, progress: pct } : q))
-                        );
-                    });
+        const sessionValid = await validateSession(auth);
+        if (!sessionValid) {
+            handleLogout();
+            addNotification("error", "세션이 만료되었습니다. 다시 로그인해주세요.");
+            return;
+        }
 
-                    setUploadQueue((prev) =>
-                        prev.map((q) => (q.id === item.id ? { ...q, status: "done", progress: 100 } : q))
-                    );
-                    successCount += 1;
-                } catch (error: unknown) {
-                    const message = error instanceof Error ? error.message : "업로드 실패";
-                    setUploadQueue((prev) =>
-                        prev.map((q) => (q.id === item.id ? { ...q, status: "error", error: message } : q))
-                    );
-                    addNotification("error", `"${item.file.name}" — ${message}`);
-                }
+        try {
+            setUploading(true);
+            setUploadProgress(0);
+            setUploadError("");
+
+            await uploadWithProgress(selectedFile, title, auth, setUploadProgress);
+
+            addNotification("success", `"${title}" 업로드 완료`);
+            setDisplayName("");
+            setSelectedFile(null);
+            if (fileInputRef.current) fileInputRef.current.value = "";
+            await fetchFiles();
+        } catch (error: unknown) {
+            const message = error instanceof Error ? error.message : "업로드 중 오류가 발생했습니다.";
+            setUploadError(message);
+            addNotification("error", message);
+
+            if (message.includes("인증")) {
+                handleLogout();
             }
-
-            if (successCount > 0) {
-                addNotification("success", `${successCount}개 파일 업로드 완료`);
-                await fetchFiles();
-            }
-
-            setTimeout(() => {
-                setUploadQueue((prev) => prev.filter((q) => q.status === "uploading" || q.status === "pending"));
-            }, 4000);
-        })();
-    }, [addNotification, fetchFiles]);
+        } finally {
+            setUploading(false);
+        }
+    };
 
     const handleDelete = async (file: ArchiveFile) => {
         const auth = localStorage.getItem(AUTH_KEY);
@@ -257,7 +273,10 @@ export default function AdminDashboardClient() {
             setDeletingId(file.id);
             const res = await fetch(`/api/archive?id=${file.id}`, {
                 method: "DELETE",
-                headers: { Authorization: `Bearer ${auth}` },
+                headers: {
+                    Authorization: `Bearer ${auth}`,
+                    "X-Admin-Token": auth,
+                },
             });
 
             if (res.status === 401) {
@@ -278,13 +297,6 @@ export default function AdminDashboardClient() {
         }
     };
 
-    const handleDrop = (e: React.DragEvent) => {
-        e.preventDefault();
-        setIsDragging(false);
-        if (isUploading) return;
-        enqueueFiles(e.dataTransfer.files);
-    };
-
     const getFileIcon = (contentType: string) => {
         if (contentType?.startsWith("image/")) return <ImageIcon size={18} />;
         if (contentType?.startsWith("video/")) return <Video size={18} />;
@@ -303,6 +315,14 @@ export default function AdminDashboardClient() {
     const filteredFiles = files.filter((f) =>
         f.filename.toLowerCase().includes(searchQuery.toLowerCase())
     );
+
+    if (sessionChecking) {
+        return (
+            <div className={styles.loginPage}>
+                <Loader2 className={styles.spin} size={32} />
+            </div>
+        );
+    }
 
     if (!isLoggedIn) {
         return (
@@ -359,73 +379,76 @@ export default function AdminDashboardClient() {
                         <div className={styles.stats}>전체 파일: {files.length}</div>
                     </header>
 
-                    <div
-                        className={`${styles.dropZone} ${isDragging ? styles.dropZoneActive : ""} ${isUploading ? styles.dropZoneDisabled : ""}`}
-                        onDragOver={(e) => { e.preventDefault(); if (!isUploading) setIsDragging(true); }}
-                        onDragLeave={() => setIsDragging(false)}
-                        onDrop={handleDrop}
-                        onClick={() => !isUploading && fileInputRef.current?.click()}
-                        role="button"
-                        tabIndex={0}
-                        onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") fileInputRef.current?.click(); }}
-                    >
-                        <CloudUpload size={36} />
-                        <p className={styles.dropTitle}>파일을 끌어다 놓거나 클릭하여 업로드</p>
-                        <p className={styles.dropHint}>PDF, 문서, 이미지, 영상, ZIP 등 · 최대 100MB · 여러 파일 동시 업로드 가능</p>
-                        <input
-                            ref={fileInputRef}
-                            type="file"
-                            multiple
-                            className={styles.hiddenInput}
-                            disabled={isUploading}
-                            onChange={(e) => {
-                                if (e.target.files) enqueueFiles(e.target.files);
-                                e.target.value = "";
-                            }}
-                        />
-                    </div>
+                    <section className={styles.uploadForm}>
+                        <h2 className={styles.uploadFormTitle}>새 자료 등록</h2>
+                        <div className={styles.uploadFormGrid}>
+                            <label className={styles.field}>
+                                <span className={styles.fieldLabel}>자료명 *</span>
+                                <input
+                                    type="text"
+                                    placeholder="예: 헬퍼C플러스 조립영상(3차)"
+                                    value={displayName}
+                                    onChange={(e) => setDisplayName(e.target.value)}
+                                    disabled={uploading}
+                                />
+                                <span className={styles.fieldHint}>자료실에 표시될 이름입니다. 확장자는 선택한 파일에서 자동 적용됩니다.</span>
+                            </label>
 
-                    {uploadQueue.length > 0 && (
-                        <div className={styles.uploadQueue}>
-                            {uploadQueue.map((item) => (
-                                <div key={item.id} className={styles.uploadItem}>
-                                    <div className={styles.uploadItemHeader}>
-                                        <span className={styles.uploadFileName}>{item.file.name}</span>
-                                        <span className={styles.uploadFileSize}>{formatSize(item.file.size)}</span>
-                                        {item.status === "done" && <CheckCircle2 size={16} className={styles.uploadDoneIcon} />}
-                                        {item.status === "error" && <AlertCircle size={16} className={styles.uploadErrorIcon} />}
-                                        {item.status === "uploading" && <Loader2 size={16} className={styles.spin} />}
-                                    </div>
-                                    {(item.status === "uploading" || item.status === "done") && (
-                                        <div className={styles.progressBar}>
-                                            <div className={styles.progressFill} style={{ width: `${item.progress}%` }} />
-                                        </div>
-                                    )}
-                                    {item.error && <p className={styles.uploadErrorText}>{item.error}</p>}
+                            <label className={styles.field}>
+                                <span className={styles.fieldLabel}>파일 선택 *</span>
+                                <div className={styles.filePickerRow}>
+                                    <button
+                                        type="button"
+                                        className={styles.filePickerBtn}
+                                        onClick={() => fileInputRef.current?.click()}
+                                        disabled={uploading}
+                                    >
+                                        <Upload size={16} />
+                                        파일 찾기
+                                    </button>
+                                    <span className={styles.selectedFileName}>
+                                        {selectedFile ? `${selectedFile.name} (${formatSize(selectedFile.size)})` : "선택된 파일 없음"}
+                                    </span>
                                 </div>
-                            ))}
+                                <input
+                                    ref={fileInputRef}
+                                    type="file"
+                                    className={styles.hiddenInput}
+                                    disabled={uploading}
+                                    onChange={(e) => handleFileSelect(e.target.files)}
+                                />
+                            </label>
                         </div>
-                    )}
+
+                        {uploading && (
+                            <div className={styles.progressBar}>
+                                <div className={styles.progressFill} style={{ width: `${uploadProgress}%` }} />
+                            </div>
+                        )}
+
+                        {uploadError && <p className={styles.uploadErrorText}>{uploadError}</p>}
+
+                        <button
+                            type="button"
+                            className={styles.submitUploadBtn}
+                            onClick={handleUpload}
+                            disabled={uploading || !displayName.trim() || !selectedFile}
+                        >
+                            {uploading ? <Loader2 className={styles.spin} size={18} /> : <CheckCircle2 size={18} />}
+                            {uploading ? `업로드 중... ${uploadProgress}%` : "업로드"}
+                        </button>
+                    </section>
 
                     <div className={styles.controls}>
                         <div className={styles.search}>
                             <Search size={18} />
                             <input
                                 type="text"
-                                placeholder="파일명 검색..."
+                                placeholder="자료명 검색..."
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
                             />
                         </div>
-                        <button
-                            type="button"
-                            className={styles.uploadBtn}
-                            onClick={() => fileInputRef.current?.click()}
-                            disabled={isUploading}
-                        >
-                            {isUploading ? <Loader2 className={styles.spin} size={18} /> : <Upload size={18} />}
-                            {isUploading ? "업로드 중..." : "파일 선택"}
-                        </button>
                     </div>
 
                     <div className={styles.tableWrap}>
@@ -435,13 +458,13 @@ export default function AdminDashboardClient() {
                             <div className={styles.emptyState}>
                                 <Archive size={40} />
                                 <p>등록된 파일이 없습니다.</p>
-                                <span>위 영역에 파일을 드래그하여 업로드하세요.</span>
+                                <span>위 양식에서 자료명과 파일을 입력한 뒤 업로드하세요.</span>
                             </div>
                         ) : (
                             <table className={styles.table}>
                                 <thead>
                                     <tr>
-                                        <th>파일명</th>
+                                        <th>자료명</th>
                                         <th>용량</th>
                                         <th>등록일</th>
                                         <th>관리</th>

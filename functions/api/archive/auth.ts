@@ -2,7 +2,7 @@
  * POST /api/archive/auth — 관리자 비밀번호 검증
  */
 
-import { corsHeaders, jsonResponse } from '../../lib/archive-helpers';
+import { corsHeaders, extractAdminToken, jsonResponse } from '../../lib/archive-helpers';
 
 interface Env {
     ADMIN_PASSWORD?: string;
@@ -38,4 +38,20 @@ export const onRequestPost = async (context: { request: Request; env: Env }) => 
     } catch {
         return jsonResponse({ error: '요청 형식이 올바르지 않습니다.' }, 400);
     }
+};
+
+/** GET /api/archive/auth — 저장된 토큰 유효성 검사 */
+export const onRequestGet = async (context: { request: Request; env: Env }) => {
+    const { request, env } = context;
+
+    if (!env.ADMIN_PASSWORD) {
+        return jsonResponse({ ok: false, error: 'ADMIN_PASSWORD not configured' }, 503);
+    }
+
+    const token = extractAdminToken(request);
+    if (token && token === env.ADMIN_PASSWORD) {
+        return jsonResponse({ ok: true });
+    }
+
+    return jsonResponse({ ok: false, error: 'Unauthorized' }, 401);
 };

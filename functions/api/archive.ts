@@ -6,9 +6,11 @@
  */
 
 import {
+    buildDisplayFilename,
     buildR2Key,
     checkAdminAuth,
     corsHeaders,
+    extractAdminToken,
     guessContentType,
     jsonResponse,
     sanitizeFilename,
@@ -53,15 +55,23 @@ export const onRequest = async (context: { request: Request; env: Env }) => {
                     503
                 );
             }
-            if (!isAdmin) {
+
+            const formData = await request.formData();
+
+            if (!checkAdminAuth(request, env.ADMIN_PASSWORD, formData)) {
                 return jsonResponse({ error: '인증에 실패했습니다. 다시 로그인해주세요.' }, 401);
             }
 
-            const formData = await request.formData();
             const file = formData.get('file');
 
             if (!(file instanceof File)) {
                 return jsonResponse({ error: '업로드할 파일이 없습니다.' }, 400);
+            }
+
+            const displayNameField = formData.get('display_name');
+            const displayTitle = typeof displayNameField === 'string' ? displayNameField.trim() : '';
+            if (!displayTitle) {
+                return jsonResponse({ error: '자료명을 입력해주세요.' }, 400);
             }
 
             const validationError = validateUploadFile(file);
@@ -70,14 +80,14 @@ export const onRequest = async (context: { request: Request; env: Env }) => {
             }
 
             const id = crypto.randomUUID();
-            const filename = sanitizeFilename(file.name);
+            const filename = buildDisplayFilename(displayTitle, file.name);
             const contentType = guessContentType(filename, file.type);
             const key = buildR2Key(id, filename);
             const buffer = await file.arrayBuffer();
 
             await env.BUCKET.put(key, buffer, {
                 httpMetadata: { contentType },
-                customMetadata: { originalName: filename },
+                customMetadata: { originalName: filename, sourceFile: sanitizeFilename(file.name) },
             });
 
             await env.DB.prepare(

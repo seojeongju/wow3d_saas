@@ -46,18 +46,38 @@ const MIME_BY_EXT: Record<string, string> = {
 export const corsHeaders = {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Admin-Token',
 };
 
 export function jsonResponse(data: unknown, status = 200) {
     return Response.json(data, { status, headers: corsHeaders });
 }
 
-export function checkAdminAuth(request: Request, adminPassword?: string): boolean {
-    if (!adminPassword) return false;
+export function extractAdminToken(request: Request, formData?: FormData): string | null {
     const authHeader = request.headers.get('Authorization');
-    if (!authHeader?.startsWith('Bearer ')) return false;
-    const token = authHeader.slice(7).trim();
+    if (authHeader?.startsWith('Bearer ')) {
+        return authHeader.slice(7).trim();
+    }
+
+    const xToken = request.headers.get('X-Admin-Token');
+    if (xToken) {
+        return xToken.trim();
+    }
+
+    if (formData) {
+        const field = formData.get('admin_token');
+        if (typeof field === 'string' && field.trim()) {
+            return field.trim();
+        }
+    }
+
+    return null;
+}
+
+export function checkAdminAuth(request: Request, adminPassword?: string, formData?: FormData): boolean {
+    if (!adminPassword) return false;
+    const token = extractAdminToken(request, formData);
+    if (!token) return false;
     return token === adminPassword;
 }
 
@@ -81,6 +101,23 @@ export function sanitizeFilename(filename: string): string {
 export function buildR2Key(id: string, filename: string): string {
     const safe = sanitizeFilename(filename);
     return `archive/${id}/${safe}`;
+}
+
+/** 자료명 + 원본 확장자로 표시 파일명 생성 */
+export function buildDisplayFilename(title: string, originalFilename: string): string {
+    const trimmed = title.trim();
+    if (!trimmed) {
+        return sanitizeFilename(originalFilename);
+    }
+
+    const sanitizedTitle = sanitizeFilename(trimmed);
+    const originalExt = getExtension(originalFilename);
+
+    if (getExtension(sanitizedTitle)) {
+        return sanitizedTitle;
+    }
+
+    return originalExt ? `${sanitizedTitle}.${originalExt}` : sanitizedTitle;
 }
 
 export function validateUploadFile(file: File): string | null {
