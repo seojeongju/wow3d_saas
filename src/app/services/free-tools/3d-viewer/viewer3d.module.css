@@ -3,7 +3,7 @@
 .container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 120px 20px 80px 20px;
+  padding: 0 1.25rem 5rem;
   min-height: 100vh;
   color: #0f172a;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -12,8 +12,8 @@
 /* 히어로 섹션 */
 .heroSection {
   text-align: center;
-  margin: -120px -20px 50px;
-  padding: calc(120px + 2rem) 1.5rem 2.5rem;
+  margin: 0 -1.25rem 2rem;
+  padding: 2.5rem 1.25rem 2.5rem;
   background-image: linear-gradient(135deg, rgba(15, 23, 42, 0.62) 0%, rgba(30, 58, 138, 0.52) 100%), url('/images/ai-quote-system-hero.png');
   background-size: cover;
   background-position: center;
@@ -588,4 +588,28 @@
   width: 0%;
   transition: width 0.1s linear;
   border-radius: 9999px;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0 1rem 4rem;
+  }
+
+  .heroSection {
+    margin: 0 -1rem 1.5rem;
+    padding: 2rem 1rem;
+  }
+
+  .heroTitle {
+    font-size: clamp(1.5rem, 7vw, 2.25rem);
+  }
+
+  .card {
+    padding: 1.25rem;
+    border-radius: 16px;
+  }
+
+  .workspace {
+    gap: 1.25rem;
+  }
 }

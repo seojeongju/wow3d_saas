@@ -5,12 +5,7 @@ import { Menu, X, ChevronRight, ChevronDown, Home, LayoutGrid, MessageCircle, In
 import { useState, useEffect } from 'react';
 import clsx from 'clsx';
 import styles from './Navbar.module.css';
-
-type NavLink = {
-  href: string;
-  label: string;
-  children?: { href: string; label: string; description?: string }[];
-};
+import { mainNavLinks } from '@/lib/navigation';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -57,63 +52,7 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', onScroll);
   }, [lastScrollY]);
 
-  const navLinks: NavLink[] = [
-    {
-      href: '/services',
-      label: 'AI S/W 솔루션',
-      children: [
-        { href: '/services/retail', label: 'AI 재고/생산관리시스템 (Smart Manager)', description: '실시간 매장 관리 및 데이터 분석 솔루션' },
-        { href: '/services/academy', label: 'HRD학사관리시스템 (On-Track)', description: 'NCS 기반 직업훈련기관 전용 행정망' },
-        { href: '/services/cbt', label: '문제은행 솔루션 (CBT)', description: '컴퓨터 기반 시험 및 교육 평가 시스템' },
-        { href: '/services/printing', label: 'AI 실시간 자동 견적 시스템', description: '3D 프린팅 자동 견적 및 발주 관리' },
-        { href: '/services/free-tools', label: '무료 프로그램', description: '와우쓰리디가 무상 지원하는 유용한 비즈니스 프로그램 도구' },
-      ]
-    },
-    {
-      href: '/hardware',
-      label: '제품 (Hardware)',
-      children: [
-        { href: '/hardware/3d-printer', label: 'MSLA-DLP 3D 프린터', description: '9K/16K 초정밀 MSLA 3D 프린팅 프로 시리즈' },
-        { href: '/hardware/hologram', label: '3D 홀로그램 디스플레이', description: '시선을 사로잡는 혁신적인 3D 디스플레이 솔루션' },
-      ]
-    },
-    {
-      href: '/pricing',
-      label: '비즈니스 가이드',
-      children: [
-        { href: '/pricing', label: '도입 안내', description: '솔루션 도입 절차 및 혜택 안내' },
-        { href: '/contact', label: '구축문의', description: '솔루션 도입 및 맞춤형 시스템 구축 상담' },
-        { href: '/gov-support', label: '정부지원사업 안내', description: '스마트제조, 스마트공장 등 정부지원 사업 안내' },
-      ]
-    },
-    {
-      href: '/services/academy',
-      label: '교육 센터',
-      children: [
-        { href: '/services/academy/center', label: '홍대 교육 센터 안내', description: '와우쓰리디 홍대센터 교육 과정 및 시설 안내' },
-      ]
-    },
-    {
-      href: '/archive',
-      label: '고객지원',
-      children: [
-        { href: '/archive', label: '자료실 (매뉴얼)', description: '제품 매뉴얼, 소프트웨어 가이드 및 드라이버' },
-        { href: '/contact', label: '1:1 문의/기술지원', description: '전문 엔지니어의 빠른 기술 지원 및 상담' },
-      ]
-    },
-    {
-      href: '/about',
-      label: '회사 소개',
-      children: [
-        { href: '/about', label: '기업 개요', description: '회사 소개 및 사업 영역' },
-        { href: '/about/history', label: '성장 연혁', description: '2016년부터 현재까지의 성장 여정' },
-        { href: '/about/technology', label: '제품·기술', description: '제품, 지재권, 보유 장비' },
-        { href: '/about/certifications', label: '인증·지정', description: '벤처·ISO·HRD 등 인증 현황' },
-        { href: '/about/achievements', label: '사업 실적', description: '정부지원·R&D 수행 이력' },
-        { href: '/about/locations', label: '센터 안내', description: '서울·구미·전주 거점' },
-      ],
-    },
-  ];
+  const navLinks = mainNavLinks;
 
   const handleLinkClick = () => {
     setIsOpen(false);

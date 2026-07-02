@@ -231,35 +231,4 @@ export const achievementYears = ['전체', '2026', '2025', '2024', '2023', '2022
 
 export const ipFilterOptions = ['전체', '특허', '디자인', '상표'] as const;
 
-export const aboutNavItems = [
-  {
-    href: '/about',
-    label: '기업 개요',
-    description: '회사 소개 및 사업 영역',
-  },
-  {
-    href: '/about/history',
-    label: '성장 연혁',
-    description: '2016년부터 현재까지의 성장 여정',
-  },
-  {
-    href: '/about/technology',
-    label: '제품·기술',
-    description: '제품, 지재권, 보유 장비',
-  },
-  {
-    href: '/about/certifications',
-    label: '인증·지정',
-    description: '벤처·ISO·HRD 등 인증 현황',
-  },
-  {
-    href: '/about/achievements',
-    label: '사업 실적',
-    description: '정부지원·R&D 수행 이력',
-  },
-  {
-    href: '/about/locations',
-    label: '센터 안내',
-    description: '서울·구미·전주 거점',
-  },
-] as const;
+export { aboutNavItems } from '@/lib/navigation';

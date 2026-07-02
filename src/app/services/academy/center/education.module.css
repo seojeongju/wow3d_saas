@@ -335,6 +335,10 @@
         font-size: 3rem;
     }
 
+    .heroSection {
+        padding: 3rem 0 4rem;
+    }
+
     .featuresGrid,
     .contentGrid,
     .infoCard {
@@ -347,5 +351,27 @@
 
     .infoText {
         padding: 3rem;
+    }
+}
+
+@media (max-width: 640px) {
+    .heroSection {
+        padding: 2.5rem 0 3rem;
+    }
+
+    .heroTitle {
+        font-size: 2rem;
+    }
+
+    .infoImage {
+        height: 280px;
+    }
+
+    .infoText {
+        padding: 2rem 1.25rem;
+    }
+
+    .section {
+        padding: 3rem 1.25rem;
     }
 }

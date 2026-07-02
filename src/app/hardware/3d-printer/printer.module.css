@@ -6,7 +6,6 @@
 .page {
     min-height: 100vh;
     background: #f8fafc;
-    padding-top: 88px;
 }
 
 /* ── Breadcrumb ── */
@@ -945,8 +944,8 @@
    Responsive
    ════════════════════════════════════════ */
 @media (max-width: 900px) {
-    .page {
-        padding-top: 72px;
+    .breadcrumb {
+        padding: 0.75rem 1.25rem 0;
     }
 
     .hero {

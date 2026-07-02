@@ -1,8 +1,7 @@
 .govSupportPage {
   min-height: 100vh;
   background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
-  padding-top: 72px;
-  padding-bottom: calc(var(--bottom-nav-height) + var(--safe-area-bottom) + 4rem);
+  padding-bottom: 2rem;
 }
 
 .heroSection {
