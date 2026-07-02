@@ -1,5 +1,5 @@
 /**
- * POST/GET /api/archive/auth — 하위 호환용 (공통 핸들러 위임)
+ * POST/GET /api/admin-auth — 관리자 인증 (최상위 라우트)
  */
 
 import {
@@ -7,7 +7,7 @@ import {
     handleAdminAuthGet,
     handleAdminAuthPost,
     type AdminAuthEnv,
-} from '../../lib/admin-auth';
+} from '../lib/admin-auth';
 
 export const onRequestOptions = adminAuthOptions;
 export const onRequestPost = (context: { request: Request; env: AdminAuthEnv }) => handleAdminAuthPost(context);

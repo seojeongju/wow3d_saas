@@ -25,6 +25,27 @@ interface Notification {
 
 const MAX_UPLOAD_BYTES = 100 * 1024 * 1024;
 const AUTH_KEY = "wow_admin_auth";
+const AUTH_API = "/api/admin-auth";
+
+type SessionCheckResult = "valid" | "unauthorized" | "unavailable" | "error";
+
+async function checkSession(token: string): Promise<SessionCheckResult> {
+    try {
+        const res = await fetch(AUTH_API, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+                "X-Admin-Token": token,
+            },
+        });
+
+        if (res.ok) return "valid";
+        if (res.status === 401) return "unauthorized";
+        if (res.status === 503) return "unavailable";
+        return "error";
+    } catch {
+        return "error";
+    }
+}
 
 async function parseApiError(res: Response, fallback: string): Promise<string> {
     try {
@@ -66,9 +87,13 @@ function uploadWithProgress(
             }
             try {
                 const data = JSON.parse(xhr.responseText) as { error?: string };
-                reject(new Error(data.error || `업로드 실패 (${xhr.status})`));
+                const err = new Error(data.error || `업로드 실패 (${xhr.status})`) as Error & { status?: number };
+                err.status = xhr.status;
+                reject(err);
             } catch {
-                reject(new Error(`업로드 실패 (${xhr.status})`));
+                const err = new Error(`업로드 실패 (${xhr.status})`) as Error & { status?: number };
+                err.status = xhr.status;
+                reject(err);
             }
         };
 
@@ -114,14 +139,8 @@ export default function AdminDashboardClient() {
         setUploadError("");
     }, []);
 
-    const validateSession = useCallback(async (token: string): Promise<boolean> => {
-        const res = await fetch("/api/archive/auth", {
-            headers: {
-                Authorization: `Bearer ${token}`,
-                "X-Admin-Token": token,
-            },
-        });
-        return res.ok;
+    const validateSession = useCallback(async (token: string): Promise<SessionCheckResult> => {
+        return checkSession(token);
     }, []);
 
     useEffect(() => {
@@ -131,11 +150,13 @@ export default function AdminDashboardClient() {
             return;
         }
 
-        void validateSession(savedAuth).then((valid) => {
-            if (valid) {
+        void validateSession(savedAuth).then((result) => {
+            if (result === "valid") {
                 setIsLoggedIn(true);
-            } else {
+            } else if (result === "unauthorized") {
                 localStorage.removeItem(AUTH_KEY);
+            } else if (result === "unavailable") {
+                setLoginError("서버 인증 설정을 확인 중입니다. 잠시 후 다시 로그인해주세요.");
             }
             setSessionChecking(false);
         });
@@ -173,7 +194,7 @@ export default function AdminDashboardClient() {
         setLoginLoading(true);
 
         try {
-            const res = await fetch("/api/archive/auth", {
+            const res = await fetch(AUTH_API, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ password: password.trim() }),
@@ -238,13 +259,6 @@ export default function AdminDashboardClient() {
             return;
         }
 
-        const sessionValid = await validateSession(auth);
-        if (!sessionValid) {
-            handleLogout();
-            addNotification("error", "세션이 만료되었습니다. 다시 로그인해주세요.");
-            return;
-        }
-
         try {
             setUploading(true);
             setUploadProgress(0);
@@ -259,11 +273,14 @@ export default function AdminDashboardClient() {
             await fetchFiles();
         } catch (error: unknown) {
             const message = error instanceof Error ? error.message : "업로드 중 오류가 발생했습니다.";
+            const status = error instanceof Error ? (error as Error & { status?: number }).status : undefined;
+
             setUploadError(message);
             addNotification("error", message);
 
-            if (message.includes("인증")) {
+            if (status === 401 || message.includes("인증")) {
                 handleLogout();
+                setLoginError("세션이 만료되었습니다. 다시 로그인해주세요.");
             }
         } finally {
             setUploading(false);
