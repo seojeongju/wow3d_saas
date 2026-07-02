@@ -2,6 +2,15 @@
    About Page Styles
    ============================================ */
 
+.aboutLayout {
+  padding-top: 72px;
+}
+
+.aboutMain {
+  position: relative;
+  z-index: 1;
+}
+
 .aboutPage {
   min-height: 100vh;
   background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
@@ -20,6 +29,7 @@
   -webkit-backdrop-filter: blur(16px) saturate(180%);
   border-bottom: 1px solid #e2e8f0;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+  min-height: 52px;
 }
 
 .subNavInner {
@@ -70,12 +80,12 @@
    ============================================ */
 
 .subHero {
-  padding: 3rem 0 2.5rem;
+  padding: 3.5rem 0 2.5rem;
   border-bottom: 1px solid #e2e8f0;
 }
 
 .subHeroDark {
-  padding: 3rem 0 2rem;
+  padding: 3.5rem 0 2rem;
   border-bottom: 1px solid rgba(148, 163, 184, 0.15);
 }
 
@@ -208,13 +218,21 @@
 }
 
 @media (max-width: 768px) {
+  .aboutLayout {
+    padding-top: 72px;
+  }
+
   .subNav {
     top: 72px;
   }
 
   .subHero,
   .subHeroDark {
-    padding: 2rem 0 1.5rem;
+    padding: 2.5rem 0 1.75rem;
+  }
+
+  .aboutLayout .heroSection {
+    padding-top: 2.5rem;
   }
 }
 
@@ -228,9 +246,13 @@
   background-position: center;
   background-repeat: no-repeat;
   color: white;
-  padding: 8rem 0 5rem;
+  padding: 4.5rem 0 5rem;
   position: relative;
   overflow: hidden;
+}
+
+.aboutLayout .heroSection {
+  padding-top: 3.5rem;
 }
 
 .heroSection::before {
