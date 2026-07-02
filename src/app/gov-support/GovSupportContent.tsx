@@ -147,13 +147,15 @@ export default function GovSupportContent() {
       <section className={styles.heroSection}>
         <div className="container">
           <div className={styles.heroContent}>
-            <div className={styles.badge}>
-              <Info size={18} />
-              <span>사업 안내</span>
-            </div>
-            <div className={styles.officialBadge}>
-              <CheckCircle2 size={16} />
-              <span>(주)와우쓰리디(WOW3D)는 스마트공장, 스마트제조, 스마트서비스, 스마트상점 <strong>공식공급업체</strong>입니다.</span>
+            <div className={styles.heroBadges}>
+              <div className={styles.badge}>
+                <Info size={18} />
+                <span>사업 안내</span>
+              </div>
+              <div className={styles.officialBadge}>
+                <CheckCircle2 size={16} />
+                <span>(주)와우쓰리디(WOW3D)는 스마트공장, 스마트제조, 스마트서비스, 스마트상점 <strong>공식공급업체</strong>입니다.</span>
+              </div>
             </div>
             <h1 className={styles.heroTitle}>
               정부지원사업으로<br />
