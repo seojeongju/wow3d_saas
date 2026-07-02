@@ -89,24 +89,12 @@
 .adminPage {
     min-height: 100vh;
     background: #f1f5f9;
-    padding-top: 88px; /* Navbar height */
-}
-
-@media (max-width: 1099px) {
-    .adminPage {
-        padding-top: 80px; /* Mobile Navbar height */
-    }
+    padding-top: 88px;
 }
 
 .container {
     display: flex;
     height: calc(100vh - 88px);
-}
-
-@media (max-width: 1099px) {
-    .container {
-        height: calc(100vh - 80px);
-    }
 }
 
 .sidebar {
@@ -448,6 +436,13 @@
     font-weight: 500;
 }
 
+.fileNameCell span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
+}
+
 .actions {
     display: flex;
     gap: 0.5rem;
@@ -502,4 +497,225 @@
 @keyframes spin {
     from { transform: rotate(0deg); }
     to { transform: rotate(360deg); }
+}
+
+/* ============================================
+   Responsive — Tablet & Mobile
+   ============================================ */
+
+@media (max-width: 1099px) {
+    .adminPage {
+        padding-top: 72px;
+        padding-bottom: calc(var(--bottom-nav-height) + var(--safe-area-bottom) + 1rem);
+    }
+
+    .container {
+        flex-direction: column;
+        height: auto;
+        min-height: calc(100vh - 72px - var(--bottom-nav-height));
+    }
+
+    .sidebar {
+        width: 100%;
+        flex-direction: row;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        padding: 0.875rem 1rem;
+    }
+
+    .brand {
+        flex: 1;
+        min-width: 0;
+        padding-bottom: 0;
+        margin-bottom: 0;
+        border-bottom: none;
+    }
+
+    .brand span {
+        font-size: 1rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .nav {
+        display: none;
+    }
+
+    .logoutBtn {
+        margin-top: 0;
+        flex-shrink: 0;
+        padding: 0.5rem 0.875rem;
+        font-size: 0.875rem;
+    }
+
+    .main {
+        padding: 1rem;
+        overflow-x: hidden;
+    }
+
+    .mainHeader {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.75rem;
+        margin-bottom: 1.25rem;
+    }
+
+    .mainHeader h1 {
+        font-size: 1.375rem;
+    }
+
+    .stats {
+        width: 100%;
+        text-align: center;
+    }
+
+    .uploadForm {
+        padding: 1rem;
+    }
+
+    .filePickerRow {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .filePickerBtn {
+        justify-content: center;
+    }
+
+    .selectedFileName {
+        word-break: break-all;
+    }
+
+    .submitUploadBtn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .notificationStack {
+        top: calc(72px + 0.75rem);
+        left: 0.75rem;
+        right: 0.75rem;
+    }
+
+    .notification {
+        font-size: 0.875rem;
+        padding: 0.75rem 1rem;
+    }
+
+    .tableWrap {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+}
+
+@media (max-width: 768px) {
+    .loginCard {
+        width: calc(100% - 2rem);
+        max-width: 400px;
+        padding: 1.75rem 1.25rem;
+        margin: 1rem;
+    }
+
+    .loginPage {
+        padding: 1rem;
+        padding-bottom: calc(var(--bottom-nav-height) + var(--safe-area-bottom) + 1rem);
+    }
+
+    .controls {
+        flex-direction: column;
+    }
+
+    .search {
+        width: 100%;
+    }
+
+    /* 테이블 → 카드형 목록 */
+    .table thead {
+        display: none;
+    }
+
+    .table,
+    .table tbody,
+    .table tr,
+    .table td {
+        display: block;
+        width: 100%;
+    }
+
+    .table tr {
+        padding: 1rem;
+        border-bottom: 1px solid #e2e8f0;
+    }
+
+    .table tr:last-child {
+        border-bottom: none;
+    }
+
+    .table td {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.75rem;
+        padding: 0.375rem 0;
+        border-bottom: none;
+        font-size: 0.875rem;
+    }
+
+    .table td::before {
+        content: attr(data-label);
+        flex-shrink: 0;
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: #94a3b8;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+    }
+
+    .fileNameCell {
+        flex-direction: row;
+        align-items: flex-start;
+        padding-bottom: 0.625rem;
+        margin-bottom: 0.375rem;
+        border-bottom: 1px solid #f1f5f9;
+    }
+
+    .fileNameCell::before {
+        display: none;
+    }
+
+    .fileNameCell span {
+        white-space: normal;
+        word-break: break-all;
+        text-align: right;
+        flex: 1;
+    }
+
+    .actions {
+        justify-content: flex-end;
+        padding-top: 0.25rem;
+    }
+
+    .actions::before {
+        margin-right: auto;
+    }
+}
+
+@media (max-width: 480px) {
+    .mainHeader h1 {
+        font-size: 1.25rem;
+    }
+
+    .uploadFormTitle {
+        font-size: 1rem;
+    }
+
+    .field input[type="text"] {
+        font-size: 16px; /* iOS 줌 방지 */
+    }
+
+    .loginForm input {
+        font-size: 16px;
+    }
 }

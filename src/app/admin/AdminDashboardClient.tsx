@@ -473,13 +473,13 @@ export default function AdminDashboardClient() {
                                 <tbody>
                                     {filteredFiles.map((file) => (
                                         <tr key={file.id}>
-                                            <td className={styles.fileNameCell}>
+                                            <td className={styles.fileNameCell} data-label="자료명">
                                                 {getFileIcon(file.content_type)}
                                                 <span title={file.filename}>{file.filename}</span>
                                             </td>
-                                            <td>{formatSize(file.size)}</td>
-                                            <td>{new Date(file.created_at).toLocaleDateString("ko-KR")}</td>
-                                            <td className={styles.actions}>
+                                            <td data-label="용량">{formatSize(file.size)}</td>
+                                            <td data-label="등록일">{new Date(file.created_at).toLocaleDateString("ko-KR")}</td>
+                                            <td className={styles.actions} data-label="관리">
                                                 <a href={`/api/archive/download?id=${file.id}`} download className={styles.downloadLink} title="다운로드"><Download size={16} /></a>
                                                 <button
                                                     onClick={() => handleDelete(file)}
